@@ -142,4 +142,27 @@ public class createUserAcctModel {
     }
     
     
+    /**
+     * 
+     * @param optionValue
+     * @param searchData
+     * @return 
+     */
+    public static ArrayList<createUserAcctModel> getUsersWithSearch(String optionValue, String searchData){
+        
+        JOptionPane.showMessageDialog(null,optionValue+" and "+searchData);
+        ArrayList<createUserAcctModel> userList = new ArrayList<>();
+        ResultSet rs = AccessLayer.getInstance().getAllUsersWithSearch(optionValue, searchData);
+        try {
+            JOptionPane.showMessageDialog(null,"After try... Error inside getUsersWithSearch...");
+                while(rs.next())
+                    JOptionPane.showMessageDialog(null,"After rs.next... Error inside getUsersWithSearch...");
+                        userList.add(new createUserAcctModel(rs.getString("employeeID"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("employeePword"), rs.getString("birthDate"),rs.getString("userType"), rs.getString("userStatus")));
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"After catch... Error inside getUsersWithSearch...");
+        }
+        return userList;
+    }
+
+    
 }

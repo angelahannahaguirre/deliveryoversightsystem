@@ -316,7 +316,24 @@ public class AccessLayer {
         }
         return null;
     }
+
     
+    /**
+     * added by angela 11.9.16
+     * @param condition
+     * @param searchData
+     * @return 
+     */
+    public ResultSet getAllUsersWithSearch(String condition, String searchData) {
+        try {
+            createConnection();
+              return Retrieve("select * from user_account where condition = '"+insertBackslash(searchData)+"'");
+        }catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        
+        return null;
+    }
     
     /*****************
      * Log Details

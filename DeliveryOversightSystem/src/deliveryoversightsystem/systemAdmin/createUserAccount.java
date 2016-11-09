@@ -6,7 +6,12 @@
 
 package deliveryoversightsystem.systemAdmin;
 
+import connection.AccessLayer;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import model.createUserAcctModel;
 
@@ -119,6 +124,11 @@ public class createUserAccount extends javax.swing.JFrame {
         positionLabel.setText("Position");
 
         positionField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Warehouse Manager", "Purchasing Head", "System Admin" }));
+        positionField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                positionFieldActionPerformed(evt);
+            }
+        });
 
         createBtn.setBackground(new java.awt.Color(255, 255, 255));
         createBtn.setForeground(new java.awt.Color(0, 153, 255));
@@ -194,7 +204,7 @@ public class createUserAccount extends javax.swing.JFrame {
                     .addComponent(dosLabel)
                     .addComponent(homeBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(createUserAcctLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                .addComponent(createUserAcctLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -219,7 +229,7 @@ public class createUserAccount extends javax.swing.JFrame {
                     .addComponent(bdateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(positionLabel)
                     .addComponent(positionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
+                .addGap(26, 26, 26)
                 .addComponent(createBtn)
                 .addGap(27, 27, 27)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -239,10 +249,6 @@ public class createUserAccount extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordFieldActionPerformed
 
     private void empIDFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empIDFieldActionPerformed
         // TODO add your handling code here:
@@ -275,6 +281,14 @@ public class createUserAccount extends javax.swing.JFrame {
                 System.gc();
         
     }//GEN-LAST:event_createBtnActionPerformed
+
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordFieldActionPerformed
+
+    private void positionFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positionFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_positionFieldActionPerformed
 
     private void clearCreateUserFields() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -374,8 +388,7 @@ public class createUserAccount extends javax.swing.JFrame {
         this.positionField = positionField;
     }
     
-    
-
+   
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
