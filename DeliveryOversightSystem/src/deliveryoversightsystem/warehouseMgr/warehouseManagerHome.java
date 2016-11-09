@@ -6,8 +6,10 @@
 
 package deliveryoversightsystem.warehouseMgr;
 
+import deliveryoversightsystem.loginModule;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import view.OptionPane;
 
 /**
  *
@@ -15,7 +17,7 @@ import javax.swing.JOptionPane;
  */
 public class warehouseManagerHome extends javax.swing.JFrame {
 
-    private static warehouseManagerHome instance;
+    public static warehouseManagerHome instance;
     
     public static void setInstance(warehouseManagerHome aInstance) {
       instance = aInstance;
@@ -136,19 +138,19 @@ public class warehouseManagerHome extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 91, Short.MAX_VALUE)
+                                .addGap(0, 94, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(viewNewItemsListBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(homeWMLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(viewFollowUpItemListBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                                    .addComponent(homeWMLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(viewFollowUpItemListBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(homeWMLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))
                                 .addGap(129, 129, 129)))
-                        .addContainerGap(20, Short.MAX_VALUE))
+                        .addContainerGap(25, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(dosLabel)
                         .addGap(0, 0, Short.MAX_VALUE))))
@@ -166,7 +168,7 @@ public class warehouseManagerHome extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(5, 5, 5)
                                 .addComponent(homeWMLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(viewUpdateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(viewUpdateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -178,40 +180,48 @@ public class warehouseManagerHome extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(homeWMLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(homeWMLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 754, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 486, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private newOrderList newList;
     private void viewNewItemsListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewNewItemsListBtnActionPerformed
         // TODO add your handling code here:
+        newList = new newOrderList();
+        newList.setVisible(true);
     }//GEN-LAST:event_viewNewItemsListBtnActionPerformed
 
+    private newFollowUp followUpList;
     private void viewFollowUpItemListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewFollowUpItemListBtnActionPerformed
         // TODO add your handling code here:
+        followUpList = new newFollowUp();
+        followUpList.setVisible(true);
     }//GEN-LAST:event_viewFollowUpItemListBtnActionPerformed
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
         // TODO add your handling code here:   
-        //JFrame frame = new JFrame();
         
-        int dialogResult = JOptionPane.showConfirmDialog (null, "Are You Sure You Want To Logout?","Confirmation",0);
-        if(dialogResult == JOptionPane.YES_OPTION){
-            //PH.dispatchEvent(new WindowEvent(PH, WindowEvent.WINDOW_CLOSING));
-            this.dispose();
-            //LM.setVisible(true);
+        int choice = OptionPane.confirmationDialog("Are you sure you want to logout?");
+        if(choice == JOptionPane.YES_OPTION){
+            setVisible(false);
+            loginModule.instance.logout();
         }
     }//GEN-LAST:event_logoutBtnActionPerformed
 
@@ -256,6 +266,15 @@ public class warehouseManagerHome extends javax.swing.JFrame {
                 new warehouseManagerHome().setVisible(true);
             }
         });
+    }
+    
+    private void showExitDialog(){
+            warehouseManagerHome.instance.setEnabled(true);
+            setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    }
+    
+    private void formWindowClosing(java.awt.event.WindowEvent evt){
+        showExitDialog();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

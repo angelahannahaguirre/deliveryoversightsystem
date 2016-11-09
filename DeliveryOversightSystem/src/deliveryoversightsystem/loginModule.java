@@ -262,6 +262,16 @@ public class loginModule extends javax.swing.JFrame {
     public void setUsernameField(JTextField usernameField) {
         this.usernameField = usernameField;
     }
+
+    public JPasswordField getPasswordField() {
+        return passwordField;
+    }
+
+    public void setPasswordField(JPasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
+    
+    
     
     private void loginUser() throws SQLException{
         String password = passwordField.getText();

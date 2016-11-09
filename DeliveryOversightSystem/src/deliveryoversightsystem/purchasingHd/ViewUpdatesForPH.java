@@ -69,7 +69,13 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
         viewUpdatesForPHCB = new javax.swing.JComboBox();
         homeBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		addWindowListener(new java.awt.event.WindowAdapter(){
+			public void windowClosing(java.awt.event.WindowEvent evt){
+				formWindowClosing(evt);
+			}
+		});
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -357,6 +363,15 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
                 new ViewUpdatesForPH().setVisible(true);
             }
         });
+    }
+    
+    private void showExitDialog(){
+            purchaseHeadHome.instance.setEnabled(true);
+            setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    }
+    
+    private void formWindowClosing(java.awt.event.WindowEvent evt){
+        showExitDialog();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

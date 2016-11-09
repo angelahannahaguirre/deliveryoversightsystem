@@ -151,6 +151,7 @@ public class createUserAcctModel {
     public static ArrayList<createUserAcctModel> getUsersWithSearch(String optionValue, String searchData){
         
         JOptionPane.showMessageDialog(null,optionValue+" and "+searchData);
+        
         ArrayList<createUserAcctModel> userList = new ArrayList<>();
         ResultSet rs = AccessLayer.getInstance().getAllUsersWithSearch(optionValue, searchData);
         try {

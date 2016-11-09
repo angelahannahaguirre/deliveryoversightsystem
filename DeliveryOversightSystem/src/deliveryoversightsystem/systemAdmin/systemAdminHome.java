@@ -306,16 +306,7 @@ public class systemAdminHome extends javax.swing.JFrame {
        
 
     }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void logoutSysAdBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutSysAdBtnActionPerformed
-        // TODO add your handling code here:
-        int choice = OptionPane.confirmationDialog("Are you sure you want to logout?");
-        if(choice == JOptionPane.YES_OPTION){
-            setVisible(false);
-            loginModule.instance.logout();
-        }
-    }//GEN-LAST:event_logoutSysAdBtnActionPerformed
-
+    private loginModule LM;
     public ViewUsers VU;
     
     private void viewUsersBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewUsersBtnActionPerformed
@@ -339,6 +330,15 @@ public class systemAdminHome extends javax.swing.JFrame {
     private void viewLogDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLogDetailsBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_viewLogDetailsBtnActionPerformed
+
+    private void logoutSysAdBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutSysAdBtnActionPerformed
+        // TODO add your handling code here:
+        int choice = OptionPane.confirmationDialog("Are you sure you want to logout?");
+        if(choice == JOptionPane.YES_OPTION){
+            setVisible(false);
+            loginModule.instance.logout();
+        }
+    }//GEN-LAST:event_logoutSysAdBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -374,6 +374,16 @@ public class systemAdminHome extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void showExitDialog(){
+            systemAdminHome.instance.setEnabled(true);
+            setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    }
+    
+    private void formWindowClosing(java.awt.event.WindowEvent evt){
+        showExitDialog();
+    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createUserBtn;

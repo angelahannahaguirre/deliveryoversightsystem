@@ -64,12 +64,17 @@ public class ViewUsers extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         viewUsersTable = new javax.swing.JTable();
         refreshBtn = new javax.swing.JButton();
-        searchThis = new javax.swing.JTextField();
         goBtn = new javax.swing.JButton();
-        homeBtn = new javax.swing.JButton();
         viewUsersCB = new javax.swing.JComboBox();
+        searchThis = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		addWindowListener(new java.awt.event.WindowAdapter(){
+			public void windowClosing(java.awt.event.WindowEvent evt){
+				formWindowClosing(evt);
+			}
+		});
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
         jPanel1.setPreferredSize(new java.awt.Dimension(764, 450));
@@ -170,16 +175,12 @@ public class ViewUsers extends javax.swing.JFrame {
             }
         });
 
-        homeBtn.setBackground(new java.awt.Color(255, 255, 255));
-        homeBtn.setForeground(new java.awt.Color(0, 153, 255));
-        homeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/home_25.png"))); // NOI18N
-        homeBtn.addActionListener(new java.awt.event.ActionListener() {
+        viewUsersCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Employee ID", "Status"}));
+        viewUsersCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                homeBtnActionPerformed(evt);
+                viewUsersCBActionPerformed(evt);
             }
         });
-
-        viewUsersCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Employee ID", "Status"}));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -190,21 +191,17 @@ public class ViewUsers extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dosLabel)
-                                    .addComponent(viewUsersLabel))
-                                .addGap(373, 373, 373))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(viewUsersCB, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(searchThis, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(goBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dosLabel)
+                            .addComponent(viewUsersLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(viewUsersCB, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchThis, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(goBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator3)
                     .addComponent(jScrollPane1))
                 .addGap(23, 23, 23))
@@ -221,14 +218,12 @@ public class ViewUsers extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(refreshBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(viewUsersCB)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(searchThis, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(homeBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addComponent(viewUsersCB, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchThis, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(goBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -239,7 +234,7 @@ public class ViewUsers extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
         );
 
         pack();
@@ -251,32 +246,29 @@ public class ViewUsers extends javax.swing.JFrame {
             System.gc();
     }//GEN-LAST:event_refreshBtnjButton1ActionPerformed
 
-    //String cbVal = "";
-    //String searchVal = "";
     //updateViewUsersWithSearch(createUserAcctModel.getUsersWithSearch(getComboBoxValue().trim(),getViewUsersField().getText()));
     
     private void goBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBtnjButton1ActionPerformed
         // TODO add your handling code here:
-        //System.out.println(searchThis.getText());
-        updateViewUsersWithSearch(createUserAcctModel.getUsersWithSearch("employeeID",searchThis.getText()));  
+        String retVal = "";
+        String condition = getViewUsersCB().getSelectedItem().toString();
+        
+        if(condition.equalsIgnoreCase("Employee ID")){
+            retVal = "employeeID";
+        }else if(condition.equalsIgnoreCase("Status")){
+            retVal = "userStatus";
+        }  
+        
+        String searchVal = getSearchThis().getText().trim();
+        
+        updateViewUsersWithSearch(createUserAcctModel.getUsersWithSearch(retVal,searchVal));  
             System.gc();
     }//GEN-LAST:event_goBtnjButton1ActionPerformed
 
-    //public String getComboBoxValue(){
-//        String comboVal = "";
-//        String retVal = "";
-//        
-//        comboVal = getViewUsersCB().getSelectedItem().toString();
-//        if(comboVal.equals("Status")){
-//            retVal = "userStatus";
-//           
-//        }else if(comboVal.equals("Employee ID")){
-//            retVal = "employeeID";
-//        }
-//        
-//        JOptionPane.showMessageDialog(null,"Inside getComboBoxValue..." +retVal); //error is here
-//        return retVal;
-    //}
+    private void viewUsersCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewUsersCBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_viewUsersCBActionPerformed
+
     
     /**
      * added by angela 11.9.16
@@ -322,10 +314,6 @@ public class ViewUsers extends javax.swing.JFrame {
     
     
     
-    private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_homeBtnActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -362,7 +350,8 @@ public class ViewUsers extends javax.swing.JFrame {
     }
     
     public void updateViewUsersTable(ArrayList<createUserAcctModel> userList){
-        JOptionPane.showMessageDialog(null,"Inside updateViewUsersTable...");
+        
+        JOptionPane.showMessageDialog(null,"Getting table results...");
         if(userList == null)
             return;
         DefaultTableModel model = (DefaultTableModel) getViewUsersTable().getModel();
@@ -415,7 +404,6 @@ public class ViewUsers extends javax.swing.JFrame {
     }
     
     
-
     public JTable getViewUsersTable() {
         return viewUsersTable;
     }
@@ -440,10 +428,6 @@ public class ViewUsers extends javax.swing.JFrame {
     public void setSearchThis(JTextField searchThis) {
         this.searchThis = searchThis;
     }
-
-    
-
-    
     
     
     
@@ -452,7 +436,6 @@ public class ViewUsers extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dosLabel;
     private javax.swing.JButton goBtn;
-    private javax.swing.JButton homeBtn;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator3;

@@ -6,9 +6,11 @@
 
 package deliveryoversightsystem.purchasingHd;
 
+import deliveryoversightsystem.loginModule;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import view.OptionPane;
 
 /**
  *
@@ -17,7 +19,7 @@ import javax.swing.JOptionPane;
 public class purchaseHeadHome extends javax.swing.JFrame {
 
     
-    private static purchaseHeadHome instance;
+    public static purchaseHeadHome instance;
     
     public static void setInstance(purchaseHeadHome aInstance) {
       instance = aInstance;
@@ -62,7 +64,13 @@ public class purchaseHeadHome extends javax.swing.JFrame {
         logoutBtn = new javax.swing.JButton();
         viewResponsesBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		addWindowListener(new java.awt.event.WindowAdapter(){
+			public void windowClosing(java.awt.event.WindowEvent evt){
+				formWindowClosing(evt);
+			}
+		});
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
         jPanel1.setPreferredSize(new java.awt.Dimension(764, 450));
@@ -271,13 +279,11 @@ public class purchaseHeadHome extends javax.swing.JFrame {
     //private loginModule LM;
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
         // TODO add your handling code here:
-        JFrame frame = new JFrame();
         
-        int dialogResult = JOptionPane.showConfirmDialog (null, "Are You Sure You Want To Logout?","Confirmation",0);
-        if(dialogResult == JOptionPane.YES_OPTION){
-            //PH.dispatchEvent(new WindowEvent(PH, WindowEvent.WINDOW_CLOSING));
-            this.dispose();
-            //LM.setVisible(true);
+        int choice = OptionPane.confirmationDialog("Are you sure you want to logout?");
+        if(choice == JOptionPane.YES_OPTION){
+            setVisible(false);
+            loginModule.instance.logout();
         }
     }//GEN-LAST:event_logoutBtnActionPerformed
 
@@ -325,6 +331,15 @@ public class purchaseHeadHome extends javax.swing.JFrame {
                 new purchaseHeadHome().setVisible(true);
             }
         });
+    }
+    
+    private void showExitDialog(){
+            purchaseHeadHome.instance.setEnabled(true);
+            setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    }
+    
+    private void formWindowClosing(java.awt.event.WindowEvent evt){
+        showExitDialog();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
