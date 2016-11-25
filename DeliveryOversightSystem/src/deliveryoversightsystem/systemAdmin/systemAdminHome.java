@@ -317,7 +317,7 @@ public class systemAdminHome extends javax.swing.JFrame {
         
         VU.updateViewUsersTable(createUserAcctModel.getAllUsers());
         
-        
+        System.gc();
     }//GEN-LAST:event_viewUsersBtnActionPerformed
 
     public createUserAccount createAcct;

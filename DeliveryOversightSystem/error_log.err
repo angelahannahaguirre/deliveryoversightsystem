@@ -46,3 +46,9 @@
 2016/11/09 03:44:23: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'condition = ''' at line 1
 2016/11/09 03:47:43: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'condition = ''' at line 1
 2016/11/09 03:47:49: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'condition = ''' at line 1
+2016/11/17 09:46:01: Data truncation: Incorrect date value: '' for column 'dateFaxed' at row 1
+2016/11/17 09:55:21: Data truncation: Incorrect date value: '' for column 'dateFaxed' at row 1
+2016/11/23 09:44:18: Cannot add or update a child row: a foreign key constraint fails (`dos_db`.`invoice`, CONSTRAINT `purchaseOrderNo` FOREIGN KEY (`purchaseOrderNo`) REFERENCES `delivery` (`purchaseOrderNo`) ON DELETE NO ACTION ON UPDATE NO ACTION)
+2016/11/23 09:46:49: Duplicate entry '1111' for key 'PRIMARY'
+2016/11/23 09:46:55: Duplicate entry '1111' for key 'PRIMARY'
+2016/11/23 11:45:42: Duplicate entry '1111' for key 'PRIMARY'

@@ -26,9 +26,9 @@ import others.ButtonColumn;
  */
 public class ViewUsers extends javax.swing.JFrame {
 
-    private static ViewUsers instance;
+    private static ViewUsers instance; //this might be thecause of the issue
     
-    public static void setInstance(ViewUsers aInstance) {
+    public static void setInstance(ViewUsers aInstance) { //this might be thecause of the issue
       instance = aInstance;
     }
     
@@ -37,12 +37,12 @@ public class ViewUsers extends javax.swing.JFrame {
      */
     public ViewUsers() {
         initComponents();
-        instance = this;
+        instance = this; //this might be thecause of the issue
         initComponents();
         setLocationRelativeTo(null);
     }
-    
-    public static ViewUsers getInstance(){
+     
+    public static ViewUsers getInstance(){ //this might be thecause of the issue
         if(instance == null)
             instance = new ViewUsers();
         return instance;
@@ -349,6 +349,11 @@ public class ViewUsers extends javax.swing.JFrame {
         });
     }
     
+    
+    /**
+     * 
+     * @param userList 
+     */
     public void updateViewUsersTable(ArrayList<createUserAcctModel> userList){
         
         JOptionPane.showMessageDialog(null,"Getting table results...");

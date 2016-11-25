@@ -6,9 +6,20 @@
 
 package deliveryoversightsystem.purchasingHd;
 
+import com.toedter.calendar.DateUtil;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 import deliveryoversightsystem.purchasingHd.purchaseHeadHome;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import model.addItemModel;
+import view.OptionPane;
 
 /**
  *
@@ -16,28 +27,17 @@ import javax.swing.JOptionPane;
  */
 public class ViewUpdatesForPH extends javax.swing.JFrame {
 
-    private static ViewUpdatesForPH instance;
-    
-    public static void setInstance(ViewUpdatesForPH aInstance) {
-      instance = aInstance;
-    }
     
     /**
      * Creates new form ViewUpdatesForPH
      */
     public ViewUpdatesForPH() {
         initComponents();
-        instance = this;
-        initComponents();
         setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
     }
     
-    public static ViewUpdatesForPH getInstance(){
-        if(instance == null)
-            instance = new ViewUpdatesForPH();
-        return instance;
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,7 +59,6 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
         purchaseOrderNoLabel = new javax.swing.JLabel();
         supplierNameLabel = new javax.swing.JLabel();
         dateFaxedLabel = new javax.swing.JLabel();
-        dateFaxedField = new javax.swing.JTextField();
         supplierNameField = new javax.swing.JTextField();
         purchaseOrderNoField = new javax.swing.JTextField();
         addItemLabel = new javax.swing.JLabel();
@@ -68,14 +67,10 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
         refreshBtn = new javax.swing.JButton();
         viewUpdatesForPHCB = new javax.swing.JComboBox();
         homeBtn = new javax.swing.JButton();
+        dateFaxedField = new com.toedter.calendar.JDateChooser();
+        resetBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-		
-		addWindowListener(new java.awt.event.WindowAdapter(){
-			public void windowClosing(java.awt.event.WindowEvent evt){
-				formWindowClosing(evt);
-			}
-		});
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -136,11 +131,11 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Purchaser", "Purchase Order No.", "Supplier Name", "Date Faxed ", "Invoice No.", "Invoice Date", "Date Delivered", "Manual RR Date", "Electronic RR Date", "Reference RR No.", "Date Forwarded"
+                "Purchase Order No.", "Purchaser", "Supplier Name", "Date Faxed ", "Invoice No.", "Invoice Date", "Date Delivered", "Manual RR Date", "Electronic RR Date", "Reference RR No.", "Date Forwarded"
             }
         ));
         viewUpdatesForPHTable.setGridColor(new java.awt.Color(153, 153, 153));
-        viewUpdatesForPHTable.setSelectionBackground(new java.awt.Color(153, 204, 255));
+        viewUpdatesForPHTable.setSelectionBackground(new java.awt.Color(0, 102, 153));
         jScrollPane1.setViewportView(viewUpdatesForPHTable);
 
         dosLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
@@ -200,6 +195,17 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
             }
         });
 
+        dateFaxedField.setOpaque(false);
+
+        resetBtn.setBackground(new java.awt.Color(255, 255, 255));
+        resetBtn.setForeground(new java.awt.Color(255, 0, 102));
+        resetBtn.setText("RESET");
+        resetBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -212,7 +218,7 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(dosLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(viewUpdatesForPHCB, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -228,31 +234,34 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(134, 134, 134)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGap(118, 118, 118)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(supplierNameLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                                        .addComponent(supplierNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(purchaserLabel)
+                                        .addComponent(dateFaxedLabel)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(purchaserField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(dateFaxedField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(purchaseOrderNoLabel)
+                                        .addGap(29, 29, 29)
+                                        .addComponent(purchaseOrderNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(89, 89, 89)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(resetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(enterBtn))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(purchaseOrderNoLabel)
-                                            .addComponent(dateFaxedLabel))
-                                        .addGap(26, 26, 26)
+                                            .addComponent(supplierNameLabel)
+                                            .addComponent(purchaserLabel))
+                                        .addGap(51, 51, 51)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(dateFaxedField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(purchaseOrderNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(enterBtn)))
+                                            .addComponent(purchaserField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(supplierNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(84, 84, 84)
                                 .addComponent(addItemLabel)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(159, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -274,18 +283,23 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
                 .addComponent(addItemLabel)
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(purchaserLabel)
                     .addComponent(purchaserField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(purchaseOrderNoLabel)
-                    .addComponent(purchaseOrderNoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(purchaseOrderNoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(purchaserLabel))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(supplierNameLabel)
-                    .addComponent(supplierNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dateFaxedLabel)
-                    .addComponent(dateFaxedField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addComponent(enterBtn)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(supplierNameLabel)
+                                .addComponent(supplierNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dateFaxedField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(33, 33, 33)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(enterBtn)
+                            .addComponent(resetBtn)))
+                    .addComponent(dateFaxedLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
@@ -320,15 +334,55 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
 
     private void enterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterBtnActionPerformed
         // TODO add your handling code here:
-        JFrame frame = new JFrame();
+        //JFrame frame = new JFrame();
+       
+        String purchaseNo = getPurchaseOrderNoField().getText().trim();
+        String purchaserName = getPurchaserField().getText().trim();
+        String suppName = getSupplierNameField().getText().trim();
+
+        String faxDate = "";
+        
+        
+        Date fDate = getDateFaxedField().getDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+
+            faxDate = dateFormat.format(fDate);
+
+        }catch(Exception e){
+            OptionPane.error("Invalid. Date Faxed is required.");
+            return;
+        }
+        
+        String deliveryStat = "New";
+        String followUpFlag = "none"; //so it's either none or flagged
+        
+        JOptionPane.showMessageDialog(null, purchaseNo);
         
         int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Add the Item into the Delivery List?","Confirmation",0);
         if(dialogResult == JOptionPane.YES_OPTION){
-            JOptionPane.showMessageDialog(frame,"Successfully Added the Item!");
+            
+            if(new addItemModel(purchaseNo, purchaserName, suppName, faxDate, deliveryStat, followUpFlag).addItemToDB(true)){}
+            //    clearCreateUserFields();   
+                updateViewUsersTable(addItemModel.getAllInvoice());
+                    System.gc();
+                        //JOptionPane.showMessageDialog(null,"Successfully Added the Item!");
+            
+                        
+            
         }else{
-            JOptionPane.showMessageDialog(frame,"Cancelled!");
+            JOptionPane.showMessageDialog(null,"Cancel1ed!");
         }
     }//GEN-LAST:event_enterBtnActionPerformed
+
+    private void resetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetBtnActionPerformed
+        // TODO add your handling code here:
+
+        int choice = OptionPane.confirmationDialog("Are you sure you want to reset?");
+        if(choice == JOptionPane.YES_OPTION){
+            //clearCreateUserFields();
+        }
+    }//GEN-LAST:event_resetBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -365,6 +419,41 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
         });
     }
     
+    /**Getters and Setters**/
+    public JDateChooser getDateFaxedField() {
+        return dateFaxedField;
+    }
+
+    public void setDateFaxedField(JDateChooser dateFaxedField) {
+        this.dateFaxedField = dateFaxedField;
+    }
+
+    public JTextField getPurchaseOrderNoField() {
+        return purchaseOrderNoField;
+    }
+
+    public void setPurchaseOrderNoField(JTextField purchaseOrderNoField) {
+        this.purchaseOrderNoField = purchaseOrderNoField;
+    }
+
+    public JTextField getPurchaserField() {
+        return purchaserField;
+    }
+
+    public void setPurchaserField(JTextField purchaserField) {
+        this.purchaserField = purchaserField;
+    }
+
+    public JTextField getSupplierNameField() {
+        return supplierNameField;
+    }
+
+    public void setSupplierNameField(JTextField supplierNameField) {
+        this.supplierNameField = supplierNameField;
+    }
+
+    
+    
     private void showExitDialog(){
             purchaseHeadHome.instance.setEnabled(true);
             setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -373,10 +462,69 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt){
         showExitDialog();
     }
+    
+    /**
+     * 
+     * @param invoiceList 
+     */
+    public void updateViewUsersTable(ArrayList<addItemModel> invoiceList){
+        
+        JOptionPane.showMessageDialog(null,"Getting table results...");
+        if(invoiceList == null)
+            return;
+        DefaultTableModel model = (DefaultTableModel) getViewUpdatesForPHTable().getModel();
+        int size = invoiceList.size(), modelRows = model.getRowCount();
+        if(size > modelRows){
+            for(int i = size-modelRows; i > 0; i--)
+                model.addRow(new String[model.getColumnCount()]);
+        }
+        else if(modelRows > size){
+            for(int i = modelRows-size; i > 0; i--)
+                model.removeRow(0);
+        }
+        for(int i = 0; i < invoiceList.size(); i++){
+            addItemModel m = invoiceList.get(i);
+            
+            model.setValueAt(m.getPurchaseNo(),i,0);
+            model.setValueAt(m.getPurchaserName(),i,1);
+            model.setValueAt(m.getSuppName(),i,2);
+            model.setValueAt(m.getFaxedDate(),i,3);
+//            
+//            String pos = m.getPosition().trim();
+//            // condition to display String Position not abbrev.
+//            if(pos.equals("WM")){
+//                pos = "Warehouse Manager";
+//            }else if(pos.equals("PH")){
+//                pos = "Purchasing Head";
+//            }else if(pos.equals("SA")){
+//                pos = "System Administrator";
+//            }
+//            model.setValueAt(pos,i,4);
+//            model.setValueAt(m.getStatus(),i,5);
+            
+            //model.setValueAt(m.getPhilcareYear(),i,6); - account created date
+            //model.setValueAt(m.getMonth1(),i,7); - change password button
+            //model.setValueAt(m.getMonth2(),i,8); - deactivate button
+            
+            //ButtonColumn btnCol = new ButtonColumn(viewUsersTable, Change, 7);
+           
+        }
+        System.gc();
+    }
+
+    public JTable getViewUpdatesForPHTable() {
+        return viewUpdatesForPHTable;
+    }
+
+    public void setViewUpdatesForPHTable(JTable viewUpdatesForPHTable) {
+        this.viewUpdatesForPHTable = viewUpdatesForPHTable;
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addItemLabel;
-    private javax.swing.JTextField dateFaxedField;
+    private com.toedter.calendar.JDateChooser dateFaxedField;
     private javax.swing.JLabel dateFaxedLabel;
     private javax.swing.JLabel dosLabel;
     private javax.swing.JButton enterBtn;
@@ -391,6 +539,7 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
     private javax.swing.JTextField purchaserField;
     private javax.swing.JLabel purchaserLabel;
     private javax.swing.JButton refreshBtn;
+    private javax.swing.JButton resetBtn;
     private javax.swing.JTextField supplierNameField;
     private javax.swing.JLabel supplierNameLabel;
     private javax.swing.JComboBox viewUpdatesForPHCB;

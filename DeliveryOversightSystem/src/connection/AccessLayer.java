@@ -444,6 +444,118 @@ public class AccessLayer {
         return null;
     }
     
-   
+    /***********************************************
+     * Start of Add Item to Delivery List methods
+     ***********************************************/
+    
+    /**
+     * add data into delivery
+     * @param purchaseNo
+     * @param purchaserName
+     * @param suppName
+     * @param faxedDate
+     * @param deliveryStat
+     * @param followUpFlag
+     * @return 
+     */
+
+    public boolean addNewItem(String purchaseNo, String purchaserName, String suppName, String faxedDate, 
+            String deliveryStat, String followUpFlag) {
+        
+      
+       
+            boolean success = makeUpdate("insert into delivery values ('"+insertBackslash(purchaseNo)+"',"
+                        + "'"+insertBackslash(purchaserName)+"','"+insertBackslash(suppName)+"','"+insertBackslash(faxedDate)+"',"
+                        + "'"+insertBackslash(deliveryStat)+"','"+insertBackslash(followUpFlag)+"');");
+       
+                    if(success)
+                        //LogDetails.addToDatabase(loginModule.userType+" "+loginModule.currentUser+" added New User Account Details with Employee ID : "+empID+".");
+                        JOptionPane.showMessageDialog(null,"Successfully Added Item#"+purchaseNo+" To Delivery List!");
+                            return success;
+    
+    }
+    
+    /**
+     * get the resultset of all the delivery found in the database
+     * @return the resultset of all the delivery in the database
+     */
+    
+    
+    public ResultSet getAllInvoiceInDB() { //displays the delivery added items in PH
+        try {
+            createConnection();
+            return Retrieve("select * from delivery");
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
+    
+    /**
+     * add data into invoice
+     * @param invoiceNo
+     * @param invoiceDate
+     * @param dateDelivered
+     * @param manualDate
+     * @param electronicDate
+     * @param referenceRRNo
+     * @param dateForwarded
+     * @return 
+     */
+
+    public boolean addNewInvoice(String invoiceNo, String invoiceDate, String dateDelivered, String manualDate, 
+            String electronicDate, String referenceRRNo, String dateForwarded) {
+        
+      
+       
+            boolean success = makeUpdate("insert into invoice values ('"+insertBackslash(invoiceNo)+"',"
+                        + "'"+insertBackslash(invoiceDate)+"','"+insertBackslash(dateDelivered)+"','"+insertBackslash(manualDate)+"',"
+                        + "'"+insertBackslash(electronicDate)+"','"+insertBackslash(referenceRRNo)+"','"+insertBackslash(dateForwarded)+"');");
+       
+                    if(success)
+                        //LogDetails.addToDatabase(loginModule.userType+" "+loginModule.currentUser+" added New User Account Details with Employee ID : "+empID+".");
+                        JOptionPane.showMessageDialog(null,"Successfully Added Item/s with Invoice#"+invoiceNo+" To Delivery List!");
+                            return success;
+    
+    }
+    
+    /**
+     * add data into invoice_list 
+     * @param purchaseOrderNo
+     * @param invoiceNo
+     * @return 
+     */
+
+    public boolean addNewBridge(String purchaseOrderNo, String invoiceNo) {
+        
+      
+       
+            boolean success = makeUpdate("insert into invoice_list values ('"+insertBackslash(purchaseOrderNo)+"',"
+                        + "'"+insertBackslash(invoiceNo)+"');");
+       
+                    if(success)
+                        //LogDetails.addToDatabase(loginModule.userType+" "+loginModule.currentUser+" added New User Account Details with Employee ID : "+empID+".");
+                        JOptionPane.showMessageDialog(null,"Successfully Added Invoice#"+invoiceNo+" To Bridge List!");
+                            return success;
+    
+    }
+    
+    
+    /**
+     * get the resultset of all the delivery and invoice found in the database
+     * @return the resultset of all the delivery and invoice in the database
+     */
+    
+    
+    public ResultSet getAllUpdatesInDB() { //displays the delivery and invoices added - - - an experiment code
+        try {
+            createConnection();
+            return Retrieve("select purchaseOrderNo, purchaser, supplierName, dateFaxed from delivery AND * from invoice");
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
+    
     
 }

@@ -10,6 +10,7 @@ import deliveryoversightsystem.loginModule;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.addItemModel;
 import view.OptionPane;
 
 /**
@@ -287,11 +288,16 @@ public class purchaseHeadHome extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_logoutBtnActionPerformed
 
-    private ViewUpdatesForPH PHBtn;
+    private ViewUpdatesForPH PHUpdatesBtn;
     private void viewUpdatesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewUpdatesBtnActionPerformed
         // TODO add your handling code here:
-        PHBtn = new ViewUpdatesForPH();
-        PHBtn.setVisible(true);
+        PHUpdatesBtn = new ViewUpdatesForPH();
+        PHUpdatesBtn.setVisible(true);
+        purchaseHeadHome.instance.setEnabled(false);
+        
+        PHUpdatesBtn.updateViewUsersTable(addItemModel.getAllInvoice());
+        
+        System.gc();
     }//GEN-LAST:event_viewUpdatesBtnActionPerformed
 
     private void viewResponsesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewResponsesBtnActionPerformed

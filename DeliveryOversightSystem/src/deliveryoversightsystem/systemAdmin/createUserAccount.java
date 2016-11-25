@@ -6,15 +6,20 @@
 
 package deliveryoversightsystem.systemAdmin;
 
+import com.toedter.calendar.DateUtil;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 import connection.AccessLayer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import model.createUserAcctModel;
-
+import view.OptionPane;
 /**
  *
  * @author Aimee
@@ -55,20 +60,14 @@ public class createUserAccount extends javax.swing.JFrame {
         firstnameLabel = new javax.swing.JLabel();
         firstnameField = new javax.swing.JTextField();
         bdateLabel = new javax.swing.JLabel();
-        bdateField = new javax.swing.JTextField();
         positionLabel = new javax.swing.JLabel();
         positionField = new javax.swing.JComboBox();
         createBtn = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
+        resetBtn = new javax.swing.JButton();
+        bdateField = new com.toedter.calendar.JDateChooser();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-		
-		addWindowListener(new java.awt.event.WindowAdapter(){
-			public void windowClosing(java.awt.event.WindowEvent evt){
-				formWindowClosing(evt);
-			}
-		});
-
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 153, 204));
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
@@ -145,6 +144,17 @@ public class createUserAccount extends javax.swing.JFrame {
             }
         });
 
+        resetBtn.setBackground(new java.awt.Color(255, 255, 255));
+        resetBtn.setForeground(new java.awt.Color(255, 0, 102));
+        resetBtn.setText("RESET");
+        resetBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetBtnActionPerformed(evt);
+            }
+        });
+
+        bdateField.setOpaque(false);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -156,38 +166,43 @@ public class createUserAccount extends javax.swing.JFrame {
                     .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
                     .addComponent(jSeparator2)
                     .addComponent(jSeparator3)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(27, 27, 27)
-                            .addComponent(empIDLabel)
-                            .addGap(18, 18, 18)
-                            .addComponent(empIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(30, 30, 30)
-                            .addComponent(passwordLabel)
-                            .addGap(18, 18, 18)
-                            .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(basicInformationLabel)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(bdateLabel)
-                                        .addComponent(lastnameLabel))
-                                    .addGap(20, 20, 20)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(bdateField, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lastnameField, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(31, 31, 31)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(firstnameLabel)
-                                .addComponent(positionLabel))
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(firstnameField, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(positionField, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(createBtn)))
-                        .addComponent(dosLabel)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(empIDLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(empIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(passwordLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(basicInformationLabel)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(bdateLabel)
+                                    .addComponent(lastnameLabel))
+                                .addGap(20, 20, 20)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lastnameField, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                            .addComponent(bdateField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(firstnameLabel)
+                            .addComponent(positionLabel))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(resetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(createBtn))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(firstnameField, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(positionField, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(dosLabel))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -216,15 +231,19 @@ public class createUserAccount extends javax.swing.JFrame {
                     .addComponent(firstnameLabel)
                     .addComponent(firstnameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bdateLabel)
-                    .addComponent(bdateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(positionLabel)
-                    .addComponent(positionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addComponent(createBtn)
-                .addGap(27, 27, 27)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bdateLabel)
+                            .addComponent(positionLabel)
+                            .addComponent(positionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(createBtn)
+                            .addComponent(resetBtn))
+                        .addGap(27, 27, 27)
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(bdateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25))
         );
 
@@ -252,7 +271,18 @@ public class createUserAccount extends javax.swing.JFrame {
         String firstName = getFirstnameField().getText().trim();
         String lastName = getLastnameField().getText().trim();
         String empPword = getPasswordField().getText().trim();
-        String birthDate = getBdateField().getText().trim();
+        
+        String birthDate; 
+        Date bDate = getBdateField().getDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            birthDate = dateFormat.format(bDate);
+            
+        }catch(Exception e){
+            OptionPane.error("Invalid. Birthday is required.");
+            return;
+        }
+        
         String position = getPositionField().getSelectedItem().toString().trim();
         String status = "active";
         
@@ -278,6 +308,15 @@ public class createUserAccount extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_positionFieldActionPerformed
 
+    private void resetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetBtnActionPerformed
+        // TODO add your handling code here:
+        
+        int choice = OptionPane.confirmationDialog("Are you sure you want to reset?");
+        if(choice == JOptionPane.YES_OPTION){
+            clearCreateUserFields();
+        }
+    }//GEN-LAST:event_resetBtnActionPerformed
+
     private void clearCreateUserFields() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         
@@ -285,7 +324,7 @@ public class createUserAccount extends javax.swing.JFrame {
         getLastnameField().setText("");
         getFirstnameField().setText("");
         getPasswordField().setText("");
-        getBdateField().setText("");
+        getBdateField().setDate(null);
         getPositionField().setSelectedIndex(0);
     }
     
@@ -328,11 +367,11 @@ public class createUserAccount extends javax.swing.JFrame {
     }
     
     /** Getters and Setters **/
-    public JTextField getBdateField() {
+    public JDateChooser getBdateField() {
         return bdateField;
     }
 
-    public void setBdateField(JTextField bdateField) {
+    public void setBdateField(JDateChooser bdateField) {
         this.bdateField = bdateField;
     }
 
@@ -388,7 +427,7 @@ public class createUserAccount extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel basicInformationLabel;
-    private javax.swing.JTextField bdateField;
+    private com.toedter.calendar.JDateChooser bdateField;
     private javax.swing.JLabel bdateLabel;
     private javax.swing.JButton createBtn;
     private javax.swing.JLabel createUserAcctLabel;
@@ -407,5 +446,6 @@ public class createUserAccount extends javax.swing.JFrame {
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JComboBox positionField;
     private javax.swing.JLabel positionLabel;
+    private javax.swing.JButton resetBtn;
     // End of variables declaration//GEN-END:variables
 }

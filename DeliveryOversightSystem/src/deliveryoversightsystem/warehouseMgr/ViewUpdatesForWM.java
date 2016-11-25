@@ -6,9 +6,19 @@
 
 package deliveryoversightsystem.warehouseMgr;
 
+import com.toedter.calendar.DateUtil;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 import deliveryoversightsystem.warehouseMgr.warehouseManagerHome;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import model.addInvoiceModel;
+import model.addInvoiceNoToBridgeModel;
+import view.OptionPane;
 
 /**
  *
@@ -60,29 +70,23 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
         invoiceDateLabel = new javax.swing.JLabel();
         dateDeliveredLabel = new javax.swing.JLabel();
         manualDateLabel = new javax.swing.JLabel();
-        manualDateField = new javax.swing.JTextField();
         electronicLabel = new javax.swing.JLabel();
-        electronicField = new javax.swing.JTextField();
         referenceLabel = new javax.swing.JLabel();
         referenceField = new javax.swing.JTextField();
         dateForwardedLabel = new javax.swing.JLabel();
-        dateForwardedField = new javax.swing.JTextField();
-        dateDeliveredField = new javax.swing.JTextField();
-        invoiceDateField = new javax.swing.JTextField();
         acceptItemLabel = new javax.swing.JLabel();
         enterBtn = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         refreshBtn = new javax.swing.JButton();
         viewUpdatesCB = new javax.swing.JComboBox();
         homeBtn = new javax.swing.JButton();
+        dateDeliveredField = new com.toedter.calendar.JDateChooser();
+        electronicField = new com.toedter.calendar.JDateChooser();
+        dateForwardedField = new com.toedter.calendar.JDateChooser();
+        inDateField = new com.toedter.calendar.JDateChooser();
+        manualField = new com.toedter.calendar.JDateChooser();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-		
-		addWindowListener(new java.awt.event.WindowAdapter(){
-			public void windowClosing(java.awt.event.WindowEvent evt){
-				formWindowClosing(evt);
-			}
-		});
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -193,12 +197,6 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
         dateForwardedLabel.setForeground(new java.awt.Color(255, 255, 255));
         dateForwardedLabel.setText("Date Forwarded");
 
-        invoiceDateField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoiceDateFieldActionPerformed(evt);
-            }
-        });
-
         acceptItemLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         acceptItemLabel.setForeground(new java.awt.Color(255, 255, 255));
         acceptItemLabel.setText("Accept Item Delivery");
@@ -237,6 +235,16 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
             }
         });
 
+        dateDeliveredField.setOpaque(false);
+
+        electronicField.setOpaque(false);
+
+        dateForwardedField.setOpaque(false);
+
+        inDateField.setOpaque(false);
+
+        manualField.setOpaque(false);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -266,41 +274,42 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(134, 134, 134)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(dateDeliveredLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                                        .addComponent(dateDeliveredField, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(invoiceLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(invoiceField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(dateDeliveredLabel)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(dateDeliveredField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                .addComponent(electronicLabel)
-                                                .addGap(18, 18, 18))
+                                                .addComponent(invoiceLabel)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(invoiceField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(dateForwardedLabel)
-                                                .addGap(31, 31, 31)))
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(electronicField, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-                                            .addComponent(dateForwardedField))))
-                                .addGap(89, 89, 89)
+                                                .addGap(203, 203, 203)))
+                                        .addGap(89, 89, 89))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(electronicLabel)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(dateForwardedField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(electronicField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(88, 88, 88)))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(invoiceDateLabel)
-                                                .addComponent(manualDateLabel))
-                                            .addGap(26, 26, 26)
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(manualDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(invoiceDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(manualDateLabel)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(manualField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(referenceLabel)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(referenceLabel)
+                                                .addComponent(invoiceDateLabel))
                                             .addGap(18, 18, 18)
-                                            .addComponent(referenceField)))
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(inDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(referenceField, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addComponent(enterBtn)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(84, 84, 84)
@@ -319,35 +328,41 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
                     .addComponent(goBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(homeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(acceptItemLabel)
                 .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(invoiceLabel)
-                    .addComponent(invoiceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(invoiceDateLabel)
-                    .addComponent(invoiceDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dateDeliveredLabel)
-                    .addComponent(dateDeliveredField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(manualDateLabel)
-                    .addComponent(manualDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(electronicField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(electronicLabel)
-                    .addComponent(referenceLabel)
-                    .addComponent(referenceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dateForwardedLabel)
-                    .addComponent(dateForwardedField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(enterBtn))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(invoiceLabel)
+                                        .addComponent(invoiceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(invoiceDateLabel))
+                                    .addComponent(inDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(dateDeliveredLabel)
+                                        .addComponent(manualDateLabel))
+                                    .addComponent(dateDeliveredField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(manualField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(17, 17, 17)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(electronicLabel)
+                                    .addComponent(referenceLabel)
+                                    .addComponent(referenceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(electronicField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(dateForwardedLabel)
+                            .addComponent(enterBtn)))
+                    .addComponent(dateForwardedField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
@@ -380,13 +395,57 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
 
     private void enterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterBtnActionPerformed
         // TODO add your handling code here:
-        JFrame frame = new JFrame();
         
-        int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Accept the Item Delivered?","Confirmation",0);
+        String purchaseNo = "1111";
+        
+        String invoiceNo = getInvoiceField().getText().trim();
+        String referenceRRNo = getReferenceField().getText().trim();
+        String invoiceDate, dateDelivered, manualDate, electronicDate, dateForwarded = "";
+
+        
+        Date inDate = getInDateField().getDate();
+        Date dateDel = getDateDeliveredField().getDate();
+        Date manDate = getManualField().getDate();
+        Date elecDate = getElectronicField().getDate();
+        Date dateForward = getDateForwardedField().getDate();
+        
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+
+            invoiceDate = dateFormat.format(inDate);
+            dateDelivered = dateFormat.format(dateDel);
+            manualDate = dateFormat.format(manDate);
+            electronicDate = dateFormat.format(elecDate);
+            dateForwarded = dateFormat.format(dateForward);
+            
+
+        }catch(Exception e){
+            OptionPane.error("Invalid. Date Faxed is required.");
+            return;
+        }
+        
+        
+        
+        //JOptionPane.showMessageDialog(null, purchaseNo);
+        JOptionPane.showMessageDialog(null, invoiceNo);
+        
+        
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Add and Accept the Items into the Delivery List?","Confirmation",0);
         if(dialogResult == JOptionPane.YES_OPTION){
-            JOptionPane.showMessageDialog(frame,"Successfully Accepted the Item!");
+        
+            if(new addInvoiceNoToBridgeModel(purchaseNo, invoiceNo).addBridgeToDB(true)){}
+                if(new addInvoiceModel(invoiceNo, invoiceDate, dateDelivered, manualDate, 
+                        electronicDate, referenceRRNo, dateForwarded).addInvoiceToDB(true)){}
+                    //clearCreateUserFields();   
+                        //updateViewUsersTable(addItemModel.getAllInvoice());
+                            System.gc();
+                                //JOptionPane.showMessageDialog(null,"Successfully Added the Item!");
+
+                        
+            
         }else{
-            JOptionPane.showMessageDialog(frame,"Cancelled!");
+            JOptionPane.showMessageDialog(null,"Cancel1ed!");
         }
     }//GEN-LAST:event_enterBtnActionPerformed
 
@@ -397,10 +456,6 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
     private void viewUpdatesCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewUpdatesCBActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_viewUpdatesCBActionPerformed
-
-    private void invoiceDateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invoiceDateFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_invoiceDateFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -445,20 +500,97 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt){
         showExitDialog();
     }
+    
+    /** Getters and Setters**/
+    public JDateChooser getDateDeliveredField() {
+        return dateDeliveredField;
+    }
+
+    public void setDateDeliveredField(JDateChooser dateDeliveredField) {
+        this.dateDeliveredField = dateDeliveredField;
+    }
+
+    public JDateChooser getElectronicField() {
+        return electronicField;
+    }
+
+    public void setElectronicField(JDateChooser electronicField) {
+        this.electronicField = electronicField;
+    }
+
+    public JDateChooser getInDateField() {
+        return inDateField;
+    }
+
+    public void setInDateField(JDateChooser inDateField) {
+        this.inDateField = inDateField;
+    }
+
+    public JDateChooser getManualField() {
+        return manualField;
+    }
+
+    public void setManualField(JDateChooser manualField) {
+        this.manualField = manualField;
+    }
+
+    public JTextField getInvoiceField() {
+        return invoiceField;
+    }
+
+    public void setInvoiceField(JTextField invoiceField) {
+        this.invoiceField = invoiceField;
+    }
+
+    public JTextField getReferenceField() {
+        return referenceField;
+    }
+
+    public void setReferenceField(JTextField referenceField) {
+        this.referenceField = referenceField;
+    }
+
+    public JTextField getSearchField() {
+        return searchField;
+    }
+
+    public void setSearchField(JTextField searchField) {
+        this.searchField = searchField;
+    }
+
+    public JTable getViewUpdatesTable() {
+        return viewUpdatesTable;
+    }
+
+    public void setViewUpdatesTable(JTable viewUpdatesTable) {
+        this.viewUpdatesTable = viewUpdatesTable;
+    }
+
+    public JDateChooser getDateForwardedField() {
+        return dateForwardedField;
+    }
+
+    public void setDateForwardedField(JDateChooser dateForwardedField) {
+        this.dateForwardedField = dateForwardedField;
+    }
+    
+    
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel acceptItemLabel;
-    private javax.swing.JTextField dateDeliveredField;
+    private com.toedter.calendar.JDateChooser dateDeliveredField;
     private javax.swing.JLabel dateDeliveredLabel;
-    private javax.swing.JTextField dateForwardedField;
+    private com.toedter.calendar.JDateChooser dateForwardedField;
     private javax.swing.JLabel dateForwardedLabel;
     private javax.swing.JLabel dosLabel;
-    private javax.swing.JTextField electronicField;
+    private com.toedter.calendar.JDateChooser electronicField;
     private javax.swing.JLabel electronicLabel;
     private javax.swing.JButton enterBtn;
     private javax.swing.JButton goBtn;
     private javax.swing.JButton homeBtn;
-    private javax.swing.JTextField invoiceDateField;
+    private com.toedter.calendar.JDateChooser inDateField;
     private javax.swing.JLabel invoiceDateLabel;
     private javax.swing.JTextField invoiceField;
     private javax.swing.JLabel invoiceLabel;
@@ -466,8 +598,8 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField manualDateField;
     private javax.swing.JLabel manualDateLabel;
+    private com.toedter.calendar.JDateChooser manualField;
     private javax.swing.JTextField referenceField;
     private javax.swing.JLabel referenceLabel;
     private javax.swing.JButton refreshBtn;
