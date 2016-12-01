@@ -52,3 +52,18 @@
 2016/11/23 09:46:49: Duplicate entry '1111' for key 'PRIMARY'
 2016/11/23 09:46:55: Duplicate entry '1111' for key 'PRIMARY'
 2016/11/23 11:45:42: Duplicate entry '1111' for key 'PRIMARY'
+2016/11/26 02:59:02: Unknown column 'i.purchaseOrderNo' in 'on clause'
+2016/11/26 03:00:16: Unknown column 'i.purchaseOrderNo' in 'on clause'
+2016/11/26 03:04:25: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+2016/11/26 03:06:18: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+2016/11/26 03:13:53: Column count doesn't match value count at row 1
+2016/11/26 03:14:16: Column count doesn't match value count at row 1
+2016/11/26 03:21:29: Duplicate entry '111101' for key 'PRIMARY'
+2016/11/26 03:24:21: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+2016/11/26 11:15:03: Duplicate entry '111103' for key 'PRIMARY'
+2016/11/26 11:18:07: Duplicate entry '111101' for key 'PRIMARY'
+2016/11/29 11:14:39: Duplicate entry '222201' for key 'PRIMARY'
+2016/11/29 11:54:41: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'condition = '161119'' at line 1
+2016/12/01 04:06:56: Unparseable date: "password"
+2016/12/01 09:06:51: Table 'dos_db.log_details' doesn't exist
+2016/12/01 03:54:13: Table 'dos_db.log_details' doesn't exist

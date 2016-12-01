@@ -307,11 +307,11 @@ public class systemAdminHome extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton3ActionPerformed
     private loginModule LM;
-    public ViewUsers VU;
+    public ViewUsersAcct VU;
     
     private void viewUsersBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewUsersBtnActionPerformed
         // TODO add your handling code here:
-        VU = new ViewUsers();
+        VU = new ViewUsersAcct();
         VU.setVisible(true);
         systemAdminHome.instance.setEnabled(false);
         

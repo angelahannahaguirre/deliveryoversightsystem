@@ -494,6 +494,7 @@ public class AccessLayer {
     /**
      * add data into invoice
      * @param invoiceNo
+     * @param purchaseNo
      * @param invoiceDate
      * @param dateDelivered
      * @param manualDate
@@ -503,12 +504,12 @@ public class AccessLayer {
      * @return 
      */
 
-    public boolean addNewInvoice(String invoiceNo, String invoiceDate, String dateDelivered, String manualDate, 
+    public boolean addNewInvoice(String invoiceNo, String purchaseNo, String invoiceDate, String dateDelivered, String manualDate, 
             String electronicDate, String referenceRRNo, String dateForwarded) {
         
       
        
-            boolean success = makeUpdate("insert into invoice values ('"+insertBackslash(invoiceNo)+"',"
+            boolean success = makeUpdate("insert into invoice values ('"+insertBackslash(invoiceNo)+"','"+insertBackslash(purchaseNo)+"',"
                         + "'"+insertBackslash(invoiceDate)+"','"+insertBackslash(dateDelivered)+"','"+insertBackslash(manualDate)+"',"
                         + "'"+insertBackslash(electronicDate)+"','"+insertBackslash(referenceRRNo)+"','"+insertBackslash(dateForwarded)+"');");
        
@@ -541,21 +542,115 @@ public class AccessLayer {
     }
     
     
+    
     /**
      * get the resultset of all the delivery and invoice found in the database
      * @return the resultset of all the delivery and invoice in the database
      */
     
     
-    public ResultSet getAllUpdatesInDB() { //displays the delivery and invoices added - - - an experiment code
+    public ResultSet getAllUpdatesInDB() { //displays the delivery and invoices added
         try {
             createConnection();
-            return Retrieve("select purchaseOrderNo, purchaser, supplierName, dateFaxed from delivery AND * from invoice");
+            return Retrieve("select d.*, i.* from invoice i right join delivery d on d.purchaseOrderNo = i.purchaseOrderNo");
         } catch (SQLException | ClassNotFoundException ex) {
             addToERRORLog(ex.getLocalizedMessage());
         }
         return null;
     }
     
+    /*************************
+     * Edit User Account
+     *************************/
+    
+    /**
+     * @param empID
+     * @return 
+     */
+    public ResultSet getPassword(String empID) {
+        try {
+            createConnection();
+            return Retrieve("select employeePword from user_account where employeeID = '"+insertBackslash(empID)+"'");
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
+    
+    /**
+     * @param empID
+     * @return 
+     */
+    public ResultSet getLastname(String empID) {
+        try {
+            createConnection();
+            return Retrieve("select lastName from user_account where employeeID = '"+insertBackslash(empID)+"'");
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
+    
+    /**
+     * @param empID
+     * @return 
+     */
+    public ResultSet getFirstname(String empID) {
+        try {
+            createConnection();
+            return Retrieve("select firstName from user_account where employeeID = '"+insertBackslash(empID)+"'");
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
+    
+    /**
+     * @param empID
+     * @return 
+     */
+    public ResultSet getBdate(String empID) {
+        try {
+            createConnection();
+            return Retrieve("select birthDate from user_account where employeeID = '"+insertBackslash(empID)+"'");
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
+    
+    /**
+     * @param empID
+     * @return 
+     */
+    public ResultSet getPosition(String empID) {
+        try {
+            createConnection();
+            return Retrieve("select userType from user_account where employeeID = '"+insertBackslash(empID)+"'");
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
+    
+    /**
+     * update the user's account detail with the given values
+     
+     * @param employeeID
+     * @param firstName
+     * @param lastName
+     * @param emPword
+     * @return true if the operation was successful otherwise false
+     */
+    
+    public boolean updateUserAccountInDB(String employeeID, String firstName, String lastName, String emPword) {
+        boolean success = makeUpdate("update user_account set firstName = '"+insertBackslash(firstName)+"'"
+                + " where employeeID = '"+insertBackslash(employeeID)+"';");
+                
+        if(success)
+            model.LogDetails.addToDatabase("Employee ID#"+employeeID+"'s information has been updated");
+        return success;
+        
+    }
     
 }

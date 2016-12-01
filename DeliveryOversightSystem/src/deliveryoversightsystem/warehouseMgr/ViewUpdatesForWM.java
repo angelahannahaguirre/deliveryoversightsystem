@@ -9,15 +9,22 @@ package deliveryoversightsystem.warehouseMgr;
 import com.toedter.calendar.DateUtil;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
+import connection.AccessLayer;
 import deliveryoversightsystem.warehouseMgr.warehouseManagerHome;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import model.addInvoiceModel;
 import model.addInvoiceNoToBridgeModel;
+import model.updatesModel;
 import view.OptionPane;
 
 /**
@@ -149,9 +156,22 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
             new String [] {
                 "Purchaser", "Purchase Order No.", "Supplier Name", "Data Faxed ", "Invoice No.", "Invoice Date", "Date Delivered", "Manual RR Date", "Electronic RR Date", "Reference RR No.", "Date Forwarded"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         viewUpdatesTable.setGridColor(new java.awt.Color(153, 153, 153));
         viewUpdatesTable.setSelectionBackground(new java.awt.Color(0, 51, 102));
+        viewUpdatesTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewUpdatesTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(viewUpdatesTable);
 
         dosLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
@@ -396,7 +416,7 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
     private void enterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterBtnActionPerformed
         // TODO add your handling code here:
         
-        String purchaseNo = "1111";
+        String purchaseNo = id;
         
         String invoiceNo = getInvoiceField().getText().trim();
         String referenceRRNo = getReferenceField().getText().trim();
@@ -434,11 +454,11 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
         int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Add and Accept the Items into the Delivery List?","Confirmation",0);
         if(dialogResult == JOptionPane.YES_OPTION){
         
-            if(new addInvoiceNoToBridgeModel(purchaseNo, invoiceNo).addBridgeToDB(true)){}
-                if(new addInvoiceModel(invoiceNo, invoiceDate, dateDelivered, manualDate, 
+            //if(new addInvoiceNoToBridgeModel(purchaseNo, invoiceNo).addBridgeToDB(true)){}
+                if(new addInvoiceModel(invoiceNo, purchaseNo, invoiceDate, dateDelivered, manualDate, 
                         electronicDate, referenceRRNo, dateForwarded).addInvoiceToDB(true)){}
                     //clearCreateUserFields();   
-                        //updateViewUsersTable(addItemModel.getAllInvoice());
+                        updateViewUsersTable(updatesModel.getAllUpdates());
                             System.gc();
                                 //JOptionPane.showMessageDialog(null,"Successfully Added the Item!");
 
@@ -457,6 +477,31 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_viewUpdatesCBActionPerformed
 
+    public String id;
+    private void viewUpdatesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewUpdatesTableMouseClicked
+        // TODO add your handling code here:
+        int i = evt.getY()/getViewUpdatesTable().getRowHeight();
+        if(evt.getClickCount() == 2 && i < getViewUpdatesTable().getRowCount()){
+            //setUpdateEmployeeOK(true);
+            //setUpdateEmployeePanelValues(getViewUpdatesTable(i));
+            id = getInvoicePH(i);
+            System.gc();
+        }
+    }//GEN-LAST:event_viewUpdatesTableMouseClicked
+
+  
+     /**
+     * get the updates from the table at row i
+     * @param i row
+     * @return a String from row i
+     */
+    private String getInvoicePH(int i){
+        String phNo = getViewUpdatesTable().getValueAt(i, 0).toString();
+        return phNo;
+    }
+    
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -575,7 +620,64 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
     }
     
     
-
+    
+    
+    /**
+     * 
+     * @param invoiceList 
+     */
+    public void updateViewUsersTable(ArrayList<updatesModel> invoiceList){
+        
+        JOptionPane.showMessageDialog(null,"Getting table results...");
+        if(invoiceList == null)
+            return;
+        DefaultTableModel model = (DefaultTableModel) getViewUpdatesTable().getModel();
+        int size = invoiceList.size(), modelRows = model.getRowCount();
+        if(size > modelRows){
+            for(int i = size-modelRows; i > 0; i--)
+                model.addRow(new String[model.getColumnCount()]);
+        }
+        else if(modelRows > size){
+            for(int i = modelRows-size; i > 0; i--)
+                model.removeRow(0);
+        }
+        for(int i = 0; i < invoiceList.size(); i++){
+            updatesModel m = invoiceList.get(i);
+            
+            model.setValueAt(m.getPurchaseNo(),i,0);
+            model.setValueAt(m.getPurchaserName(),i,1);
+            model.setValueAt(m.getSuppName(),i,2);
+            model.setValueAt(m.getFaxedDate(),i,3);
+            
+            model.setValueAt(m.getInvoiceNo(),i,4);
+            model.setValueAt(m.getInvoiceDate(),i,5);
+            model.setValueAt(m.getDateDelivered(),i,6);
+            model.setValueAt(m.getManualDate(),i,7);
+            model.setValueAt(m.getElectronicDate(),i,8);
+            model.setValueAt(m.getReferenceRRNo(),i,9);
+            model.setValueAt(m.getDateForwarded(),i,10);
+            
+//            String pos = m.getPosition().trim();
+//            // condition to display String Position not abbrev.
+//            if(pos.equals("WM")){
+//                pos = "Warehouse Manager";
+//            }else if(pos.equals("PH")){
+//                pos = "Purchasing Head";
+//            }else if(pos.equals("SA")){
+//                pos = "System Administrator";
+//            }
+//            model.setValueAt(pos,i,4);
+//            model.setValueAt(m.getStatus(),i,5);
+            
+            //model.setValueAt(m.getPhilcareYear(),i,6); - account created date
+            //model.setValueAt(m.getMonth1(),i,7); - change password button
+            //model.setValueAt(m.getMonth2(),i,8); - deactivate button
+            
+            //ButtonColumn btnCol = new ButtonColumn(viewUsersTable, Change, 7);
+           
+        }
+        System.gc();
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

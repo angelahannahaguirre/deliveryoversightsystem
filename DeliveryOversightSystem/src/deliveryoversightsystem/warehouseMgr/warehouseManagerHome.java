@@ -7,8 +7,11 @@
 package deliveryoversightsystem.warehouseMgr;
 
 import deliveryoversightsystem.loginModule;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.updatesModel;
 import view.OptionPane;
 
 /**
@@ -231,6 +234,13 @@ public class warehouseManagerHome extends javax.swing.JFrame {
         WMBtn = new ViewUpdatesForWM();
         WMBtn.setVisible(true);
         
+        warehouseManagerHome.instance.setEnabled(false);
+        
+        WMBtn.updateViewUsersTable(updatesModel.getAllUpdates()); //added on 112516
+        
+        System.gc();
+        
+        
     }//GEN-LAST:event_viewUpdateBtnActionPerformed
 
     /**
@@ -276,7 +286,8 @@ public class warehouseManagerHome extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt){
         showExitDialog();
     }
-
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dosLabel;
     private javax.swing.JLabel homeWMLabel;

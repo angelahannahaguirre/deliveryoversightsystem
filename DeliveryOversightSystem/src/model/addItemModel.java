@@ -130,7 +130,7 @@ public class addItemModel {
                         rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus"),
                         rs.getString("followUpFlag")));
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null,"SQLException inside getAllUsers in createUserAcctModel...");
+            JOptionPane.showMessageDialog(null,"SQLException inside getAllItems in createUserAcctModel...");
         }
         return invoice;
     }
