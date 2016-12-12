@@ -83,7 +83,13 @@ public class EditUserAccount extends javax.swing.JFrame {
         resetBtn = new javax.swing.JButton();
         bdateField = new com.toedter.calendar.JDateChooser();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		addWindowListener(new java.awt.event.WindowAdapter(){
+			public void windowClosing(java.awt.event.WindowEvent evt){
+				formWindowClosing(evt);
+			}
+		});
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -462,6 +468,16 @@ public class EditUserAccount extends javax.swing.JFrame {
         this.positionField = positionField;
     }
 
+	private void showExitDialog(){
+        
+            ViewUsersAcct.instance.setEnabled(true);
+            setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+       
+    }
+    
+    private void formWindowClosing(java.awt.event.WindowEvent evt){
+        showExitDialog();
+    }
     
     
     

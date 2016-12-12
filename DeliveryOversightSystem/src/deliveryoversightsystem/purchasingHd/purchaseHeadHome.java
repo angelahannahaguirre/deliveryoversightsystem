@@ -11,6 +11,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import model.addItemModel;
+import model.updatesModel;
 import view.OptionPane;
 
 /**
@@ -295,7 +296,8 @@ public class purchaseHeadHome extends javax.swing.JFrame {
         PHUpdatesBtn.setVisible(true);
         purchaseHeadHome.instance.setEnabled(false);
         
-        PHUpdatesBtn.updateViewUsersTable(addItemModel.getAllInvoice());
+        //PHUpdatesBtn.updateViewUpdatesTable(addItemModel.getAllInvoice());
+        PHUpdatesBtn.updateViewUpdatesTable(updatesModel.getAllUpdates());
         
         System.gc();
     }//GEN-LAST:event_viewUpdatesBtnActionPerformed

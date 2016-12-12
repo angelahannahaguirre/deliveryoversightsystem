@@ -13,12 +13,14 @@ import deliveryoversightsystem.purchasingHd.purchaseHeadHome;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import model.addItemModel;
+import model.updatesModel;
 import view.OptionPane;
 
 /**
@@ -51,7 +53,7 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         viewUpdatesForPHTable = new javax.swing.JTable();
         dosLabel = new javax.swing.JLabel();
-        viewUpdatesForPHSearchField = new javax.swing.JTextField();
+        searchField = new javax.swing.JTextField();
         goBtn = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         purchaserLabel = new javax.swing.JLabel();
@@ -70,7 +72,13 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
         dateFaxedField = new com.toedter.calendar.JDateChooser();
         resetBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		addWindowListener(new java.awt.event.WindowAdapter(){
+			public void windowClosing(java.awt.event.WindowEvent evt){
+				formWindowClosing(evt);
+			}
+		});
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -145,6 +153,11 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
         goBtn.setBackground(new java.awt.Color(255, 255, 255));
         goBtn.setForeground(new java.awt.Color(0, 153, 255));
         goBtn.setText("GO");
+        goBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goBtnActionPerformed(evt);
+            }
+        });
 
         purchaserLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         purchaserLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -184,7 +197,7 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
             }
         });
 
-        viewUpdatesForPHCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Purchase Order No.", "Item 2", "Item 3", "Item 4" }));
+        viewUpdatesForPHCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Purchase Order No.", "Invoice No." }));
 
         homeBtn.setBackground(new java.awt.Color(255, 255, 255));
         homeBtn.setForeground(new java.awt.Color(0, 153, 255));
@@ -223,7 +236,7 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(viewUpdatesForPHCB, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(viewUpdatesForPHSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -270,7 +283,7 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(dosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(viewUpdatesForPHSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(viewUpdatesForPHCB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(goBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -323,6 +336,7 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
 
     private void refreshBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnjButton1ActionPerformed
         // TODO add your handling code here:
+        updateViewUpdatesTable(updatesModel.getAllUpdates());
     }//GEN-LAST:event_refreshBtnjButton1ActionPerformed
 
     private purchaseHeadHome PH;
@@ -357,14 +371,14 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
         String deliveryStat = "New";
         String followUpFlag = "none"; //so it's either none or flagged
         
-        JOptionPane.showMessageDialog(null, purchaseNo);
+        //JOptionPane.showMessageDialog(null, purchaseNo);
         
         int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Add the Item into the Delivery List?","Confirmation",0);
         if(dialogResult == JOptionPane.YES_OPTION){
             
             if(new addItemModel(purchaseNo, purchaserName, suppName, faxDate, deliveryStat, followUpFlag).addItemToDB(true)){}
             //    clearCreateUserFields();   
-                updateViewUsersTable(addItemModel.getAllInvoice());
+                updateViewUpdatesTable(updatesModel.getAllUpdates());
                     System.gc();
                         //JOptionPane.showMessageDialog(null,"Successfully Added the Item!");
             
@@ -383,6 +397,23 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
             //clearCreateUserFields();
         }
     }//GEN-LAST:event_resetBtnActionPerformed
+
+    private void goBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBtnActionPerformed
+        // TODO add your handling code here:
+        String retVal = "";
+        String condition = getViewUpdatesForPHCB().getSelectedItem().toString(); //currently here
+        
+        if(condition.equalsIgnoreCase("Purchase Order No.")){
+            retVal = "purchaseOrderNo";
+        }else if(condition.equalsIgnoreCase("Invoice No.")){
+            retVal = "invoiceNo";
+        }  
+        
+        String searchVal = getSearchField().getText().trim();
+        
+        updateViewUpdatesTable(updatesModel.getInvoiceWithSearch(retVal,searchVal));  
+            System.gc();
+    }//GEN-LAST:event_goBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -452,6 +483,22 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
         this.supplierNameField = supplierNameField;
     }
 
+    public JTextField getSearchField() {
+        return searchField;
+    }
+
+    public void setSearchField(JTextField searchField) {
+        this.searchField = searchField;
+    }
+
+    public JComboBox getViewUpdatesForPHCB() {
+        return viewUpdatesForPHCB;
+    }
+
+    public void setViewUpdatesForPHCB(JComboBox viewUpdatesForPHCB) {
+        this.viewUpdatesForPHCB = viewUpdatesForPHCB;
+    }
+    
     
     
     private void showExitDialog(){
@@ -467,9 +514,9 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
      * 
      * @param invoiceList 
      */
-    public void updateViewUsersTable(ArrayList<addItemModel> invoiceList){
+    public void updateViewUpdatesTable(ArrayList<updatesModel> invoiceList){
         
-        JOptionPane.showMessageDialog(null,"Getting table results...");
+        //JOptionPane.showMessageDialog(null,"Getting table results...");
         if(invoiceList == null)
             return;
         DefaultTableModel model = (DefaultTableModel) getViewUpdatesForPHTable().getModel();
@@ -483,12 +530,21 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
                 model.removeRow(0);
         }
         for(int i = 0; i < invoiceList.size(); i++){
-            addItemModel m = invoiceList.get(i);
+            updatesModel m = invoiceList.get(i);
             
             model.setValueAt(m.getPurchaseNo(),i,0);
             model.setValueAt(m.getPurchaserName(),i,1);
             model.setValueAt(m.getSuppName(),i,2);
             model.setValueAt(m.getFaxedDate(),i,3);
+            
+            
+            model.setValueAt(m.getInvoiceNo(),i,4);
+            model.setValueAt(m.getInvoiceDate(),i,5);
+            model.setValueAt(m.getDateDelivered(),i,6);
+            model.setValueAt(m.getManualDate(),i,7);
+            model.setValueAt(m.getElectronicDate(),i,8);
+            model.setValueAt(m.getReferenceRRNo(),i,9);
+            model.setValueAt(m.getDateForwarded(),i,10);
 //            
 //            String pos = m.getPosition().trim();
 //            // condition to display String Position not abbrev.
@@ -510,6 +566,50 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
            
         }
         System.gc();
+    }
+    
+    /**
+     * added by angela 11.9.16
+     * update the userList table by using the values in the userList arrayList
+     * @param updateList 
+     */
+    public void updateViewUsersWithSearch(ArrayList<updatesModel> updateList) {
+         if(updateList == null)
+            return;
+        DefaultTableModel model = (DefaultTableModel) getViewUpdatesForPHTable().getModel();
+        int size = updateList.size(), modelRows = model.getRowCount();
+        if(size > modelRows){
+            for(int i = size-modelRows; i > 0; i--)
+                model.addRow(new String[model.getColumnCount()]);
+        }
+        else if(modelRows > size){
+            for(int i = modelRows-size; i > 0; i--)
+                model.removeRow(0);
+        }
+        for(int i = 0; i < updateList.size(); i++){
+            updatesModel m = updateList.get(i);
+            
+//            model.setValueAt(m.getPurchaseNo(),i,0);
+//            model.setValueAt(m.getPurchaserName(),i,1);
+//            model.setValueAt(m.getSuppName(),i,2);
+//            model.setValueAt(m.getFaxedDate(),i,3);
+            
+            model.setValueAt(m.getPurchaseNo(),i,0);
+            model.setValueAt(m.getPurchaserName(),i,1);
+            model.setValueAt(m.getSuppName(),i,2);
+            model.setValueAt(m.getFaxedDate(),i,3);
+            
+            model.setValueAt(m.getInvoiceNo(),i,4);
+            model.setValueAt(m.getInvoiceDate(),i,5);
+            model.setValueAt(m.getDateDelivered(),i,6);
+            model.setValueAt(m.getManualDate(),i,7);
+            model.setValueAt(m.getElectronicDate(),i,8);
+            model.setValueAt(m.getReferenceRRNo(),i,9);
+            model.setValueAt(m.getDateForwarded(),i,10);
+            
+            
+        }
+        System.gc();  
     }
 
     public JTable getViewUpdatesForPHTable() {
@@ -540,10 +640,10 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
     private javax.swing.JLabel purchaserLabel;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JButton resetBtn;
+    private javax.swing.JTextField searchField;
     private javax.swing.JTextField supplierNameField;
     private javax.swing.JLabel supplierNameLabel;
     private javax.swing.JComboBox viewUpdatesForPHCB;
-    private javax.swing.JTextField viewUpdatesForPHSearchField;
     private javax.swing.JTable viewUpdatesForPHTable;
     // End of variables declaration//GEN-END:variables
 }

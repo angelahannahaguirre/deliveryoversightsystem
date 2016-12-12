@@ -314,7 +314,7 @@ public class loginModule extends javax.swing.JFrame {
                 
             }else{
                 
-                 JOptionPane.showMessageDialog(this,"Username, Password, and Usertype does not match!","Error",JOptionPane.ERROR_MESSAGE);
+                 JOptionPane.showMessageDialog(this,"Username and Password does not match!","Error",JOptionPane.ERROR_MESSAGE);
             }
     
     }

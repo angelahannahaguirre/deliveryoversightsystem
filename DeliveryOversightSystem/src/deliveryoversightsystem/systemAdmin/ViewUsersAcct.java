@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import model.createUserAcctModel;
+import model.updateStatusModel;
 import others.ButtonColumn;
 
 /**
@@ -71,7 +72,13 @@ public class ViewUsersAcct extends javax.swing.JFrame {
         editAcctBtn = new javax.swing.JButton();
         deactivateBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		addWindowListener(new java.awt.event.WindowAdapter(){
+			public void windowClosing(java.awt.event.WindowEvent evt){
+				formWindowClosing(evt);
+			}
+		});
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -145,6 +152,11 @@ public class ViewUsersAcct extends javax.swing.JFrame {
         });
 
         deactivateBtn.setText("Deactivate");
+        deactivateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deactivateBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -273,6 +285,21 @@ public class ViewUsersAcct extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_viewUsersMouseClicked
 
+    private void deactivateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deactivateBtnActionPerformed
+        // TODO add your handling code here:
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to deactivate "+empID+"'s acount?","Confirmation",0);
+        if(dialogResult == JOptionPane.YES_OPTION){
+            
+            if(new updateStatusModel(empID).updateStatusToDB())
+                //updateViewUsersTable(addItemModel.getAllInvoice());
+                    JOptionPane.showMessageDialog(null,"Successfully deactivated "+empID+"'s account");
+                        System.gc(); 
+         
+        }else{
+            JOptionPane.showMessageDialog(null,"Cancelled!");
+        }
+    }//GEN-LAST:event_deactivateBtnActionPerformed
+
     /**
      * get the data from the table at row i
      * @param i row
@@ -321,6 +348,12 @@ public class ViewUsersAcct extends javax.swing.JFrame {
     }
     
     /**Getters and Setters**/
+    
+    /**
+     * 
+     * @return 
+     */
+    
     public JTextField getConditionField() {
         return conditionField;
     }
@@ -394,7 +427,7 @@ public class ViewUsersAcct extends javax.swing.JFrame {
      */
     public void updateViewUsersTable(ArrayList<createUserAcctModel> userList){
         
-        JOptionPane.showMessageDialog(null,"Getting table results...");
+        //JOptionPane.showMessageDialog(null,"Getting table results...");
         if(userList == null)
             return;
         DefaultTableModel model = (DefaultTableModel) getViewUsers().getModel();

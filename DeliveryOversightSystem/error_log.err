@@ -67,3 +67,35 @@
 2016/12/01 04:06:56: Unparseable date: "password"
 2016/12/01 09:06:51: Table 'dos_db.log_details' doesn't exist
 2016/12/01 03:54:13: Table 'dos_db.log_details' doesn't exist
+2016/12/05 10:38:02: Table 'dos_db.log_details' doesn't exist
+2016/12/05 10:38:50: Table 'dos_db.log_details' doesn't exist
+2016/12/05 10:40:50: Table 'dos_db.log_details' doesn't exist
+2016/12/07 12:34:25: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'condition = '161119'' at line 1
+2016/12/07 12:36:20: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'condition = '161119'' at line 1
+2016/12/07 12:36:26: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'condition = '161119'' at line 1
+2016/12/07 12:39:03: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'condition = '161119'and employeeID = '161119'' at line 1
+2016/12/07 12:40:51: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'condition = '161119'and employeeID = '161119'' at line 1
+2016/12/07 12:43:08: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'condition = '161123'and employeeID = '161123'' at line 1
+2016/12/07 12:45:24: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'condition = '161119'' at line 1
+2016/12/07 10:23:31: Table 'dos_db.log_details' doesn't exist
+2016/12/07 11:02:59: Unknown column 'purchaseOrderNo' in 'where clause'
+2016/12/07 11:39:03: Column 'purchaseOrderNo' in where clause is ambiguous
+2016/12/07 11:44:08: Column 'purchaseOrderNo' in where clause is ambiguous
+2016/12/07 11:46:26: Column 'purchaseOrderNo' in where clause is ambiguous
+2016/12/07 11:50:38: Column 'purchaseOrderNo' in where clause is ambiguous
+2016/12/07 12:39:52: Column 'purchaseOrderNo' in where clause is ambiguous
+2016/12/07 01:03:24: Column 'purchaseOrderNo' in where clause is ambiguous
+2016/12/07 01:06:06: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 'DCIS' OR d. = 'DCIS'' at line 1
+2016/12/07 01:08:46: Unknown column 'd.invoiceNo' in 'where clause'
+2016/12/07 01:08:54: Unknown column 'd.invoiceNo' in 'where clause'
+2016/12/07 01:09:00: Unknown column 'd.invoiceNo' in 'where clause'
+2016/12/07 01:09:44: Unknown column 'd.invoiceNo' in 'where clause'
+2016/12/07 01:11:48: Unknown column 'd.invoiceNo' in 'where clause'
+2016/12/09 09:02:01: Table 'dos_db.log_details' doesn't exist
+2016/12/09 09:05:02: Table 'dos_db.log_details' doesn't exist
+2016/12/09 09:25:19: Duplicate entry '161131' for key 'PRIMARY'
+2016/12/09 09:25:33: Table 'dos_db.log_details' doesn't exist
+2016/12/09 09:25:40: Table 'dos_db.log_details' doesn't exist
+2016/12/09 09:28:22: Duplicate entry '1115' for key 'PRIMARY'
+2016/12/09 09:32:46: Duplicate entry '222202' for key 'PRIMARY'
+2016/12/10 12:06:34: Table 'dos_db.log_details' doesn't exist

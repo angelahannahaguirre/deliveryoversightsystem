@@ -224,9 +224,10 @@ public class AccessLayer {
      * @return the resultset of the consultants with the usertype, password and username
      */
     public ResultSet getUser(String password, String userID){
+        String status = "active";
         try {
             
-            String credentials="SELECT * FROM user_account WHERE employeePword = '" +insertBackslash(password)+ "' and " + "employeeID = '"+insertBackslash(userID)+"'";
+            String credentials="SELECT * FROM user_account WHERE employeePword = '" +insertBackslash(password)+ "' and " + "employeeID = '"+insertBackslash(userID)+"' and " + "userStatus = '"+insertBackslash(status)+"'";
             createConnection();
             ResultSet rs = Retrieve(credentials);
             return rs;
@@ -320,20 +321,24 @@ public class AccessLayer {
     
     /**
      * added by angela 11.9.16
-     * @param condition
+     * @param optionValue
      * @param searchData
      * @return 
      */
-    public ResultSet getAllUsersWithSearch(String condition, String searchData) {
+    public ResultSet getAllUsersWithSearch(String optionValue, String searchData) {
         try {
             createConnection();
-              return Retrieve("select * from user_account where condition = '"+insertBackslash(searchData)+"'");
+            
+            //currently added 12-6-16 @ 12AM by angela
+            return Retrieve("select * from user_account where "+optionValue+" = '"+insertBackslash(searchData)+"' ");
+            //ends here
         }catch (SQLException | ClassNotFoundException ex) {
             addToERRORLog(ex.getLocalizedMessage());
         }
         
         return null;
     }
+    
     
     /*****************
      * Log Details
@@ -474,6 +479,27 @@ public class AccessLayer {
                             return success;
     
     }
+    
+    /**
+     * added by angela 12.6.16
+     * @param optionValue
+     * @param searchData
+     * @return 
+     */
+    public ResultSet getAllDeliveryUpdatesWithSearch(String optionValue, String searchData) {
+        try {
+            createConnection();
+            
+            //currently added 12-6-16 @ 12AM by angela
+            return Retrieve("select * from delivery where "+optionValue+" = '"+insertBackslash(searchData)+"' ");
+            //ends here
+        }catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        
+        return null;
+    }
+    
     
     /**
      * get the resultset of all the delivery found in the database
@@ -652,5 +678,52 @@ public class AccessLayer {
         return success;
         
     }
+    
+    /***
+     * Deactivate Account
+     */
+    
+     /**
+     * update the user's account status with the given value "inactive"
+     * @param empID
+     * @return true if the operation was successful otherwise false
+     */
+    
+    public boolean updateAccountStatusInDB(String empID) {
+        
+        String status = "inactive";
+        
+        boolean success = makeUpdate("update user_account set userStatus = '"+insertBackslash(status)+"' where employeeID = '"+insertBackslash(empID)+"';");
+                
+        if(success)
+            model.LogDetails.addToDatabase("Employee ID#"+empID+"' has been deactivated"); 
+        return success;
+        
+    }
+    
+    /**
+     * get the resultset of all the delivery and invoice found in the database
+     * @return the resultset of all the delivery and invoice in the database
+     */
+    
+    
+    //displays the delivery and invoices w/ respect to search
+    /**
+     * @param optionValue
+     * @param searchData
+     * @return 
+     */
+    
+    public ResultSet getAllInvoiceUpdatesWithSearch(String optionValue, String searchData) { 
+        try {
+            createConnection();
+            //fix to match the PurchaseOrderNo and InvoiceNo search functionality
+            return Retrieve("select d.*, i.* from invoice i right join delivery d on d.purchaseOrderNo = i.purchaseOrderNo where i."+optionValue+" = '"+insertBackslash(searchData)+"' ");
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
+    
     
 }

@@ -158,9 +158,9 @@ public class viewUpdatesWMModel { //this is a trial code for View Updates WM Tab
         try {
             while(rs.next())
                 updates.add(new viewUpdatesWMModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
-                        rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus"),
-                        rs.getString("followUpFlag"),rs.getString("followUpFlag"),rs.getString("followUpFlag"),
-                        rs.getString("followUpFlag"),rs.getString("followUpFlag"),rs.getString("followUpFlag")));
+                        rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("invoiceNo"),
+                        rs.getString("invoiceDate"), rs.getString("dateDelivered"), rs.getString("manualDate"),
+                        rs.getString("electronicDate"), rs.getString("referenceRRNo"), rs.getString("dateForwarded")));
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null,"SQLException inside getAllUsers in createUserAcctModel...");
         }

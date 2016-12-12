@@ -135,5 +135,26 @@ public class addItemModel {
         return invoice;
     }
     
-    
+    /**
+     * 
+     * @param optionValue
+     * @param searchData
+     * @return 
+     */
+    public static ArrayList<addItemModel> getUpdatesWithSearch(String optionValue, String searchData){
+        
+        JOptionPane.showMessageDialog(null,optionValue+" and "+searchData);
+        
+        ArrayList<addItemModel> updateList = new ArrayList<>();
+        ResultSet rs = AccessLayer.getInstance().getAllDeliveryUpdatesWithSearch(optionValue, searchData);
+        try {
+            while(rs.next())
+                updateList.add(new addItemModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
+                        rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus"),
+                        rs.getString("followUpFlag")));
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"After catch... Error inside getUsersWithSearch..."); //error prompt to be changed
+        }
+        return updateList;
+    }
 }

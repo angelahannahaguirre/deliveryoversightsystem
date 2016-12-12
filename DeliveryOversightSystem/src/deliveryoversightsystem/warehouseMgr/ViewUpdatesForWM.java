@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -25,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import model.addInvoiceModel;
 import model.addInvoiceNoToBridgeModel;
 import model.updatesModel;
+import model.viewUpdatesWMModel;
 import view.OptionPane;
 
 /**
@@ -69,7 +71,7 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         viewUpdatesTable = new javax.swing.JTable();
         dosLabel = new javax.swing.JLabel();
-        searchField = new javax.swing.JTextField();
+        searchFieldForWM = new javax.swing.JTextField();
         goBtn = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         invoiceLabel = new javax.swing.JLabel();
@@ -85,7 +87,7 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
         enterBtn = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         refreshBtn = new javax.swing.JButton();
-        viewUpdatesCB = new javax.swing.JComboBox();
+        viewInvoiceCB = new javax.swing.JComboBox();
         homeBtn = new javax.swing.JButton();
         dateDeliveredField = new com.toedter.calendar.JDateChooser();
         electronicField = new com.toedter.calendar.JDateChooser();
@@ -93,7 +95,13 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
         inDateField = new com.toedter.calendar.JDateChooser();
         manualField = new com.toedter.calendar.JDateChooser();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		addWindowListener(new java.awt.event.WindowAdapter(){
+			public void windowClosing(java.awt.event.WindowEvent evt){
+				formWindowClosing(evt);
+			}
+		});
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -154,7 +162,7 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Purchaser", "Purchase Order No.", "Supplier Name", "Data Faxed ", "Invoice No.", "Invoice Date", "Date Delivered", "Manual RR Date", "Electronic RR Date", "Reference RR No.", "Date Forwarded"
+                "Purchase Order No.", "Purchaser", "Supplier Name", "Data Faxed ", "Invoice No.", "Invoice Date", "Date Delivered", "Manual RR Date", "Electronic RR Date", "Reference RR No.", "Date Forwarded"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -178,16 +186,20 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
         dosLabel.setForeground(new java.awt.Color(255, 255, 255));
         dosLabel.setText("Delivery Oversight System");
 
-        searchField.setText("1149283");
-        searchField.addActionListener(new java.awt.event.ActionListener() {
+        searchFieldForWM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchFieldActionPerformed(evt);
+                searchFieldForWMActionPerformed(evt);
             }
         });
 
         goBtn.setBackground(new java.awt.Color(255, 255, 255));
         goBtn.setForeground(new java.awt.Color(0, 153, 255));
         goBtn.setText("GO");
+        goBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goBtnActionPerformed(evt);
+            }
+        });
 
         invoiceLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         invoiceLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -239,10 +251,10 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
             }
         });
 
-        viewUpdatesCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Purchase Order No.", "Purchaser", "Date", "Item 4" }));
-        viewUpdatesCB.addActionListener(new java.awt.event.ActionListener() {
+        viewInvoiceCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Purchase Order No.", "Invoice No." }));
+        viewInvoiceCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewUpdatesCBActionPerformed(evt);
+                viewInvoiceCBActionPerformed(evt);
             }
         });
 
@@ -280,9 +292,9 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, Short.MAX_VALUE)
                                 .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(viewUpdatesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(viewInvoiceCB, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(searchFieldForWM, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -343,8 +355,8 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(dosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(viewUpdatesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(searchFieldForWM, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(viewInvoiceCB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(goBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(homeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -404,6 +416,8 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
 
     private void refreshBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnjButton1ActionPerformed
         // TODO add your handling code here:
+        updateViewUpdatesTable(updatesModel.getAllUpdates());
+        System.gc();
     }//GEN-LAST:event_refreshBtnjButton1ActionPerformed
 
     private warehouseManagerHome WM;
@@ -448,7 +462,7 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
         
         
         //JOptionPane.showMessageDialog(null, purchaseNo);
-        JOptionPane.showMessageDialog(null, invoiceNo);
+        //JOptionPane.showMessageDialog(null, invoiceNo);
         
         
         int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Add and Accept the Items into the Delivery List?","Confirmation",0);
@@ -458,7 +472,7 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
                 if(new addInvoiceModel(invoiceNo, purchaseNo, invoiceDate, dateDelivered, manualDate, 
                         electronicDate, referenceRRNo, dateForwarded).addInvoiceToDB(true)){}
                     //clearCreateUserFields();   
-                        updateViewUsersTable(updatesModel.getAllUpdates());
+                        updateViewUpdatesTable(updatesModel.getAllUpdates());
                             System.gc();
                                 //JOptionPane.showMessageDialog(null,"Successfully Added the Item!");
 
@@ -469,13 +483,13 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_enterBtnActionPerformed
 
-    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
+    private void searchFieldForWMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldForWMActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_searchFieldActionPerformed
+    }//GEN-LAST:event_searchFieldForWMActionPerformed
 
-    private void viewUpdatesCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewUpdatesCBActionPerformed
+    private void viewInvoiceCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewInvoiceCBActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_viewUpdatesCBActionPerformed
+    }//GEN-LAST:event_viewInvoiceCBActionPerformed
 
     public String id;
     private void viewUpdatesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewUpdatesTableMouseClicked
@@ -488,6 +502,23 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
             System.gc();
         }
     }//GEN-LAST:event_viewUpdatesTableMouseClicked
+
+    private void goBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBtnActionPerformed
+        // TODO add your handling code here:
+        
+        String retVal = "";
+        String condition = getViewInvoiceCB().getSelectedItem().toString(); //currently here
+        
+        if(condition.equalsIgnoreCase("Purchase Order No.")){
+            retVal = "purchaseOrderNo";
+        }else if(condition.equalsIgnoreCase("Invoice No.")){
+            retVal = "invoiceNo";
+        }  
+        
+        String searchVal = getSearchFieldForWM().getText().trim();
+        
+        updateViewUpdatesTable(updatesModel.getInvoiceWithSearch(retVal,searchVal));
+    }//GEN-LAST:event_goBtnActionPerformed
 
   
      /**
@@ -596,11 +627,11 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
     }
 
     public JTextField getSearchField() {
-        return searchField;
+        return searchFieldForWM;
     }
 
     public void setSearchField(JTextField searchField) {
-        this.searchField = searchField;
+        this.searchFieldForWM = searchField;
     }
 
     public JTable getViewUpdatesTable() {
@@ -618,17 +649,32 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
     public void setDateForwardedField(JDateChooser dateForwardedField) {
         this.dateForwardedField = dateForwardedField;
     }
+
+    public JTextField getSearchFieldForWM() {
+        return searchFieldForWM;
+    }
+
+    public void setSearchFieldForWM(JTextField searchFieldForWM) {
+        this.searchFieldForWM = searchFieldForWM;
+    }
+
+    public JComboBox getViewInvoiceCB() {
+        return viewInvoiceCB;
+    }
+
+    public void setViewInvoiceCB(JComboBox viewInvoiceCB) {
+        this.viewInvoiceCB = viewInvoiceCB;
+    }
     
-    
-    
+  
     
     /**
      * 
      * @param invoiceList 
      */
-    public void updateViewUsersTable(ArrayList<updatesModel> invoiceList){
+    public void updateViewUpdatesTable(ArrayList<updatesModel> invoiceList){
         
-        JOptionPane.showMessageDialog(null,"Getting table results...");
+        //JOptionPane.showMessageDialog(null,"Getting table results...");
         if(invoiceList == null)
             return;
         DefaultTableModel model = (DefaultTableModel) getViewUpdatesTable().getModel();
@@ -705,8 +751,8 @@ public class ViewUpdatesForWM extends javax.swing.JFrame {
     private javax.swing.JTextField referenceField;
     private javax.swing.JLabel referenceLabel;
     private javax.swing.JButton refreshBtn;
-    private javax.swing.JTextField searchField;
-    private javax.swing.JComboBox viewUpdatesCB;
+    private javax.swing.JTextField searchFieldForWM;
+    private javax.swing.JComboBox viewInvoiceCB;
     private javax.swing.JTable viewUpdatesTable;
     // End of variables declaration//GEN-END:variables
 }

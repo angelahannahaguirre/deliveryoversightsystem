@@ -162,7 +162,7 @@ public class updatesModel {
     public static ArrayList<updatesModel> getAllUpdates(){      
         ArrayList<updatesModel> invoice = new ArrayList<>();    
         ResultSet rs = AccessLayer.getInstance().getAllUpdatesInDB();
-        JOptionPane.showMessageDialog(null, "Inside updatesModel getAllUpdates...");
+        //JOptionPane.showMessageDialog(null, "Inside updatesModel getAllUpdates...");
         try {
             while(rs.next())
                 invoice.add(new updatesModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
@@ -173,6 +173,30 @@ public class updatesModel {
             JOptionPane.showMessageDialog(null,"SQLException inside getAllUpdates in createUserAcctModel...");
         }
         return invoice;
+    }
+    
+    /**
+     * 
+     * @param optionValue
+     * @param searchData
+     * @return 
+     */
+    public static ArrayList<updatesModel> getInvoiceWithSearch(String optionValue, String searchData){
+        
+        //JOptionPane.showMessageDialog(null,optionValue+" and "+searchData);
+        
+        ArrayList<updatesModel> invoiceList = new ArrayList<>();
+        ResultSet rs = AccessLayer.getInstance().getAllInvoiceUpdatesWithSearch(optionValue,searchData);
+        try {
+            while(rs.next())
+                invoiceList.add(new updatesModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
+                        rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("invoiceNo"),
+                        rs.getString("invoiceDate"), rs.getString("dateDelivered"), rs.getString("manualDate"),
+                        rs.getString("electronicDate"), rs.getString("referenceRRNo"), rs.getString("dateForwarded")));
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"After catch... Error inside getUsersWithSearch..."); //error prompt to be changed
+        }
+        return invoiceList;
     }
     
 }
