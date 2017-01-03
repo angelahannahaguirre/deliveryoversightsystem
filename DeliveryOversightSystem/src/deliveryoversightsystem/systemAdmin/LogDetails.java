@@ -41,7 +41,6 @@ public class LogDetails extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         refreshBtn = new javax.swing.JButton();
         logCB = new javax.swing.JComboBox();
-        homeBtn = new javax.swing.JButton();
         homeBtn1 = new javax.swing.JButton();
         refreshBtn1 = new javax.swing.JButton();
 
@@ -147,15 +146,6 @@ public class LogDetails extends javax.swing.JFrame {
 
         logCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Employee LN", "Item 2", "Item 3", "Item 4" }));
 
-        homeBtn.setBackground(new java.awt.Color(255, 255, 255));
-        homeBtn.setForeground(new java.awt.Color(0, 153, 255));
-        homeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/home_25.png"))); // NOI18N
-        homeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                homeBtnActionPerformed(evt);
-            }
-        });
-
         homeBtn1.setBackground(new java.awt.Color(255, 255, 255));
         homeBtn1.setForeground(new java.awt.Color(0, 153, 255));
         homeBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/home_25.png"))); // NOI18N
@@ -201,11 +191,6 @@ public class LogDetails extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(25, 25, 25))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(366, 366, 366)
-                    .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(367, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,11 +215,6 @@ public class LogDetails extends javax.swing.JFrame {
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(refreshBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(25, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(209, 209, 209)
-                    .addComponent(homeBtn)
-                    .addContainerGap(210, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -258,10 +238,6 @@ public class LogDetails extends javax.swing.JFrame {
     private void refreshBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnjButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_refreshBtnjButton1ActionPerformed
-
-    private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_homeBtnActionPerformed
 
     private void homeBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtn1ActionPerformed
         // TODO add your handling code here:
@@ -309,7 +285,6 @@ public class LogDetails extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dosLabel;
     private javax.swing.JButton goBtn;
-    private javax.swing.JButton homeBtn;
     private javax.swing.JButton homeBtn1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane3;

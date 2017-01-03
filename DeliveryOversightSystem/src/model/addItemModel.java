@@ -19,7 +19,7 @@ import view.OptionPane;
  */
 public class addItemModel {
     
-    private String purchaseNo, purchaserName, suppName, faxedDate, deliveryStat, followUpFlag;
+    private String purchaseNo, purchaserName, suppName, faxedDate, deliveryStat, followUpFlag, dateFollowedUp;
     
      /**
      * Constructor
@@ -29,10 +29,11 @@ public class addItemModel {
      * @param faxedDate
      * @param deliveryStat
      * @param followUpFlag
+     * @param dateFollowedUp
      */
     
     public addItemModel(String purchaseNo, String purchaserName, String suppName, String faxedDate, String deliveryStat, 
-            String followUpFlag) {
+            String followUpFlag, String dateFollowedUp) {
         
         this.purchaseNo = purchaseNo;
         this.purchaserName = purchaserName;
@@ -40,6 +41,7 @@ public class addItemModel {
         this.faxedDate = faxedDate;
         this.deliveryStat = deliveryStat; 
         this.followUpFlag = followUpFlag;
+        this.dateFollowedUp = dateFollowedUp;
        
     }
     
@@ -99,16 +101,25 @@ public class addItemModel {
         this.followUpFlag = followUpFlag;
     }
 
+    public String getDateFollowedUp() {
+        return dateFollowedUp;
+    }
+
+    public void setDateFollowedUp(String dateFollowedUp) {
+        this.dateFollowedUp = dateFollowedUp;
+    }
+    
     
     /**
      * addItemToDB is used when the PH adds a new set of item to the Delivery List
      * @param b
+     * @return
      */
     
     public boolean addItemToDB(boolean b) {
        
         
-        if(AccessLayer.getInstance().addNewItem(purchaseNo, purchaserName, suppName, faxedDate, deliveryStat, followUpFlag)){
+        if(AccessLayer.getInstance().addNewItem(purchaseNo, purchaserName, suppName, faxedDate, deliveryStat, followUpFlag, dateFollowedUp)){
             //OptionPane.message("Item: "+purchaseNo+" has been successfully added to Delivery List!");
                 return true;
         }else
@@ -128,9 +139,9 @@ public class addItemModel {
             while(rs.next())
                 invoice.add(new addItemModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
                         rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus"),
-                        rs.getString("followUpFlag")));
+                        rs.getString("followUpFlag"), rs.getString("dateFollowedUp")));
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null,"SQLException inside getAllItems in createUserAcctModel...");
+            JOptionPane.showMessageDialog(null,"SQLException inside getAllItems in addItemModel...");
         }
         return invoice;
     }
@@ -151,7 +162,7 @@ public class addItemModel {
             while(rs.next())
                 updateList.add(new addItemModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
                         rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus"),
-                        rs.getString("followUpFlag")));
+                        rs.getString("followUpFlag"), rs.getString("dateFollowedUp")));
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null,"After catch... Error inside getUsersWithSearch..."); //error prompt to be changed
         }

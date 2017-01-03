@@ -6,6 +6,11 @@
 
 package deliveryoversightsystem.warehouseMgr;
 
+import java.util.ArrayList;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import model.newItemsModel;
+
 /**
  *
  * @author Aimee
@@ -36,7 +41,6 @@ public class newOrderList extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         weeklyOrderListLabel = new javax.swing.JLabel();
         refreshBtn = new javax.swing.JButton();
-        homeBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         weeklyOrderListTable = new javax.swing.JTable();
         goBtn = new javax.swing.JButton();
@@ -69,15 +73,6 @@ public class newOrderList extends javax.swing.JFrame {
         refreshBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refreshBtnjButton1ActionPerformed(evt);
-            }
-        });
-
-        homeBtn.setBackground(new java.awt.Color(255, 255, 255));
-        homeBtn.setForeground(new java.awt.Color(0, 153, 255));
-        homeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/home_25.png"))); // NOI18N
-        homeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                homeBtnjButton1ActionPerformed(evt);
             }
         });
 
@@ -114,7 +109,15 @@ public class newOrderList extends javax.swing.JFrame {
             new String [] {
                 "Purchaser", "Purchase Order No.", "Supplier Name", "Date Faxed", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(weeklyOrderListTable);
 
         goBtn.setBackground(new java.awt.Color(255, 255, 255));
@@ -148,15 +151,14 @@ public class newOrderList extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(weeklyOrderListSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
                             .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(weeklyOrderListLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(25, 25, 25))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -164,22 +166,21 @@ public class newOrderList extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(dosLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(weeklyOrderListLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addComponent(weeklyOrderListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(goBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(weeklyOrderListSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(weeklyOrderListSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(goBtn)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -190,7 +191,7 @@ public class newOrderList extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
         );
 
         pack();
@@ -199,10 +200,6 @@ public class newOrderList extends javax.swing.JFrame {
     private void refreshBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnjButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_refreshBtnjButton1ActionPerformed
-
-    private void homeBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnjButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_homeBtnjButton1ActionPerformed
 
     private void goBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBtnActionPerformed
         // TODO add your handling code here:
@@ -251,11 +248,55 @@ public class newOrderList extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt){
         showExitDialog();
     }
+    
+    /***
+     * Getters and Setters
+     * @return 
+     */
+    
+    public JTable getWeeklyOrderListTable() {
+        return weeklyOrderListTable;
+    }
+
+    public void setWeeklyOrderListTable(JTable weeklyOrderListTable) {
+        this.weeklyOrderListTable = weeklyOrderListTable;
+    }
+
+    
+     /**
+     * added by angela 12/30/16
+     * @param newOrderList 
+     */
+    public void updateNewOrderListTable(ArrayList<newItemsModel> newOrderList){ 
+        
+        //JOptionPane.showMessageDialog(null,"Getting table results...");
+        if(newOrderList == null)
+            return;
+        DefaultTableModel model = (DefaultTableModel) getWeeklyOrderListTable().getModel();
+        int size = newOrderList.size(), modelRows = model.getRowCount();
+        if(size > modelRows){
+            for(int i = size-modelRows; i > 0; i--)
+                model.addRow(new String[model.getColumnCount()]);
+        }
+        else if(modelRows > size){
+            for(int i = modelRows-size; i > 0; i--)
+                model.removeRow(0);
+        }
+        for(int i = 0; i < newOrderList.size(); i++){
+            newItemsModel m = newOrderList.get(i);
+            
+            model.setValueAt(m.getPurchaseNo(),i,0);
+            model.setValueAt(m.getPurchaserName(),i,1);
+            model.setValueAt(m.getSuppName(),i,2);
+            model.setValueAt(m.getFaxedDate(),i,3);
+            model.setValueAt(m.getDeliveryStat(),i,4);
+        }
+        System.gc();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dosLabel;
     private javax.swing.JButton goBtn;
-    private javax.swing.JButton homeBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

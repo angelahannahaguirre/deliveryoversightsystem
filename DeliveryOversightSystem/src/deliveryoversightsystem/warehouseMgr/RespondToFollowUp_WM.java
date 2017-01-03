@@ -6,17 +6,46 @@
 
 package deliveryoversightsystem.warehouseMgr;
 
+import connection.AccessLayer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import model.responseModel;
+import view.OptionPane;
+
 /**
  *
  * @author Aimee
  */
 public class RespondToFollowUp_WM extends javax.swing.JFrame {
 
+    public static RespondToFollowUp_WM instance;
+    public static String purchaseNoID;
+    
+    public static void setInstance(RespondToFollowUp_WM aInstance) {
+      instance = aInstance;
+    }
+    
     /**
      * Creates new form RespondToFollowUp
+     * @param purchaseNoID
      */
-    public RespondToFollowUp_WM() {
+    public RespondToFollowUp_WM(String purchaseNoID) {
         initComponents();
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
+        purchaseOrderNoField.setText(purchaseNoID);
+    }
+    
+    public static RespondToFollowUp_WM getInstance(String purchaseNoID){
+        if(instance == null)
+            instance = new RespondToFollowUp_WM(purchaseNoID);
+        return instance;
     }
 
     /**
@@ -45,7 +74,13 @@ public class RespondToFollowUp_WM extends javax.swing.JFrame {
         woIssuesRBtn = new javax.swing.JRadioButton();
         incomingRBtn = new javax.swing.JRadioButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		addWindowListener(new java.awt.event.WindowAdapter(){
+			public void windowClosing(java.awt.event.WindowEvent evt){
+				formWindowClosing(evt);
+			}
+		});
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -68,6 +103,11 @@ public class RespondToFollowUp_WM extends javax.swing.JFrame {
         respondBtn.setBackground(new java.awt.Color(255, 255, 255));
         respondBtn.setForeground(new java.awt.Color(0, 153, 255));
         respondBtn.setText("RESPOND");
+        respondBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                respondBtnActionPerformed(evt);
+            }
+        });
 
         wIssuesRBtn.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         wIssuesRBtn.setForeground(new java.awt.Color(255, 255, 255));
@@ -91,7 +131,7 @@ public class RespondToFollowUp_WM extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
@@ -110,12 +150,12 @@ public class RespondToFollowUp_WM extends javax.swing.JFrame {
                                 .addComponent(woIssuesRBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(respondToFollowUpLabel))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addContainerGap()
                 .addComponent(respondToFollowUpLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -142,15 +182,13 @@ public class RespondToFollowUp_WM extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -160,6 +198,65 @@ public class RespondToFollowUp_WM extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_wIssuesRBtnActionPerformed
 
+    private void respondBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_respondBtnActionPerformed
+        // TODO add your handling code here:
+        String purchaseNo = getPurchaseOrderNoField().getText().trim();
+        String buttonChoice = "";
+        
+        if(wIssuesRBtn.isSelected()){
+            buttonChoice = "With Issues...";
+        }else if(woIssuesRBtn.isSelected()){
+            buttonChoice = "Without Issues...";
+        }else if(incomingRBtn.isSelected()){
+            buttonChoice = "Incoming...";
+        }
+        
+        String respondMsg = getShortMsgArea().getText().trim();
+        String currDate = getCurrentDate().trim();
+        String responseStats = "DONE"; // DONE <finish responding> and OK <finish reading respond> status
+        
+        /**
+        JOptionPane.showMessageDialog(null,"Purchase No. is "+purchaseNo+" / Choice is "+buttonChoice+" / "
+                + "Respond Msg. is "+respondMsg+" / Current Date is "+currDate+" "); **/
+        
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to send the response?","Confirmation",0);
+            if(dialogResult == JOptionPane.YES_OPTION){
+                
+                if(new responseModel(purchaseNo, buttonChoice, respondMsg, currDate, responseStats).addResponseToDB(true)){}
+                
+                    AccessLayer.getInstance().updateResponseStatus(purchaseNo);
+                        JOptionPane.showMessageDialog(null,"Response was sent successfully!");
+                            
+                        
+                }else{
+                
+                    JOptionPane.showMessageDialog(null,"Cancelled!");
+                }
+        
+        // add a function here that closes the panel after user has clicked RESPOND
+        // if user has responded already, user cannot respond again -  becoz only once a day
+        System.gc();
+
+    }//GEN-LAST:event_respondBtnActionPerformed
+
+    
+    public String getCurrentDate(){
+        
+        String myDate = "";
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
+        try{
+            myDate = dateFormat.format(date);
+            
+        }catch(Exception e){
+            OptionPane.error("Error! Invalid in Date Format!");
+        }
+        
+        //JOptionPane.showMessageDialog(null,"Current Date is "+myDate);
+        return myDate;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -190,10 +287,68 @@ public class RespondToFollowUp_WM extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RespondToFollowUp_WM().setVisible(true);
+                new RespondToFollowUp_WM(purchaseNoID).setVisible(true);
             }
         });
     }
+    
+    
+    
+    private void showExitDialog(){
+          //newFollowUp.instance.setEnabled(true);
+          setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    }
+    
+    private void formWindowClosing(java.awt.event.WindowEvent evt){
+        showExitDialog();
+    }
+    
+    /**
+     * Getters and Setters
+     * @return 
+     */
+    public JRadioButton getIncomingRBtn() {
+        return incomingRBtn;
+    }
+
+    public void setIncomingRBtn(JRadioButton incomingRBtn) {
+        this.incomingRBtn = incomingRBtn;
+    }
+
+    public JTextField getPurchaseOrderNoField() {
+        return purchaseOrderNoField;
+    }
+
+    public void setPurchaseOrderNoField(JTextField purchaseOrderNoField) {
+        this.purchaseOrderNoField = purchaseOrderNoField;
+    }
+
+    public JTextArea getShortMsgArea() {
+        return shortMsgArea;
+    }
+
+    public void setShortMsgArea(JTextArea shortMsgArea) {
+        this.shortMsgArea = shortMsgArea;
+    }
+
+    public JRadioButton getwIssuesRBtn() {
+        return wIssuesRBtn;
+    }
+
+    public void setwIssuesRBtn(JRadioButton wIssuesRBtn) {
+        this.wIssuesRBtn = wIssuesRBtn;
+    }
+
+    public JRadioButton getWoIssuesRBtn() {
+        return woIssuesRBtn;
+    }
+
+    public void setWoIssuesRBtn(JRadioButton woIssuesRBtn) {
+        this.woIssuesRBtn = woIssuesRBtn;
+    }
+
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;

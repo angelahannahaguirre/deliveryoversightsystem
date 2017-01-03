@@ -300,10 +300,11 @@ public class EditUserAccount extends javax.swing.JFrame {
         String emPword = getPasswordField().getText().trim();
         String lastName = getLastnameField().getText().trim();
         String firstName = getFirstnameField().getText().trim();
+        
       
         
         if(employeeID.isEmpty() || emPword.isEmpty() || lastName.isEmpty() || firstName.isEmpty()){
-                    OptionPane.error("There is an empty required filed. Please fill it up.");
+                    OptionPane.error("There is an empty required field. Please fill it up.");
                         return;
         } 
         

@@ -10,19 +10,23 @@ import connection.AccessLayer;
 import deliveryoversightsystem.purchasingHd.purchaseHeadHome;
 import deliveryoversightsystem.systemAdmin.systemAdminHome;
 import deliveryoversightsystem.warehouseMgr.warehouseManagerHome;
+import java.awt.*;
+import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.*;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Arrays;
+import model.newItemsModel;
+import view.OptionPane;
 
 /**
  *
@@ -272,7 +276,6 @@ public class loginModule extends javax.swing.JFrame {
     }
     
     
-    
     private void loginUser() throws SQLException{
         String password = passwordField.getText();
         String username = usernameField.getText().trim();
@@ -293,6 +296,10 @@ public class loginModule extends javax.swing.JFrame {
                 if(rs.getString("userType").equals("PH")){ //userType var is the DB var name
                     PH = new purchaseHeadHome();
                     PH.setVisible(true);
+                    
+                    PH.updateViewPHTable(newItemsModel.getAllNewItems()); //added by angela 12/30/16
+                   
+                    System.gc();
                     
                 }else if(rs.getString("userType").equals("WM")){
                     WM = new warehouseManagerHome();

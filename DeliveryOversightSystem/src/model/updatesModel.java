@@ -170,7 +170,7 @@ public class updatesModel {
                         rs.getString("invoiceDate"), rs.getString("dateDelivered"), rs.getString("manualDate"),
                         rs.getString("electronicDate"), rs.getString("referenceRRNo"), rs.getString("dateForwarded")));
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null,"SQLException inside getAllUpdates in createUserAcctModel...");
+            JOptionPane.showMessageDialog(null,"SQLException inside getAllUpdates in updatesModel...");
         }
         return invoice;
     }

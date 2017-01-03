@@ -20,6 +20,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import model.addItemModel;
+import model.newItemsModel;
 import model.updatesModel;
 import view.OptionPane;
 
@@ -141,7 +142,15 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
             new String [] {
                 "Purchase Order No.", "Purchaser", "Supplier Name", "Date Faxed ", "Invoice No.", "Invoice Date", "Date Delivered", "Manual RR Date", "Electronic RR Date", "Reference RR No.", "Date Forwarded"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         viewUpdatesForPHTable.setGridColor(new java.awt.Color(153, 153, 153));
         viewUpdatesForPHTable.setSelectionBackground(new java.awt.Color(0, 102, 153));
         jScrollPane1.setViewportView(viewUpdatesForPHTable);
@@ -356,7 +365,7 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
 
         String faxDate = "";
         
-        
+        Date cDate = new Date();
         Date fDate = getDateFaxedField().getDate();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try{
@@ -367,20 +376,25 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
             OptionPane.error("Invalid. Date Faxed is required.");
             return;
         }
+        if(cDate.before(fDate)){
+            OptionPane.error("Date Faxed is not valid.");
+            return;
+        }
         
         String deliveryStat = "New";
-        String followUpFlag = "none"; //so it's either none or flagged
+        String followUpFlag = " "; //so it's either none or done
+        String dateFollowedUp = "0000-00-00";
         
         //JOptionPane.showMessageDialog(null, purchaseNo);
         
         int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Add the Item into the Delivery List?","Confirmation",0);
         if(dialogResult == JOptionPane.YES_OPTION){
             
-            if(new addItemModel(purchaseNo, purchaserName, suppName, faxDate, deliveryStat, followUpFlag).addItemToDB(true)){}
+            if(new addItemModel(purchaseNo, purchaserName, suppName, faxDate, deliveryStat, followUpFlag, dateFollowedUp).addItemToDB(true)){}
             //    clearCreateUserFields();   
                 updateViewUpdatesTable(updatesModel.getAllUpdates());
                     System.gc();
-                        //JOptionPane.showMessageDialog(null,"Successfully Added the Item!");
+                    //JOptionPane.showMessageDialog(null,"Successfully Added the Item!");
             
                         
             
@@ -394,10 +408,17 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
 
         int choice = OptionPane.confirmationDialog("Are you sure you want to reset?");
         if(choice == JOptionPane.YES_OPTION){
-            //clearCreateUserFields();
+            clearFields();
         }
     }//GEN-LAST:event_resetBtnActionPerformed
 
+    private void clearFields(){
+        getPurchaseOrderNoField().setText("");
+        getPurchaserField().setText("");
+        getDateFaxedField().setDate(null);
+        getSupplierNameField().setText("");
+    }
+    
     private void goBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBtnActionPerformed
         // TODO add your handling code here:
         String retVal = "";
@@ -509,6 +530,7 @@ public class ViewUpdatesForPH extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt){
         showExitDialog();
     }
+    
     
     /**
      * 

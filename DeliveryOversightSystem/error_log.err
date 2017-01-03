@@ -99,3 +99,69 @@
 2016/12/09 09:28:22: Duplicate entry '1115' for key 'PRIMARY'
 2016/12/09 09:32:46: Duplicate entry '222202' for key 'PRIMARY'
 2016/12/10 12:06:34: Table 'dos_db.log_details' doesn't exist
+2016/12/20 08:30:01: Table 'dos_db.log_details' doesn't exist
+2016/12/20 08:33:04: Table 'dos_db.log_details' doesn't exist
+2016/12/20 08:33:57: Table 'dos_db.log_details' doesn't exist
+2016/12/20 10:34:01: Table 'dos_db.log_details' doesn't exist
+2016/12/20 10:35:28: Table 'dos_db.log_details' doesn't exist
+2016/12/20 10:36:45: Table 'dos_db.log_details' doesn't exist
+2016/12/20 10:39:11: Table 'dos_db.log_details' doesn't exist
+2016/12/20 10:39:47: Table 'dos_db.log_details' doesn't exist
+2016/12/21 07:19:33: Table 'dos_db.log_details' doesn't exist
+2016/12/22 12:04:18: Table 'dos_db.log_details' doesn't exist
+2016/12/22 12:04:27: Table 'dos_db.log_details' doesn't exist
+2016/12/27 11:34:10: Table 'dos_db.log_details' doesn't exist
+2016/12/27 11:34:23: Table 'dos_db.log_details' doesn't exist
+2016/12/27 11:34:35: Table 'dos_db.log_details' doesn't exist
+2016/12/27 11:35:43: Duplicate entry '1123' for key 'PRIMARY'
+2016/12/27 11:38:40: Duplicate entry '444401' for key 'PRIMARY'
+2016/12/28 01:56:16: Table 'dos_db.log_details' doesn't exist
+2016/12/28 02:05:01: Table 'dos_db.log_details' doesn't exist
+2016/12/28 02:22:10: Table 'dos_db.log_details' doesn't exist
+2016/12/29 11:57:59: Table 'dos_db.log_details' doesn't exist
+2016/12/29 12:00:03: Table 'dos_db.log_details' doesn't exist
+2016/12/29 12:00:23: Table 'dos_db.log_details' doesn't exist
+2016/12/29 12:12:04: Table 'dos_db.log_details' doesn't exist
+2016/12/29 12:12:16: Table 'dos_db.log_details' doesn't exist
+2016/12/29 12:16:27: Table 'dos_db.log_details' doesn't exist
+2016/12/29 12:16:34: Duplicate entry '222204' for key 'PRIMARY'
+2016/12/29 12:17:08: Table 'dos_db.log_details' doesn't exist
+2016/12/30 01:54:37: Table 'dos_db.log_details' doesn't exist
+2016/12/30 01:55:53: Unknown column 'purchaseNo' in 'where clause'
+2016/12/30 01:55:59: Unknown column 'purchaseNo' in 'where clause'
+2016/12/30 01:57:09: Table 'dos_db.log_details' doesn't exist
+2016/12/30 02:00:05: Unknown column 'purchaseNo' in 'where clause'
+2016/12/30 02:01:18: Unknown column 'purchaseNo' in 'where clause'
+2016/12/30 02:02:32: Table 'dos_db.log_details' doesn't exist
+2016/12/30 02:33:10: Table 'dos_db.log_details' doesn't exist
+2016/12/30 05:02:51: Table 'dos_db.log_details' doesn't exist
+2016/12/30 05:13:23: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'waiting'' at line 1
+2016/12/30 05:17:46: Table 'dos_db.log_details' doesn't exist
+2016/12/30 08:21:45: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''1116','Without Issues...','This hasn\'t been delivered yet and has NO issues.',' at line 1
+2016/12/30 08:24:30: Incorrect integer value: '' for column 'responseID' at row 1
+2016/12/30 09:06:53: Table 'dos_db.log_details' doesn't exist
+2016/12/30 09:51:34: Data truncation: Truncated incorrect DOUBLE value: 'DONE'
+2016/12/30 09:52:47: Table 'dos_db.log_details' doesn't exist
+2016/12/30 11:22:31: Table 'dos_db.log_details' doesn't exist
+2016/12/30 11:59:03: Table 'dos_db.log_details' doesn't exist
+2017/01/02 12:19:53: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'elect d.*, r.* from delivery d left join response r on d.purchaseOrderNo = r.pur' at line 1
+2017/01/02 02:21:01: Table 'dos_db.log_details' doesn't exist
+2017/01/02 02:22:57: Table 'dos_db.log_details' doesn't exist
+2017/01/02 02:24:16: Table 'dos_db.log_details' doesn't exist
+2017/01/02 05:44:52: Table 'dos_db.log_details' doesn't exist
+2017/01/02 05:47:10: Table 'dos_db.log_details' doesn't exist
+2017/01/02 05:51:02: Table 'dos_db.log_details' doesn't exist
+2017/01/02 10:04:38: Table 'dos_db.log_details' doesn't exist
+2017/01/02 10:05:56: Data truncation: Incorrect date value: 'none' for column 'dateFollowedUp' at row 1
+2017/01/02 10:06:09: Data truncation: Incorrect date value: 'none' for column 'dateFollowedUp' at row 1
+2017/01/02 10:09:57: Data truncation: Incorrect date value: 'none' for column 'dateFollowedUp' at row 1
+2017/01/02 10:12:16: Data truncation: Incorrect date value: 'none' for column 'dateFollowedUp' at row 1
+2017/01/02 10:12:43: Data truncation: Incorrect date value: 'none' for column 'dateFollowedUp' at row 1
+2017/01/02 10:16:43: Data truncation: Incorrect date value: 'none' for column 'dateFollowedUp' at row 1
+2017/01/02 10:30:03: Table 'dos_db.log_details' doesn't exist
+2017/01/02 10:31:19: Table 'dos_db.log_details' doesn't exist
+2017/01/02 10:32:24: Table 'dos_db.log_details' doesn't exist
+2017/01/02 10:33:08: Table 'dos_db.log_details' doesn't exist
+2017/01/03 10:21:57: Table 'dos_db.log_details' doesn't exist
+2017/01/03 10:22:45: Table 'dos_db.log_details' doesn't exist
+2017/01/03 10:23:10: Table 'dos_db.log_details' doesn't exist

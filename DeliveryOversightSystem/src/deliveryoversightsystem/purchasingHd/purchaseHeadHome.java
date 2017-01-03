@@ -6,11 +6,21 @@
 
 package deliveryoversightsystem.purchasingHd;
 
+import connection.AccessLayer;
 import deliveryoversightsystem.loginModule;
 import java.awt.event.WindowEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import model.addItemModel;
+import model.newItemsModel;
+import model.responseListModel;
 import model.updatesModel;
 import view.OptionPane;
 
@@ -28,13 +38,14 @@ public class purchaseHeadHome extends javax.swing.JFrame {
     }
     
     /**
-     * Creates new form warehouseManagerHome
+     * Creates new form purchaseHeadHome
      */
     public purchaseHeadHome() {
         initComponents();
         instance = this;
-        initComponents();
         setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
     }
     
     public static purchaseHeadHome getInstance(){
@@ -65,14 +76,9 @@ public class purchaseHeadHome extends javax.swing.JFrame {
         goBtn = new javax.swing.JButton();
         logoutBtn = new javax.swing.JButton();
         viewResponsesBtn = new javax.swing.JButton();
+        followUpBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-		
-		addWindowListener(new java.awt.event.WindowAdapter(){
-			public void windowClosing(java.awt.event.WindowEvent evt){
-				formWindowClosing(evt);
-			}
-		});
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
         jPanel1.setPreferredSize(new java.awt.Dimension(764, 450));
@@ -153,6 +159,11 @@ public class purchaseHeadHome extends javax.swing.JFrame {
             }
         });
         purchaseHeadHomeTable.setGridColor(new java.awt.Color(0, 153, 204));
+        purchaseHeadHomeTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                purchaseHeadHomeTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(purchaseHeadHomeTable);
 
         viewUpdatesBtn.setBackground(new java.awt.Color(255, 255, 255));
@@ -202,31 +213,45 @@ public class purchaseHeadHome extends javax.swing.JFrame {
             }
         });
 
+        followUpBtn.setBackground(new java.awt.Color(255, 255, 255));
+        followUpBtn.setForeground(new java.awt.Color(0, 153, 255));
+        followUpBtn.setText("Follow-Up Delivery");
+        followUpBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                followUpBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jSeparator3)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(purchaseHeadHomeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(purchaseHeadHomeSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(goBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(viewResponsesBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(viewUpdatesBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(dosLabel)
-                    .addComponent(homePHLabel))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jSeparator3)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(purchaseHeadHomeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(purchaseHeadHomeSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(goBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(viewResponsesBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(viewUpdatesBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dosLabel)
+                            .addComponent(homePHLabel)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(310, 310, 310)
+                        .addComponent(followUpBtn)))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -251,8 +276,10 @@ public class purchaseHeadHome extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(viewResponsesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(followUpBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -271,6 +298,7 @@ public class purchaseHeadHome extends javax.swing.JFrame {
 
     private void refreshBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnjButton1ActionPerformed
         // TODO add your handling code here:
+        updateViewPHTable(newItemsModel.getAllNewItems()); //added by angela 12/30/16
     }//GEN-LAST:event_refreshBtnjButton1ActionPerformed
 
     private void goBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBtnjButton1ActionPerformed
@@ -302,10 +330,83 @@ public class purchaseHeadHome extends javax.swing.JFrame {
         System.gc();
     }//GEN-LAST:event_viewUpdatesBtnActionPerformed
 
+    private AnsweredFollowUpList AF;
+    
     private void viewResponsesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewResponsesBtnActionPerformed
         // TODO add your handling code here:
+        AF = new AnsweredFollowUpList();
+        AF.setVisible(true);
+        purchaseHeadHome.instance.setEnabled(false);
+        
+        AF.updateViewResponsesTable(responseListModel.getAllResponses());
+        
+        System.gc();
     }//GEN-LAST:event_viewResponsesBtnActionPerformed
 
+    private void followUpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_followUpBtnActionPerformed
+        // TODO add your handling code here:
+        // Sets the followUpFlag to 1; meaning it needs follow-up
+        // Created by Angela
+        
+        String followUpState = "";
+        String currDate = "";
+        
+        ResultSet rs = AccessLayer.getInstance().getFlag(purchaseNoID);
+        
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
+        try{
+            currDate = dateFormat.format(date);
+            
+        }catch(Exception e){
+            OptionPane.error("Error! Invalid.");
+        }
+        
+        try{
+            rs.next();
+            followUpState = rs.getString(1);
+        }catch (SQLException ex) {}
+        
+        if(followUpState.equalsIgnoreCase("DONE")){ //follow-up has been done already
+            JOptionPane.showMessageDialog(null,"Follow-up for this item has already been done. One follow-up per day only.");
+            
+        }else if(followUpState.equalsIgnoreCase(" ")){ //follow-up has not yet been done
+            int choice = OptionPane.confirmationDialog("Are you sure you want to follow-up this delivery?");
+            
+            if(choice == JOptionPane.YES_OPTION){
+                AccessLayer.getInstance().followUpItem(purchaseNoID, currDate);
+                updateViewPHTable(newItemsModel.getAllNewItems()); //to refresh table after adding a follow-up
+            }
+            
+        }
+        
+    }//GEN-LAST:event_followUpBtnActionPerformed
+
+    public String purchaseNoID;
+    
+    private void purchaseHeadHomeTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_purchaseHeadHomeTableMouseClicked
+        // TODO add your handling code here:
+        int i = evt.getY()/getPurchaseHeadHomeTable().getRowHeight();
+        if(evt.getClickCount() == 2 && i < getPurchaseHeadHomeTable().getRowCount()){
+            //setUpdateDependentOK(true);
+            //setUpdateEmployeePanelValues(getDependentFromTable(i));
+            purchaseNoID = getPurchaseOrderNo(i);
+            System.gc();
+        }
+    }//GEN-LAST:event_purchaseHeadHomeTableMouseClicked
+
+    /**
+     * get the data from the table at row i
+     * @param i row
+     * @return a String from row i
+     */
+    private String getPurchaseOrderNo(int i){
+        String purchaseNo = getPurchaseHeadHomeTable().getValueAt(i, 0).toString();
+        return purchaseNo;
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -350,8 +451,50 @@ public class purchaseHeadHome extends javax.swing.JFrame {
         showExitDialog();
     }
 
+    public JTable getPurchaseHeadHomeTable() {
+        return purchaseHeadHomeTable;
+    }
+
+    public void setPurchaseHeadHomeTable(JTable purchaseHeadHomeTable) {
+        this.purchaseHeadHomeTable = purchaseHeadHomeTable;
+    }
+    
+     /**
+     * added by angela 12/30/16
+     * @param newList 
+     */
+    public void updateViewPHTable(ArrayList<newItemsModel> newList){ 
+        
+        //JOptionPane.showMessageDialog(null,"Getting table results...");
+        if(newList == null)
+            return;
+        DefaultTableModel model = (DefaultTableModel) getPurchaseHeadHomeTable().getModel();
+        int size = newList.size(), modelRows = model.getRowCount();
+        if(size > modelRows){
+            for(int i = size-modelRows; i > 0; i--)
+                model.addRow(new String[model.getColumnCount()]);
+        }
+        else if(modelRows > size){
+            for(int i = modelRows-size; i > 0; i--)
+                model.removeRow(0);
+        }
+        for(int i = 0; i < newList.size(); i++){
+            newItemsModel m = newList.get(i);
+            
+            model.setValueAt(m.getPurchaseNo(),i,0);
+            model.setValueAt(m.getPurchaserName(),i,1);
+            model.setValueAt(m.getSuppName(),i,2);
+            model.setValueAt(m.getFaxedDate(),i,3);
+            model.setValueAt(m.getDeliveryStat(),i,4);
+            model.setValueAt(m.getFollowUpFlag(),i,5);
+            
+        }
+        System.gc();
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dosLabel;
+    private javax.swing.JButton followUpBtn;
     private javax.swing.JButton goBtn;
     private javax.swing.JLabel homePHLabel;
     private javax.swing.JPanel jPanel1;

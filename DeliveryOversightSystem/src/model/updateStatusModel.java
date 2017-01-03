@@ -54,11 +54,11 @@ public class updateStatusModel {
     public boolean updateStatusToDB() {
         
         if(AccessLayer.getInstance().updateAccountStatusInDB(employeeID)){
-            OptionPane.message("Account "+employeeID+" has been deactivated!");
+            OptionPane.message("Account "+employeeID+"'s status has been updated!");
             return true;
         }
         else
-            OptionPane.error("An error occurred, failed to deactivate Account#"+employeeID);
+            OptionPane.error("An error occurred, failed to update Account#"+employeeID+"'s status.");
         return false;
     }
      

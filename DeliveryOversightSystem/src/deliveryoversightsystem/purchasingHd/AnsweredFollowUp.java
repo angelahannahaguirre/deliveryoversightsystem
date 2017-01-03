@@ -6,19 +6,45 @@
 
 package deliveryoversightsystem.purchasingHd;
 
+import connection.AccessLayer;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author Aimee
  */
 public class AnsweredFollowUp extends javax.swing.JFrame {
 
+    public static String purchaseNoID;
+    
+    private static AnsweredFollowUp instance;
+    
+    public static void setInstance(AnsweredFollowUp aInstance) {
+      instance = aInstance;
+    }
+    
     /**
      * Creates new form AnsweredFollowUp
+     * @param purchaseNoID
      */
-    public AnsweredFollowUp() {
+    public AnsweredFollowUp(String purchaseNoID) {
         initComponents();
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
+        purchaseOrderNoField.setText(purchaseNoID);
+        purchaseOrderNoField.setEnabled(false);
+        shortMsgArea.setEnabled(false);
+        
     }
 
+    public static AnsweredFollowUp getInstance(){
+        if(instance == null)
+            instance = new AnsweredFollowUp(purchaseNoID);
+        return instance;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,7 +66,13 @@ public class AnsweredFollowUp extends javax.swing.JFrame {
         woIssuesRBtn = new javax.swing.JRadioButton();
         incomingRBtn = new javax.swing.JRadioButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		addWindowListener(new java.awt.event.WindowAdapter(){
+			public void windowClosing(java.awt.event.WindowEvent evt){
+				formWindowClosing(evt);
+			}
+		});
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -83,7 +115,7 @@ public class AnsweredFollowUp extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -98,9 +130,9 @@ public class AnsweredFollowUp extends javax.swing.JFrame {
                                 .addComponent(incomingRBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(wIssuesRBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(woIssuesRBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(answeredFollowUpLabel))
-                .addContainerGap(35, Short.MAX_VALUE))
+                    .addComponent(answeredFollowUpLabel)
+                    .addComponent(jSeparator1))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,22 +155,18 @@ public class AnsweredFollowUp extends javax.swing.JFrame {
                 .addComponent(shortMsgLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(89, 89, 89))
+                .addGap(155, 155, 155))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 387, Short.MAX_VALUE)
         );
 
         pack();
@@ -148,6 +176,7 @@ public class AnsweredFollowUp extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_wIssuesRBtnActionPerformed
 
+   
     /**
      * @param args the command line arguments
      */
@@ -178,11 +207,62 @@ public class AnsweredFollowUp extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AnsweredFollowUp().setVisible(true);
+                new AnsweredFollowUp(purchaseNoID).setVisible(true);
             }
         });
     }
 
+    
+    /**
+     * 
+     * @param purchaseNoID
+     */
+    public void retrieveResponse(String purchaseNoID){
+        
+        String choice, msg = "";
+        
+         ResultSet cv = AccessLayer.getInstance().getChoiceVal(purchaseNoID);
+         ResultSet sm = AccessLayer.getInstance().getShortMsg(purchaseNoID);
+         
+         try{
+            cv.next();
+            sm.next();
+            
+            choice = cv.getString(1);
+            msg = sm.getString(1);
+            
+            if(choice.equalsIgnoreCase("With Issues...")){
+                wIssuesRBtn.setSelected(true);
+                woIssuesRBtn.setSelected(false);
+                incomingRBtn.setSelected(false);
+                
+            }else if(choice.equalsIgnoreCase("Without Issues...")){
+                wIssuesRBtn.setSelected(false);
+                woIssuesRBtn.setSelected(true);
+                incomingRBtn.setSelected(false);
+                
+                
+            }else if(choice.equalsIgnoreCase("Incoming...")){
+                wIssuesRBtn.setSelected(false);
+                woIssuesRBtn.setSelected(false);
+                incomingRBtn.setSelected(true);
+                
+            }
+            shortMsgArea.setText(msg);
+            
+        }catch (SQLException ex) {}
+       
+    }
+    
+    private void showExitDialog(){
+            purchaseHeadHome.instance.setEnabled(true);
+            setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    }
+    
+    private void formWindowClosing(java.awt.event.WindowEvent evt){
+        showExitDialog();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel answeredFollowUpLabel;
     private javax.swing.JRadioButton incomingRBtn;

@@ -6,17 +6,39 @@
 
 package deliveryoversightsystem.purchasingHd;
 
+import connection.AccessLayer;
+import java.util.ArrayList;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import model.responseListModel;
+
 /**
  *
  * @author Aimee
  */
 public class AnsweredFollowUpList extends javax.swing.JFrame {
 
+    private static AnsweredFollowUpList instance;
+    
+    public static void setInstance(AnsweredFollowUpList aInstance) {
+      instance = aInstance;
+    }
+    
+    
     /**
      * Creates new form AnsweredFollowUpList
      */
     public AnsweredFollowUpList() {
         initComponents();
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
+    }
+    
+    public static AnsweredFollowUpList getInstance(){
+        if(instance == null)
+            instance = new AnsweredFollowUpList();
+        return instance;
     }
 
     /**
@@ -33,50 +55,71 @@ public class AnsweredFollowUpList extends javax.swing.JFrame {
         answeredFollowUpListTable = new javax.swing.JTable();
         dosLabel = new javax.swing.JLabel();
         answeredFollowUpListLabel = new javax.swing.JLabel();
-        homeBtn = new javax.swing.JButton();
         answeredFollowUpListCB = new javax.swing.JComboBox();
         answeredFollowUpListSearchField = new javax.swing.JTextField();
         goBtn = new javax.swing.JButton();
         refreshBtn = new javax.swing.JButton();
+        viewAnswerBtn = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        viewAnswerBtn1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		addWindowListener(new java.awt.event.WindowAdapter(){
+			public void windowClosing(java.awt.event.WindowEvent evt){
+				formWindowClosing(evt);
+			}
+		});
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
         answeredFollowUpListTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Purchaser", "Purchase Order No.", "View Answer"
+                "Purchase Order No.", "Purchaser", "Supplier Name", "Date Faxed", "Status", "View Answer"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        answeredFollowUpListTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                answeredFollowUpListTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(answeredFollowUpListTable);
 
         dosLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
@@ -87,15 +130,6 @@ public class AnsweredFollowUpList extends javax.swing.JFrame {
         answeredFollowUpListLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         answeredFollowUpListLabel.setForeground(new java.awt.Color(255, 255, 255));
         answeredFollowUpListLabel.setText("Answered Follow-Up List");
-
-        homeBtn.setBackground(new java.awt.Color(255, 255, 255));
-        homeBtn.setForeground(new java.awt.Color(0, 153, 255));
-        homeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/home_25.png"))); // NOI18N
-        homeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                homeBtnActionPerformed(evt);
-            }
-        });
 
         answeredFollowUpListCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Purchase Order No.", "Item 2", "Item 3", "Item 4" }));
 
@@ -112,80 +146,141 @@ public class AnsweredFollowUpList extends javax.swing.JFrame {
             }
         });
 
+        viewAnswerBtn.setBackground(new java.awt.Color(255, 255, 255));
+        viewAnswerBtn.setForeground(new java.awt.Color(0, 153, 255));
+        viewAnswerBtn.setText("View Answer");
+        viewAnswerBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewAnswerBtnActionPerformed(evt);
+            }
+        });
+
+        viewAnswerBtn1.setBackground(new java.awt.Color(255, 255, 255));
+        viewAnswerBtn1.setForeground(new java.awt.Color(0, 153, 255));
+        viewAnswerBtn1.setText("Close Response");
+        viewAnswerBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewAnswerBtn1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(dosLabel)
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(answeredFollowUpListLabel)
-                                .addGap(33, 33, 33)
-                                .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(answeredFollowUpListCB, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(answeredFollowUpListCB, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(answeredFollowUpListSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(answeredFollowUpListSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(4, 4, 4)
-                        .addComponent(goBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                                .addComponent(goBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dosLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(answeredFollowUpListLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(179, 179, 179)
+                        .addComponent(viewAnswerBtn1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(viewAnswerBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(25, 25, 25))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(15, 15, 15)
                 .addComponent(dosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(homeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(answeredFollowUpListLabel)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(answeredFollowUpListSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(answeredFollowUpListCB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(answeredFollowUpListLabel)
+                .addGap(3, 3, 3)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(answeredFollowUpListSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(answeredFollowUpListCB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(viewAnswerBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(viewAnswerBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
-        // TODO add your handling code here:
-    
-    }//GEN-LAST:event_homeBtnActionPerformed
-
     private void refreshBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnjButton1ActionPerformed
         // TODO add your handling code here:
+        updateViewResponsesTable(responseListModel.getAllResponses());
     }//GEN-LAST:event_refreshBtnjButton1ActionPerformed
 
+    private AnsweredFollowUp viewAnswer;
+    
+    private void viewAnswerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAnswerBtnActionPerformed
+        // TODO add your handling code here:
+        viewAnswer = new AnsweredFollowUp(purchaseNoID);
+        viewAnswer.setVisible(true);
+        //AnsweredFollowUpList.instance.setEnabled(false);
+        viewAnswer.retrieveResponse(purchaseNoID);
+        
+        System.gc();
+        
+    }//GEN-LAST:event_viewAnswerBtnActionPerformed
+
+    public String purchaseNoID;
+    
+    private void answeredFollowUpListTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_answeredFollowUpListTableMouseClicked
+        // TODO add your handling code here:
+        int i = evt.getY()/getAnsweredFollowUpListTable().getRowHeight();
+        if(evt.getClickCount() == 2 && i < getAnsweredFollowUpListTable().getRowCount()){
+            //setUpdateDependentOK(true);
+            //setUpdateEmployeePanelValues(getDependentFromTable(i));
+            purchaseNoID = getPurchaseOrderNo(i);
+            //response = getResponseStatus(i);
+            System.gc();
+        }
+    }//GEN-LAST:event_answeredFollowUpListTableMouseClicked
+
+    private void viewAnswerBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAnswerBtn1ActionPerformed
+        // TODO add your handling code here:
+         AccessLayer.getInstance().closeResponse(purchaseNoID);
+         updateViewResponsesTable(responseListModel.getAllResponses());
+         
+    }//GEN-LAST:event_viewAnswerBtn1ActionPerformed
+
+    /**
+     * get the data from the table at row i
+     * @param i row
+     * @return a String from row i
+     */
+    private String getPurchaseOrderNo(int i){
+        String purchaseNo = getAnsweredFollowUpListTable().getValueAt(i, 0).toString();
+        return purchaseNo;
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -220,6 +315,93 @@ public class AnsweredFollowUpList extends javax.swing.JFrame {
             }
         });
     }
+    
+    /***Getters and Setters ***/
+    /**
+     * 
+     * @return 
+     */
+    
+    public JTable getAnsweredFollowUpListTable() {
+        return answeredFollowUpListTable;
+    }
+
+    public void setAnsweredFollowUpListTable(JTable answeredFollowUpListTable) {
+        this.answeredFollowUpListTable = answeredFollowUpListTable;
+    }
+
+    
+    
+    /**
+     * 
+     * @param responseList 
+     */
+    public void updateViewResponsesTable(ArrayList<responseListModel> responseList){
+        
+        //JOptionPane.showMessageDialog(null,"Getting table results...");
+        if(responseList == null)
+            return;
+        DefaultTableModel model = (DefaultTableModel) getAnsweredFollowUpListTable().getModel();
+        int size = responseList.size(), modelRows = model.getRowCount();
+        if(size > modelRows){
+            for(int i = size-modelRows; i > 0; i--)
+                model.addRow(new String[model.getColumnCount()]);
+        }
+        else if(modelRows > size){
+            for(int i = modelRows-size; i > 0; i--)
+                model.removeRow(0);
+        }
+        for(int i = 0; i < responseList.size(); i++){
+            responseListModel m = responseList.get(i);
+            
+            model.setValueAt(m.getPurchaseNo(),i,0);
+            model.setValueAt(m.getPurchaser(),i,1);
+            model.setValueAt(m.getSupplierName(),i,2);
+            model.setValueAt(m.getDateFaxed(),i,3);
+            model.setValueAt(m.getDelStatus(),i,4);
+            //model.setValueAt(m.getResponseStatus(),i,5);
+            
+            String response = m.getResponseStatus().trim();
+            if(response.equals("DONE")){
+                response = "View?";
+            }else if(response.equals("Response Viewed")){
+                response = "Response has been reviewed.";
+            }
+            
+            model.setValueAt(response,i,5);
+            
+            
+//            
+//            String pos = m.getPosition().trim();
+//            // condition to display String Position not abbrev.
+//            if(pos.equals("WM")){
+//                pos = "Warehouse Manager";
+//            }else if(pos.equals("PH")){
+//                pos = "Purchasing Head";
+//            }else if(pos.equals("SA")){
+//                pos = "System Administrator";
+//            }
+//            model.setValueAt(pos,i,4);
+//            model.setValueAt(m.getStatus(),i,5);
+            
+            //model.setValueAt(m.getPhilcareYear(),i,6); - account created date
+            //model.setValueAt(m.getMonth1(),i,7); - change password button
+            //model.setValueAt(m.getMonth2(),i,8); - deactivate button
+            
+            //ButtonColumn btnCol = new ButtonColumn(viewUsersTable, Change, 7);
+           
+        }
+        System.gc();
+    }
+    
+    private void showExitDialog(){
+            purchaseHeadHome.instance.setEnabled(true);
+            setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    }
+    
+    private void formWindowClosing(java.awt.event.WindowEvent evt){
+        showExitDialog();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox answeredFollowUpListCB;
@@ -228,9 +410,11 @@ public class AnsweredFollowUpList extends javax.swing.JFrame {
     private javax.swing.JTable answeredFollowUpListTable;
     private javax.swing.JLabel dosLabel;
     private javax.swing.JButton goBtn;
-    private javax.swing.JButton homeBtn;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton refreshBtn;
+    private javax.swing.JButton viewAnswerBtn;
+    private javax.swing.JButton viewAnswerBtn1;
     // End of variables declaration//GEN-END:variables
 }

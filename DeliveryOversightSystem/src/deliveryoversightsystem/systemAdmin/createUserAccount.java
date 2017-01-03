@@ -279,14 +279,22 @@ public class createUserAccount extends javax.swing.JFrame {
         String lastName = getLastnameField().getText().trim();
         String empPword = getPasswordField().getText().trim();
         
-        String birthDate; 
+        String birthDate;
+        
         Date bDate = getBdateField().getDate();
+        Date cDate = new Date();
+        
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try{
             birthDate = dateFormat.format(bDate);
             
         }catch(Exception e){
             OptionPane.error("Invalid. Birthday is required.");
+            return;
+        }
+        
+        if(cDate.before(bDate)){
+            OptionPane.error("Birthdate is not valid.");
             return;
         }
         

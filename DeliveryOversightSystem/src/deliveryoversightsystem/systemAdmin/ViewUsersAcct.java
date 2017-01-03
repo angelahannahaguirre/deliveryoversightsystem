@@ -151,7 +151,7 @@ public class ViewUsersAcct extends javax.swing.JFrame {
             }
         });
 
-        deactivateBtn.setText("Deactivate");
+        deactivateBtn.setText("Change Status");
         deactivateBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deactivateBtnActionPerformed(evt);
@@ -287,12 +287,12 @@ public class ViewUsersAcct extends javax.swing.JFrame {
 
     private void deactivateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deactivateBtnActionPerformed
         // TODO add your handling code here:
-        int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to deactivate "+empID+"'s acount?","Confirmation",0);
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to change "+empID+"'s account status?","Confirmation",0);
         if(dialogResult == JOptionPane.YES_OPTION){
             
             if(new updateStatusModel(empID).updateStatusToDB())
                 //updateViewUsersTable(addItemModel.getAllInvoice());
-                    JOptionPane.showMessageDialog(null,"Successfully deactivated "+empID+"'s account");
+                    JOptionPane.showMessageDialog(null,"Successfully changed "+empID+"'s account status!");
                         System.gc(); 
          
         }else{

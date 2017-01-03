@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.followUpResponseBridgeModel;
+import model.newItemsModel;
 import model.updatesModel;
 import model.viewUpdatesWMModel;
 import view.OptionPane;
@@ -209,6 +211,10 @@ public class warehouseManagerHome extends javax.swing.JFrame {
         // TODO add your handling code here:
         newList = new newOrderList();
         newList.setVisible(true);
+        warehouseManagerHome.instance.setEnabled(false);
+        
+        newList.updateNewOrderListTable(newItemsModel.getAllNewItemList());
+        System.gc();
     }//GEN-LAST:event_viewNewItemsListBtnActionPerformed
 
     private newFollowUp followUpList;
@@ -216,6 +222,11 @@ public class warehouseManagerHome extends javax.swing.JFrame {
         // TODO add your handling code here:
         followUpList = new newFollowUp();
         followUpList.setVisible(true);
+        warehouseManagerHome.instance.setEnabled(false);
+        
+        followUpList.updateFollowUpListTable(followUpResponseBridgeModel.getFollowUpAndResponseList());
+        
+        System.gc();
     }//GEN-LAST:event_viewFollowUpItemListBtnActionPerformed
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
