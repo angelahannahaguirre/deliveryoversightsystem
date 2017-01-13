@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import model.newItemsModel;
+import model.newListClass;
 import view.OptionPane;
 
 /**

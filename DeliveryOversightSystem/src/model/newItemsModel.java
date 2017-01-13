@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class newItemsModel {
     
-    private String purchaseNo, purchaserName, suppName, faxedDate, deliveryStat, followUpFlag;
+    private String purchaseNo, purchaserName, suppName, faxedDate, deliveryStat;
     
      /**
      * Constructor
@@ -27,19 +27,16 @@ public class newItemsModel {
      * @param suppName
      * @param faxedDate
      * @param deliveryStat
-     * @param followUpFlag
      */
      
      public newItemsModel(String purchaseNo, String purchaserName, String suppName, String faxedDate, 
-            String deliveryStat, String followUpFlag) {
+            String deliveryStat) {
         
         this.purchaseNo = purchaseNo;
         this.purchaserName = purchaserName;
         this.suppName = suppName;
         this.faxedDate = faxedDate;
         this.deliveryStat = deliveryStat;
-        this.followUpFlag = followUpFlag;
-       
     }
      
     /**
@@ -86,14 +83,7 @@ public class newItemsModel {
         this.deliveryStat = deliveryStat;
     }
 
-    public String getFollowUpFlag() {
-        return followUpFlag;
-    }
-
-    public void setFollowUpFlag(String followUpFlag) {
-        this.followUpFlag = followUpFlag;
-    }
-
+   
      
      /**
      * get all the details inside the delivery table from the database
@@ -107,8 +97,8 @@ public class newItemsModel {
         try {
             while(rs.next())
                 newList.add(new newItemsModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
-                        rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus"),
-                        rs.getString("followUpFlag")));
+                        rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus")));
+            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null,"SQLException inside getAllNewItems in newItemsModel...");
         }
@@ -127,32 +117,61 @@ public class newItemsModel {
         try {
             while(rs.next())
                 newOrderList.add(new newItemsModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
-                        rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus"),
-                        rs.getString("followUpFlag")));
+                        rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus")));
+            
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null,"SQLException inside getAllNewItems in newItemsModel...");
+            JOptionPane.showMessageDialog(null,"SQLException inside getAllNewItemList in newItemsModel...");
         }
         return newOrderList;
     }
     
-//    /**
-//     * get all the details inside the delivery table from the database
-//     * this function is called for the Daily Follow-Up List table
-//     * @return an arraylist of delivery details
-//     */
-//    public static ArrayList<newItemsModel> getAnswerFollowUpList(){      
-//        ArrayList<newItemsModel> followUpList = new ArrayList<>();    
-//        ResultSet rs = AccessLayer.getInstance().getAnswerFollowUpListInDB();
-//        //JOptionPane.showMessageDialog(null, "Inside newItemsModel getAnswerFollowUpList...");
-//        try {
-//            while(rs.next())
-//                followUpList.add(new newItemsModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
-//                        rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus"),
-//                        rs.getString("followUpFlag")));
-//        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(null,"SQLException inside getAllNewItems in newItemsModel...");
-//        }
-//        return followUpList;
-//    }
+
+    /**
+     * Search func
+     * For the Daily Follow-Up table
+     * @param optionValue
+     * @param searchData
+     * @return 
+     */
+    public static ArrayList<newItemsModel> getNewItemsWithSearch(String optionValue, String searchData){
+        
+        //JOptionPane.showMessageDialog(null,optionValue+" and "+searchData);
+        
+        ArrayList<newItemsModel> newItemList = new ArrayList<>();
+        ResultSet rs = AccessLayer.getInstance().getAllNewItemUpdatesWithSearch(optionValue,searchData);
+        try {
+            while(rs.next())
+                newItemList.add(new newItemsModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
+                        rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus")));
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"After catch... Error inside getNewItemsWithSearch..."); //error prompt to be changed
+        }
+        return newItemList;
+    }
+    
+    
+    /**
+     * Search func
+     * For the Weekly Order List table
+     * get all the details inside the delivery table from the database
+     * this function is called for the Weekly Order List table
+     * @return an arraylist of delivery details
+     * @param searchVal
+     */
+    public static ArrayList<newItemsModel> getAllNewOrderList(String searchVal){      
+        ArrayList<newItemsModel> allNewOrderList = new ArrayList<>();    
+        ResultSet rs = AccessLayer.getInstance().getNewOrderWithSearchInDB(searchVal);
+        //JOptionPane.showMessageDialog(null, "Inside newItemsModel getAllNewItemList...");
+        try {
+            while(rs.next())
+                allNewOrderList.add(new newItemsModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
+                        rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus")));
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"SQLException inside getAllNewOrderList in newItemsModel...");
+        }
+        return allNewOrderList;
+    }
     
 }

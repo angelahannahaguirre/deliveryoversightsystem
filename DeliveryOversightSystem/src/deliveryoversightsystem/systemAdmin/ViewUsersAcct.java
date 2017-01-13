@@ -126,7 +126,7 @@ public class ViewUsersAcct extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Employee ID", "Lastname", "Firstname", "Birthdate", "Positionl", "Status"
+                "Employee ID", "Lastname", "Firstname", "Birthdate", "Position", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {

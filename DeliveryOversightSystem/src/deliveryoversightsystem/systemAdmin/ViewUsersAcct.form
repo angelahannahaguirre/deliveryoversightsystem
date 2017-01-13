@@ -186,7 +186,7 @@
                     <Column editable="false" title="Lastname" type="java.lang.Object"/>
                     <Column editable="false" title="Firstname" type="java.lang.Object"/>
                     <Column editable="false" title="Birthdate" type="java.lang.Object"/>
-                    <Column editable="false" title="Positionl" type="java.lang.Object"/>
+                    <Column editable="false" title="Position" type="java.lang.Object"/>
                     <Column editable="false" title="Status" type="java.lang.Object"/>
                   </Table>
                 </Property>

@@ -19,8 +19,8 @@ import view.OptionPane;
  */
 public class responseListModel {
     
-    private String purchaseNo, purchaser, supplierName, dateFaxed, delStatus, followUpFlag, dateFollowedUp, 
-            purchaseOrderNo, choiceVal, shortMsg, currentDate, responseStatus;;
+    private String purchaseNo, purchaser, supplierName, dateFaxed, delStatus, 
+            purchaseOrderNo, choiceVal, shortMsg, currentDate, responseStatus;
     
     /**
      * Constructor
@@ -29,8 +29,6 @@ public class responseListModel {
      * @param supplierName
      * @param dateFaxed
      * @param delStatus
-     * @param followUpFlag
-     * @param dateFollowedUp
      * @param purchaseOrderNo
      * @param choiceVal
      * @param shortMsg
@@ -39,7 +37,7 @@ public class responseListModel {
      */
     
     public responseListModel(String purchaseNo, String purchaser, String supplierName, String dateFaxed, 
-            String delStatus, String followUpFlag, String dateFollowedUp, String purchaseOrderNo, String choiceVal, String shortMsg, 
+            String delStatus, String purchaseOrderNo, String choiceVal, String shortMsg, 
             String currentDate, String responseStatus) {
         
         this.purchaseNo = purchaseNo;
@@ -47,8 +45,6 @@ public class responseListModel {
         this.supplierName = supplierName;
         this.dateFaxed = dateFaxed;
         this.delStatus = delStatus;
-        this.followUpFlag = followUpFlag;
-        this.dateFollowedUp = dateFollowedUp;
         this.purchaseOrderNo = purchaseOrderNo;
         this.choiceVal = choiceVal;
         this.shortMsg = shortMsg;
@@ -109,14 +105,6 @@ public class responseListModel {
         this.responseStatus = responseStatus;
     }
 
-    public String getFollowUpFlag() {
-        return followUpFlag;
-    }
-
-    public void setFollowUpFlag(String followUpFlag) {
-        this.followUpFlag = followUpFlag;
-    }
-
     public String getPurchaseOrderNo() {
         return purchaseOrderNo;
     }
@@ -148,17 +136,7 @@ public class responseListModel {
     public void setCurrentDate(String currentDate) {
         this.currentDate = currentDate;
     }
-
-    public String getDateFollowedUp() {
-        return dateFollowedUp;
-    }
-
-    public void setDateFollowedUp(String dateFollowedUp) {
-        this.dateFollowedUp = dateFollowedUp;
-    }
     
-    
-
     
    
     /**
@@ -174,9 +152,8 @@ public class responseListModel {
             while(rs.next())
                 responseList.add(new responseListModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
                         rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus"),
-                        rs.getString("followUpFlag"), rs.getString("dateFollowedUp"), rs.getString("purchaseOrderNo"), 
-                        rs.getString("choiceValue"), rs.getString("shortMsg"), rs.getString("currDate"),
-                        rs.getString("responseStatus")));
+                        rs.getString("purchaseOrderNo"), rs.getString("choiceValue"), rs.getString("shortMsg"),
+                        rs.getString("currDate"), rs.getString("responseStatus")));
             
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null,"SQLException inside getAllResponses in responseListModel...");
@@ -185,5 +162,30 @@ public class responseListModel {
     }
 
   
+    /**
+     * 
+     * @param optionValue
+     * @param searchData
+     * @return 
+     */
+    public static ArrayList<responseListModel> getResponseWithSearch(String optionValue, String searchData){ //this has an issue
+        
+        //JOptionPane.showMessageDialog(null,optionValue+" and "+searchData);
+        
+        ArrayList<responseListModel> rList = new ArrayList<>();
+        ResultSet rs = AccessLayer.getInstance().getAllResponseUpdatesWithSearch(optionValue,searchData);
+        try {
+            while(rs.next())
+                rList.add(new responseListModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
+                        rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus"),
+                        rs.getString("purchaseOrderNo"), rs.getString("choiceValue"), rs.getString("shortMsg"),
+                        rs.getString("currDate"), rs.getString("responseStatus")));
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"After catch... Error inside getResponseWithSearch..."); //error prompt to be changed
+        }
+        return rList;
+    }
+    
     
 }

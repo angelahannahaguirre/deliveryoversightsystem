@@ -9,6 +9,7 @@ package deliveryoversightsystem.warehouseMgr;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import model.followUpResponseBridgeModel;
 import model.newItemsModel;
@@ -55,7 +56,6 @@ public class newFollowUp extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         dailyFollowUpLabel = new javax.swing.JLabel();
         refreshBtn = new javax.swing.JButton();
-        homeBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         dailyFollowUpTable = new javax.swing.JTable();
         goBtn = new javax.swing.JButton();
@@ -63,13 +63,7 @@ public class newFollowUp extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         respondBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-		
-		addWindowListener(new java.awt.event.WindowAdapter(){
-			public void windowClosing(java.awt.event.WindowEvent evt){
-				formWindowClosing(evt);
-			}
-		});
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
         jPanel1.setPreferredSize(new java.awt.Dimension(764, 450));
@@ -89,15 +83,6 @@ public class newFollowUp extends javax.swing.JFrame {
         refreshBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refreshBtnjButton1ActionPerformed(evt);
-            }
-        });
-
-        homeBtn.setBackground(new java.awt.Color(255, 255, 255));
-        homeBtn.setForeground(new java.awt.Color(0, 153, 255));
-        homeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/home_25.png"))); // NOI18N
-        homeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                homeBtnjButton1ActionPerformed(evt);
             }
         });
 
@@ -132,7 +117,7 @@ public class newFollowUp extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Purchase Order No.", "Purchaser", "Supplier Name", "Date Faxed", "Status", "Answer Follow-Up?"
+                "Purchase Order No.", "Purchaser", "Supplier Name", "Date Faxed", "Delivery Status", "Follow-Up Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -177,33 +162,31 @@ public class newFollowUp extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(308, 308, 308)
+                .addComponent(respondBtn)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(dosLabel)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+                            .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(dailyFollowUpSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
-                            .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(dailyFollowUpLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(25, 25, 25))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(308, 308, 308)
-                .addComponent(respondBtn)
-                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(25, 25, 25))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dailyFollowUpLabel)
+                            .addComponent(dosLabel))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,19 +194,17 @@ public class newFollowUp extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(dosLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(dailyFollowUpLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(dailyFollowUpSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)))
+                .addComponent(dailyFollowUpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(dailyFollowUpSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
@@ -247,14 +228,16 @@ public class newFollowUp extends javax.swing.JFrame {
 
     private void refreshBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnjButton1ActionPerformed
         // TODO add your handling code here:
+        updateFollowUpListTable(followUpResponseBridgeModel.getFollowUpAndResponseList());
     }//GEN-LAST:event_refreshBtnjButton1ActionPerformed
-
-    private void homeBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnjButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_homeBtnjButton1ActionPerformed
 
     private void goBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBtnActionPerformed
         // TODO add your handling code here:
+        String searchVal = getDailyFollowUpSearchField().getText().trim();
+        
+        updateFollowUpListTable(followUpResponseBridgeModel.getFollowUpAndResponseListWithSearch(searchVal));  
+           
+        System.gc();
     }//GEN-LAST:event_goBtnActionPerformed
 
     private RespondToFollowUp_WM respondToBtn;
@@ -262,9 +245,16 @@ public class newFollowUp extends javax.swing.JFrame {
     private void respondBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_respondBtnActionPerformed
         // TODO add your handling code here:
         
-        respondToBtn = new RespondToFollowUp_WM(purchaseNoID);
-        respondToBtn.setVisible(true);
-        //newFollowUp.instance.setEnabled(false);
+        String followUpStats = fStatus;
+        
+        if(followUpStats.equalsIgnoreCase("Waiting for Response")){
+            respondToBtn = new RespondToFollowUp_WM(purchaseNoID);
+            respondToBtn.setVisible(true);
+            //newFollowUp.instance.setEnabled(false);
+        }else{
+            JOptionPane.showMessageDialog(null, "Response for this follow-up has been sent.");
+        }
+        
         
         System.gc();
     }//GEN-LAST:event_respondBtnActionPerformed
@@ -284,6 +274,7 @@ public class newFollowUp extends javax.swing.JFrame {
 //    public String responseStatus;
     
     public String purchaseNoID;
+    public String fStatus;
     
     private void dailyFollowUpTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dailyFollowUpTableMouseClicked
         // TODO add your handling code here:
@@ -292,6 +283,7 @@ public class newFollowUp extends javax.swing.JFrame {
             //setUpdateDependentOK(true);
             //setUpdateEmployeePanelValues(getDependentFromTable(i));
             purchaseNoID = getPurchaseOrderNo(i);
+            fStatus = getFollowUpStatus(i);
             //response = getResponseStatus(i);
             System.gc();
         }
@@ -305,6 +297,16 @@ public class newFollowUp extends javax.swing.JFrame {
     private String getPurchaseOrderNo(int i){
         String purchaseNo = getDailyFollowUpTable().getValueAt(i, 0).toString();
         return purchaseNo;
+    }
+    
+    /**
+     * get the data from the table at row i
+     * @param i row
+     * @return a String from row i
+     */
+    private String getFollowUpStatus(int i){
+        String fStats = getDailyFollowUpTable().getValueAt(i, 5).toString();
+        return fStats;
     }
     
     /**
@@ -364,6 +366,16 @@ public class newFollowUp extends javax.swing.JFrame {
         this.dailyFollowUpTable = dailyFollowUpTable;
     }
 
+    public JTextField getDailyFollowUpSearchField() {
+        return dailyFollowUpSearchField;
+    }
+
+    public void setDailyFollowUpSearchField(JTextField dailyFollowUpSearchField) {
+        this.dailyFollowUpSearchField = dailyFollowUpSearchField;
+    }
+
+    
+    
     /**
      * added by angela 12/30/16
      * @param newFollowUpList 
@@ -392,7 +404,7 @@ public class newFollowUp extends javax.swing.JFrame {
             model.setValueAt(m.getSuppName(),i,2);
             model.setValueAt(m.getFaxedDate(),i,3);
             model.setValueAt(m.getDeliveryStat(),i,4);
-            model.setValueAt(m.getResponseStatus(),i,5);
+            model.setValueAt(m.getFollowUpFlag(),i,5);
             
         
         }
@@ -408,7 +420,6 @@ public class newFollowUp extends javax.swing.JFrame {
     private javax.swing.JTable dailyFollowUpTable;
     private javax.swing.JLabel dosLabel;
     private javax.swing.JButton goBtn;
-    private javax.swing.JButton homeBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

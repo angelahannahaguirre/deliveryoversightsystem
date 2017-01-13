@@ -8,6 +8,7 @@ package deliveryoversightsystem.warehouseMgr;
 
 import java.util.ArrayList;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import model.newItemsModel;
 
@@ -199,10 +200,18 @@ public class newOrderList extends javax.swing.JFrame {
 
     private void refreshBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnjButton1ActionPerformed
         // TODO add your handling code here:
+        updateNewOrderListTable(newItemsModel.getAllNewItemList());
+        
+        System.gc();
     }//GEN-LAST:event_refreshBtnjButton1ActionPerformed
 
     private void goBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBtnActionPerformed
         // TODO add your handling code here:
+        String searchVal = getWeeklyOrderListSearchField().getText().trim();
+        
+        updateNewOrderListTable(newItemsModel.getAllNewOrderList(searchVal));  
+           
+        System.gc();
     }//GEN-LAST:event_goBtnActionPerformed
 
     /**
@@ -261,6 +270,16 @@ public class newOrderList extends javax.swing.JFrame {
     public void setWeeklyOrderListTable(JTable weeklyOrderListTable) {
         this.weeklyOrderListTable = weeklyOrderListTable;
     }
+
+    public JTextField getWeeklyOrderListSearchField() {
+        return weeklyOrderListSearchField;
+    }
+
+    public void setWeeklyOrderListSearchField(JTextField weeklyOrderListSearchField) {
+        this.weeklyOrderListSearchField = weeklyOrderListSearchField;
+    }
+    
+    
 
     
      /**

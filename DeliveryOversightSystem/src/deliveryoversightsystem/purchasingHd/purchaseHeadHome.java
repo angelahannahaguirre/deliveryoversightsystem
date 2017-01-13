@@ -14,12 +14,15 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import model.addItemModel;
 import model.newItemsModel;
+import model.newListClass;
 import model.responseListModel;
 import model.updatesModel;
 import view.OptionPane;
@@ -73,7 +76,7 @@ public class purchaseHeadHome extends javax.swing.JFrame {
         refreshBtn = new javax.swing.JButton();
         purchaseHeadHomeCB = new javax.swing.JComboBox();
         purchaseHeadHomeSearchField = new javax.swing.JTextField();
-        goBtn = new javax.swing.JButton();
+        searchBtnPH = new javax.swing.JButton();
         logoutBtn = new javax.swing.JButton();
         viewResponsesBtn = new javax.swing.JButton();
         followUpBtn = new javax.swing.JButton();
@@ -94,64 +97,64 @@ public class purchaseHeadHome extends javax.swing.JFrame {
 
         purchaseHeadHomeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Purchaser", "Purchase Order No.", "Supplier Name", "Date Faxed", "Delivery Status", "Follow-Up?"
+                "Purchase Order No.", "Purchaser", "Supplier Name", "Date Faxed", "Delivery Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -184,14 +187,14 @@ public class purchaseHeadHome extends javax.swing.JFrame {
             }
         });
 
-        purchaseHeadHomeCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        purchaseHeadHomeCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Purchase Order No.", "Delivery Status" }));
 
-        goBtn.setBackground(new java.awt.Color(255, 255, 255));
-        goBtn.setForeground(new java.awt.Color(0, 153, 255));
-        goBtn.setText("GO");
-        goBtn.addActionListener(new java.awt.event.ActionListener() {
+        searchBtnPH.setBackground(new java.awt.Color(255, 255, 255));
+        searchBtnPH.setForeground(new java.awt.Color(0, 153, 255));
+        searchBtnPH.setText("GO");
+        searchBtnPH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                goBtnjButton1ActionPerformed(evt);
+                searchBtnPHjButton1ActionPerformed(evt);
             }
         });
 
@@ -232,13 +235,13 @@ public class purchaseHeadHome extends javax.swing.JFrame {
                         .addGap(25, 25, 25)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jSeparator3)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(purchaseHeadHomeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(purchaseHeadHomeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(purchaseHeadHomeSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(goBtn)
+                                .addComponent(searchBtnPH)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(viewResponsesBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -250,9 +253,9 @@ public class purchaseHeadHome extends javax.swing.JFrame {
                             .addComponent(dosLabel)
                             .addComponent(homePHLabel)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(310, 310, 310)
+                        .addGap(304, 304, 304)
                         .addComponent(followUpBtn)))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -263,34 +266,36 @@ public class purchaseHeadHome extends javax.swing.JFrame {
                 .addComponent(homePHLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(purchaseHeadHomeCB, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(logoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(viewUpdatesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(purchaseHeadHomeSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(viewResponsesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(followUpBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(23, 23, 23))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(refreshBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(viewUpdatesBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(viewResponsesBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(purchaseHeadHomeCB, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(searchBtnPH, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(purchaseHeadHomeSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(logoutBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(followUpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 759, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1))
         );
 
         pack();
@@ -299,11 +304,27 @@ public class purchaseHeadHome extends javax.swing.JFrame {
     private void refreshBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnjButton1ActionPerformed
         // TODO add your handling code here:
         updateViewPHTable(newItemsModel.getAllNewItems()); //added by angela 12/30/16
+        
+        System.gc();
     }//GEN-LAST:event_refreshBtnjButton1ActionPerformed
 
-    private void goBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBtnjButton1ActionPerformed
+    private void searchBtnPHjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnPHjButton1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_goBtnjButton1ActionPerformed
+        String retVal = "";
+        //String condition = getPurchaseHeadHomeSearchField().getSelectedItem().toString(); //currently here
+        String condition = getPurchaseHeadHomeCB().getSelectedItem().toString(); //currently here
+        
+        if(condition.equalsIgnoreCase("Purchase Order No.")){
+            retVal = "purchaseOrderNo";
+        }else if(condition.equalsIgnoreCase("Delivery Status")){
+            retVal = "deliveryStatus";
+        }  
+        
+        String searchVal = getPurchaseHeadHomeSearchField().getText().trim();
+        
+        updateViewPHTable(newItemsModel.getNewItemsWithSearch(retVal,searchVal));  
+            System.gc();
+    }//GEN-LAST:event_searchBtnPHjButton1ActionPerformed
 
     private purchaseHeadHome PH;
     //private loginModule LM;
@@ -348,10 +369,19 @@ public class purchaseHeadHome extends javax.swing.JFrame {
         // Sets the followUpFlag to 1; meaning it needs follow-up
         // Created by Angela
         
-        String followUpState = "";
+        String fDate = "";
+        ResultSet rs =  AccessLayer.getInstance().getFollowUpDate(purchaseNoID);
+        
+        try{
+            
+            rs.next();
+            
+            fDate = rs.getString(1);
+            
+        }catch (SQLException ex) {}
+        
         String currDate = "";
         
-        ResultSet rs = AccessLayer.getInstance().getFlag(purchaseNoID);
         
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -362,23 +392,28 @@ public class purchaseHeadHome extends javax.swing.JFrame {
         }catch(Exception e){
             OptionPane.error("Error! Invalid.");
         }
+    
+//      REMOVE COMMENTS LATER        
+//        try{
+//            rs.next();
+//            followUpState = rs.getString(1);
+//        }catch (SQLException ex) {}
         
-        try{
-            rs.next();
-            followUpState = rs.getString(1);
-        }catch (SQLException ex) {}
+//        if(followUpState.equalsIgnoreCase("DONE")){ //follow-up has been done already
+//            JOptionPane.showMessageDialog(null,"Follow-up for this item has already been done. One follow-up only.");
+//            
+//        }else if(followUpState.equalsIgnoreCase(" ")){ //follow-up has not yet been done
         
-        if(followUpState.equalsIgnoreCase("DONE")){ //follow-up has been done already
-            JOptionPane.showMessageDialog(null,"Follow-up for this item has already been done. One follow-up per day only.");
+        if(fDate.equalsIgnoreCase(currDate)){
+             JOptionPane.showMessageDialog(null,"Follow-up for this item has already been done. One follow-up per day only.");
             
-        }else if(followUpState.equalsIgnoreCase(" ")){ //follow-up has not yet been done
+        }else{
             int choice = OptionPane.confirmationDialog("Are you sure you want to follow-up this delivery?");
             
             if(choice == JOptionPane.YES_OPTION){
                 AccessLayer.getInstance().followUpItem(purchaseNoID, currDate);
                 updateViewPHTable(newItemsModel.getAllNewItems()); //to refresh table after adding a follow-up
             }
-            
         }
         
     }//GEN-LAST:event_followUpBtnActionPerformed
@@ -458,6 +493,25 @@ public class purchaseHeadHome extends javax.swing.JFrame {
     public void setPurchaseHeadHomeTable(JTable purchaseHeadHomeTable) {
         this.purchaseHeadHomeTable = purchaseHeadHomeTable;
     }
+
+    public JTextField getPurchaseHeadHomeSearchField() {
+        return purchaseHeadHomeSearchField;
+    }
+
+    public void setPurchaseHeadHomeSearchField(JTextField purchaseHeadHomeSearchField) {
+        this.purchaseHeadHomeSearchField = purchaseHeadHomeSearchField;
+    }
+
+    public JComboBox getPurchaseHeadHomeCB() {
+        return purchaseHeadHomeCB;
+    }
+
+    public void setPurchaseHeadHomeCB(JComboBox purchaseHeadHomeCB) {
+        this.purchaseHeadHomeCB = purchaseHeadHomeCB;
+    }
+    
+    
+    
     
      /**
      * added by angela 12/30/16
@@ -486,7 +540,6 @@ public class purchaseHeadHome extends javax.swing.JFrame {
             model.setValueAt(m.getSuppName(),i,2);
             model.setValueAt(m.getFaxedDate(),i,3);
             model.setValueAt(m.getDeliveryStat(),i,4);
-            model.setValueAt(m.getFollowUpFlag(),i,5);
             
         }
         System.gc();
@@ -495,7 +548,6 @@ public class purchaseHeadHome extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dosLabel;
     private javax.swing.JButton followUpBtn;
-    private javax.swing.JButton goBtn;
     private javax.swing.JLabel homePHLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -505,6 +557,7 @@ public class purchaseHeadHome extends javax.swing.JFrame {
     private javax.swing.JTextField purchaseHeadHomeSearchField;
     private javax.swing.JTable purchaseHeadHomeTable;
     private javax.swing.JButton refreshBtn;
+    private javax.swing.JButton searchBtnPH;
     private javax.swing.JButton viewResponsesBtn;
     private javax.swing.JButton viewUpdatesBtn;
     // End of variables declaration//GEN-END:variables

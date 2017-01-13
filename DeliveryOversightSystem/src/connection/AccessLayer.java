@@ -325,12 +325,27 @@ public class AccessLayer {
      * @param searchData
      * @return 
      */
+//    public ResultSet getAllUsersWithSearch(String optionValue, String searchData) {
+//        try {
+//            createConnection();
+//            
+//            //currently added 12-6-16 @ 12AM by angela
+//            return Retrieve("select * from user_account where "+optionValue+" = '"+insertBackslash(searchData)+"' ");
+//            //ends here
+//        }catch (SQLException | ClassNotFoundException ex) {
+//            addToERRORLog(ex.getLocalizedMessage());
+//        }
+//        
+//        return null;
+//    }
+    
     public ResultSet getAllUsersWithSearch(String optionValue, String searchData) {
         try {
             createConnection();
             
             //currently added 12-6-16 @ 12AM by angela
-            return Retrieve("select * from user_account where "+optionValue+" = '"+insertBackslash(searchData)+"' ");
+            //revised by luigi to search using substring
+            return Retrieve("select * from user_account where "+optionValue+" like '%"+insertBackslash(searchData)+"%' ");
             //ends here
         }catch (SQLException | ClassNotFoundException ex) {
             addToERRORLog(ex.getLocalizedMessage());
@@ -346,22 +361,24 @@ public class AccessLayer {
     
     /**
      * add a new log detail to the database with the corresponding date, time and the log info
-     * @param date
-     * @param time
-     * @param log 
+     * @param logDate
+     * @param logTime
+     * @param empID
+     * @param logActivity
      */
-    public void addLog(String date, String time, String log) {
-        makeUpdate("insert into log_details(`log`, `date`, `time`) values ('"+insertBackslash(log)+"','"+insertBackslash(date)+"','"+insertBackslash(time)+"');");
+    public void addLog(String logDate, String logTime, String empID, String logActivity) {
+        makeUpdate("insert into log_details(`employeeID`, `logActivity`, `logDate`, `logTime`) values ('"+insertBackslash(empID)+"',"
+                + "'"+insertBackslash(logActivity)+"','"+insertBackslash(logDate)+"','"+insertBackslash(logTime)+"');");
     }
     
     /**
      * get the resultset of all the logs inside the database
      * @return the resultset of all the logs inside the database
      */
-    public ResultSet getAllLogs() {
+    public ResultSet getAllLogs() { //updated by angela 1/3/17
         try {
             createConnection();
-            return Retrieve("select * from log_details");
+            return Retrieve("select l.*, u.* from log_details l left join user_account u on l.employeeID = u.employeeID");
         } catch (SQLException | ClassNotFoundException ex) {
             addToERRORLog(ex.getLocalizedMessage());
         }
@@ -397,9 +414,9 @@ public class AccessLayer {
     public boolean addBackup(String date, String time, String path) {
         time = time.replace("-", ":");
         boolean success = makeUpdate("insert into backup_details values('"+insertBackslash(date)+"','"+insertBackslash(time)+"','"+insertBackslash(path)+"');");
-        if(success)
-            model.LogDetails.addToDatabase("A backup was saved in "+getComputerName()+"-"+path);
+        
         return success;
+            
     }
     
     /**
@@ -467,17 +484,19 @@ public class AccessLayer {
 
     public boolean addNewItem(String purchaseNo, String purchaserName, String suppName, String faxedDate, 
             String deliveryStat, String followUpFlag, String dateFollowedUp) {
-        
+            
+            String employeeID = loginModule.currentUser;
             
             boolean success = makeUpdate("insert into delivery values ('"+insertBackslash(purchaseNo)+"','"+insertBackslash(purchaserName)+"',"
                     + "'"+insertBackslash(suppName)+"','"+insertBackslash(faxedDate)+"','"+insertBackslash(deliveryStat)+"',"
                     + "'"+insertBackslash(followUpFlag)+"','"+insertBackslash(dateFollowedUp)+"');");
        
                 if(success)
-                    //LogDetails.addToDatabase(loginModule.userType+" "+loginModule.currentUser+" added New User Account Details with Employee ID : "+empID+".");
-                    JOptionPane.showMessageDialog(null,"Successfully Added Item#"+purchaseNo+" To Delivery List!");
-                        return success;
-    
+                    
+                    model.LogDetails.addToDatabase(employeeID,"Added New Item To Delivery List with Purchase Order No. : "+purchaseNo+".");
+                        JOptionPane.showMessageDialog(null,"Successfully Added Item#"+purchaseNo+" To Delivery List!");
+                            return success;
+
     }
     
     /**
@@ -492,6 +511,7 @@ public class AccessLayer {
             
             //currently added 12-6-16 @ 12AM by angela
             return Retrieve("select * from delivery where "+optionValue+" = '"+insertBackslash(searchData)+"' ");
+            //return Retrieve("select * from delivery where "+optionValue+" like '%"+insertBackslash(searchData)+"%' ");
             //ends here
         }catch (SQLException | ClassNotFoundException ex) {
             addToERRORLog(ex.getLocalizedMessage());
@@ -500,6 +520,7 @@ public class AccessLayer {
         return null;
     }
     
+  
     
     /**
      * get the resultset of all the delivery found in the database
@@ -533,7 +554,7 @@ public class AccessLayer {
     public boolean addNewInvoice(String invoiceNo, String purchaseNo, String invoiceDate, String dateDelivered, String manualDate, 
             String electronicDate, String referenceRRNo, String dateForwarded) {
         
-      
+            String employeeID = loginModule.currentUser;
        
             boolean success = makeUpdate("insert into invoice values ('"+insertBackslash(invoiceNo)+"','"+insertBackslash(purchaseNo)+"',"
                         + "'"+insertBackslash(invoiceDate)+"','"+insertBackslash(dateDelivered)+"','"+insertBackslash(manualDate)+"',"
@@ -541,8 +562,9 @@ public class AccessLayer {
        
                     if(success)
                         //LogDetails.addToDatabase(loginModule.userType+" "+loginModule.currentUser+" added New User Account Details with Employee ID : "+empID+".");
-                        JOptionPane.showMessageDialog(null,"Successfully Added Item/s with Invoice#"+invoiceNo+" To Delivery List!");
-                            return success;
+                        model.LogDetails.addToDatabase(employeeID,"Accepted the Delivery of Purchase Order No."+purchaseNo+" with Invoice No."+invoiceNo+".");
+                            JOptionPane.showMessageDialog(null,"Successfully Added Item/s with Invoice#"+invoiceNo+" To Delivery List!");
+                                return success;
     
     }
     
@@ -670,11 +692,15 @@ public class AccessLayer {
      */
     
     public boolean updateUserAccountInDB(String employeeID, String firstName, String lastName, String emPword) {
+        
+        String empID = loginModule.currentUser;
+        
         boolean success = makeUpdate("update user_account set firstName = '"+insertBackslash(firstName)+"', lastName = '"+insertBackslash(lastName)+"', employeePword = '"+insertBackslash(emPword)+"'"
                 + " where employeeID = '"+insertBackslash(employeeID)+"';");
                 
         if(success)
-            model.LogDetails.addToDatabase("Employee ID#"+employeeID+"'s information has been updated");
+            //model.LogDetails.addToDatabase("Employee ID#"+employeeID+"'s information has been updated");
+            model.LogDetails.addToDatabase(empID,"Updated the User Account Details of "+employeeID+".");
         return success;
         
     }
@@ -690,6 +716,8 @@ public class AccessLayer {
      */
     
     public boolean updateAccountStatusInDB(String empID) {
+        
+        String employeeID = loginModule.currentUser;
         
         String status = "";
         ResultSet rs = AccessLayer.getInstance().getCurrentUserStatus(empID);
@@ -710,7 +738,8 @@ public class AccessLayer {
         boolean success = makeUpdate("update user_account set userStatus = '"+insertBackslash(status)+"' where employeeID = '"+insertBackslash(empID)+"';");
                 
         if(success)
-            model.LogDetails.addToDatabase("Employee ID#"+empID+"' has been deactivated"); 
+            //model.LogDetails.addToDatabase("Employee ID#"+empID+"' has been deactivated"); 
+            model.LogDetails.addToDatabase(employeeID,"Updated the User Account Status of "+empID+" to "+status+".");
         return success;
         
     }
@@ -765,12 +794,15 @@ public class AccessLayer {
     
     public boolean changeStatusToDelivered(String purchaseNo) {
         
+        String employeeID = loginModule.currentUser;
+        
         String newStatus = "delivered";
         
         boolean success = makeUpdate("update delivery set deliveryStatus = '"+insertBackslash(newStatus)+"' where purchaseOrderNo = '"+insertBackslash(purchaseNo)+"';");
                 
         if(success)
-            model.LogDetails.addToDatabase("Delivery status of #"+purchaseNo+"' has been updated"); 
+            //model.LogDetails.addToDatabase("Delivery status of #"+purchaseNo+"' has been updated"); 
+            model.LogDetails.addToDatabase(employeeID,"Updated the Delivery Status of "+purchaseNo+" to "+newStatus+".");
         return success;
         
     }
@@ -800,11 +832,15 @@ public class AccessLayer {
      */
     
     public boolean updateDeliveryStatusToWaiting(String purchaseNo, String delStatus) {
+        
+        String employeeID = loginModule.currentUser;
+        
         boolean success = makeUpdate("update delivery set deliveryStatus = '"+insertBackslash(delStatus)+"' "
                 + "where purchaseOrderNo = '"+insertBackslash(purchaseNo)+"';");
                 
         if(success)
-            model.LogDetails.addToDatabase("Delivery item#"+purchaseNo+"'s status has been updated");
+            //model.LogDetails.addToDatabase("Delivery item#"+purchaseNo+"'s status has been updated");
+            model.LogDetails.addToDatabase(employeeID,"Updated the Delivery Status of "+purchaseNo+" to "+delStatus+".");
         return success;
         
     }
@@ -822,12 +858,13 @@ public class AccessLayer {
     
     public ResultSet getAllItemsToFollowUpInDB() { //displays the "new and waiting" delivery
         
-        String delStatusOne = "new";
+        String delStatusOne = "New";
         String delStatusTwo = "waiting";
         
         try {
             createConnection();
-            return Retrieve("select * from delivery where deliveryStatus ='"+insertBackslash(delStatusOne)+"' OR deliveryStatus ='"+insertBackslash(delStatusTwo)+"' ");
+            return Retrieve("select * from delivery where deliveryStatus = '"+insertBackslash(delStatusOne)+"' OR deliveryStatus = '"+insertBackslash(delStatusTwo)+"' ");
+            
         } catch (SQLException | ClassNotFoundException ex) {
             addToERRORLog(ex.getLocalizedMessage());
         }
@@ -844,14 +881,15 @@ public class AccessLayer {
     
     public boolean followUpItem(String purchaseNoID, String currDate) {
         
-        String flagOne = "DONE";
+        String employeeID = loginModule.currentUser;
+        String flagOne = "Waiting for Response";
         
-        boolean success = makeUpdate("update delivery set followUpFlag = '"+insertBackslash(flagOne)+"', "
-                + "dateFollowedUp = '"+insertBackslash(currDate)+"' where purchaseOrderNo = '"+insertBackslash(purchaseNoID)+"' ;");
-        //boolean success = makeUpdate("update delivery set followUpFlag = '"+insertBackslash(flagOne)+"' ;");
+        boolean success = makeUpdate("insert into follow_up values ('"+insertBackslash(purchaseNoID)+"',"
+                        + "'"+insertBackslash(flagOne)+"','"+insertBackslash(currDate)+"');");
                   
         if(success)
-            model.LogDetails.addToDatabase("Delivery item#"+purchaseNoID+"'s has been followed-up.");
+            //model.LogDetails.addToDatabase("Delivery item#"+purchaseNoID+"'s has been followed-up.");
+            model.LogDetails.addToDatabase(employeeID,"Delivery of Purchase Order No."+purchaseNoID+" was followed-up on "+currDate+".");
         return success;
         
     }
@@ -886,11 +924,11 @@ public class AccessLayer {
     
     public ResultSet getAllNewItemOrderListInDB() { //displays the only the NEW delivery
         
-        String delStatusOne = "new";
+        String delStatusOne = "New";
         
         try {
             createConnection();
-            return Retrieve("select * from delivery where deliveryStatus ='"+insertBackslash(delStatusOne)+"' ");
+            return Retrieve("select * from delivery where deliveryStatus = '"+insertBackslash(delStatusOne)+"' ");
         } catch (SQLException | ClassNotFoundException ex) {
             addToERRORLog(ex.getLocalizedMessage());
         }
@@ -937,14 +975,38 @@ public class AccessLayer {
 
     public boolean addNewResponse(String purchaseNo, String choiceValue, String shortMsg, String currDate, String responseStatus) {
         
+        String employeeID = loginModule.currentUser;
+        
         boolean success = makeUpdate("insert into response values ('"+insertBackslash(purchaseNo)+"',"
                     + "'"+insertBackslash(choiceValue)+"','"+insertBackslash(shortMsg)+"','"+insertBackslash(currDate)+"',"
                     + "'"+insertBackslash(responseStatus)+"');");
        
             if(success)
-                JOptionPane.showMessageDialog(null,"Successfully sent the follow-up response for delivery#"+purchaseNo);
-                    return success;
+                model.LogDetails.addToDatabase(employeeID,"A response for the follow-up of delivery: "+purchaseNo+" was sent on "+currDate+".");
+                    //JOptionPane.showMessageDialog(null,"Successfully sent the follow-up response for delivery#"+purchaseNo);
+                        return success;
     
+    }
+    
+    /**
+     * update's the response status to 'Response Viewed'
+     * @param purchaseNo
+     * @return true if the operation was successful otherwise false
+     */
+    
+    public boolean updateResponseStatusToViewed(String purchaseNo) {
+        
+        //String employeeID = loginModule.currentUser;
+        String responseStats = "Response Viewed";
+        
+        boolean success = makeUpdate("update response set responseStatus = '"+insertBackslash(responseStats)+"' "
+                + "where purchaseOrderNo = '"+insertBackslash(purchaseNo)+"';");
+                
+        //if(success)
+            //model.LogDetails.addToDatabase("Delivery Item#"+purchaseNo+"'s Response Status has been updated.");
+            //model.LogDetails.addToDatabase(employeeID,"A response for the follow-up of delivery: "+purchaseNo+" was sent on "+currDate+".");
+        return success;
+        
     }
     
     /**
@@ -953,17 +1015,21 @@ public class AccessLayer {
      * @return true if the operation was successful otherwise false
      */
     
-    public boolean updateResponseStatus(String purchaseNo) {
-        String responseStats = "DONE";
+    public boolean updateFollowUpFlag(String purchaseNo) {
         
-        boolean success = makeUpdate("update response set responseStatus = '"+insertBackslash(responseStats)+"' "
+        //String employeeID = loginModule.currentUser;
+        String followUpFlag = "Responded";
+        
+        boolean success = makeUpdate("update follow_up set followUpFlag = '"+insertBackslash(followUpFlag)+"' "
                 + "where purchaseOrderNo = '"+insertBackslash(purchaseNo)+"';");
                 
-        if(success)
-            model.LogDetails.addToDatabase("Delivery Item#"+purchaseNo+"'s Response Status has been updated.");
+        //if(success)
+            //model.LogDetails.addToDatabase("Delivery Item#"+purchaseNo+"'s Response Status has been updated.");
+            //model.LogDetails.addToDatabase(employeeID,"A response for the follow-up of delivery: "+purchaseNo+" was sent on "+currDate+".");
         return success;
         
     }
+    
     
     /*********************************************************
      * displays the delivery and response w/ respect to search
@@ -975,17 +1041,27 @@ public class AccessLayer {
     
     public ResultSet getFollowUpAndResponseListInDB() { 
         
-        String flagState = "DONE";
+//        String delStats1 = "New";
+//        String delStats2 = "waiting";
+        String flagOne = "Waiting for Response";
+        String flagTwo = "Responded";
         
         try {
             createConnection();
             //fix to match the PurchaseOrderNo and InvoiceNo search functionality
-            return Retrieve("select d.*, r.* from response r right join delivery d on d.purchaseOrderNo = r.purchaseOrderNo where d.followUpFlag ='"+insertBackslash(flagState)+"' ");
+            //return Retrieve("select d.*, r.*, f.* from follow_up f right join response r right join delivery d on d.purchaseOrderNo = r.purchaseOrderNo = f.purchaseOrderNo where f.followUpFlag ='"+insertBackslash(flagState)+"' "); 
+            //return Retrieve("select d.*, r.*, f.* from delivery d inner join follow_up f on d.purchaseOrderNo = f.purchaseOrderNo inner join response r on f.purchaseOrderNo = r.purchaseOrderNo where f.followUpFlag ='"+insertBackslash(flagState)+"' ");
+            return Retrieve("select d.*, f.* from follow_up f right join delivery d on d.purchaseOrderNo = f.purchaseOrderNo "
+                    + "where f.followUpFlag = '"+insertBackslash(flagOne)+"' OR f.followUpFlag = '"+insertBackslash(flagTwo)+"' ");
+         
         } catch (SQLException | ClassNotFoundException ex) {
             addToERRORLog(ex.getLocalizedMessage());
         }
         return null;
+        
     }
+        
+       
     
     
     
@@ -1000,12 +1076,14 @@ public class AccessLayer {
     
     public ResultSet getAllResponsesInDB() { 
         
-        String responseState = "DONE";
+        String responseState1 = "DONE";
+        String responseState2 = "Response Viewed";
         
         try {
             createConnection();
             
-            return Retrieve("select d.*, r.* from response r right join delivery d on d.purchaseOrderNo = r.purchaseOrderNo where r.responseStatus ='"+insertBackslash(responseState)+"' ");
+            return Retrieve("select d.*, r.* from response r right join delivery d on d.purchaseOrderNo = r.purchaseOrderNo where "
+                    + "r.responseStatus ='"+insertBackslash(responseState1)+"' OR r.responseStatus ='"+insertBackslash(responseState2)+"' ");
         } catch (SQLException | ClassNotFoundException ex) {
             addToERRORLog(ex.getLocalizedMessage());
         }
@@ -1067,9 +1145,13 @@ public class AccessLayer {
      */
     
     public boolean closeResponse(String purchaseNo) {
+        
+          String employeeID = loginModule.currentUser;
+          
 //        ResultSet rs = AccessLayer.getInstance().getResponseStatus(purchaseNo);
 //        String resStatus = "";
-          String responseStats = "Response Viewed";
+          //String responseStats = "Response Viewed";
+          String responseStats = "CLOSED";
 //        
 //        try{
 //            rs.next();
@@ -1091,10 +1173,216 @@ public class AccessLayer {
                 + "where purchaseOrderNo = '"+insertBackslash(purchaseNo)+"';");
                 
         if(success)
-            model.LogDetails.addToDatabase("Delivery Item#"+purchaseNo+"'s Response Status has been updated.");
+            //model.LogDetails.addToDatabase("Delivery Item#"+purchaseNo+"'s Response Status has been updated.");
+            model.LogDetails.addToDatabase(employeeID,"Closed the follow-up response of delivery: "+purchaseNo+".");
         return success;
         
     }
     
+    /**
+     * update's the response status to OK
+     * @param purchaseNo
+     * @return true if the operation was successful otherwise false
+     */
+    
+    public boolean closeFollowUp(String purchaseNo) {
+        
+          String employeeID = loginModule.currentUser;
+          
+//        ResultSet rs = AccessLayer.getInstance().getResponseStatus(purchaseNo);
+//        String resStatus = "";
+          //String responseStats = "Response Viewed";
+          String followUpStatus = "CLOSED";
+//        
+//        try{
+//            rs.next();
+//            resStatus = rs.getString(1);
+//        }catch (SQLException ex) {}
+//        
+//        
+//        
+//        if(resStatus.equalsIgnoreCase("DONE")){
+//            responseStats  = "Response Viewed";
+//        }
+//        
+//        else if(resStatus.equalsIgnoreCase("Response Viewed")){
+//            responseStats = "Response Viewed";
+//        }
+        
+        
+        boolean success = makeUpdate("update follow_up set followUpFlag = '"+insertBackslash(followUpStatus)+"' "
+                + "where purchaseOrderNo = '"+insertBackslash(purchaseNo)+"';");
+                
+        if(success)
+            //model.LogDetails.addToDatabase("Delivery Item#"+purchaseNo+"'s Response Status has been updated.");
+            model.LogDetails.addToDatabase(employeeID,"Closed the follow-up of delivery: "+purchaseNo+".");
+        return success;
+        
+    }
+    
+   
+    /**
+     * @param optionValue
+     * @param searchData
+     * @return 
+     */
+    
+    public ResultSet getAllNewItemUpdatesWithSearch(String optionValue, String searchData) { 
+        
+        String delStats1 = "delivered";
+        //String delStats2 = "waiting";
+        
+        try {
+            createConnection();
+            //fix to match the PurchaseOrderNo and InvoiceNo search functionality
+            //return Retrieve("select * from delivery where "+optionValue+" like '%"+insertBackslash(searchData)+"%' AND deliveryStatus = '"+insertBackslash(delStats1)+"' OR deliveryStatus = '"+insertBackslash(delStats2)+"' ");
+            return Retrieve("select * from delivery where !(deliveryStatus = '"+insertBackslash(delStats1)+"') AND "+optionValue+" like '%"+insertBackslash(searchData)+"%' ");
+       
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
+    
+    /**********************************
+     * This has an issue; needs fixing
+     **********************************/
+    
+     /**
+     * @param optionValue
+     * @param searchData
+     * @return 
+     */
+    
+    public ResultSet getAllResponseUpdatesWithSearch(String optionValue, String searchData) { //this has an issue
+        
+        //substring functionality was removed because it causes damage for this panel
+        
+        String responseState = "DONE";
+        
+        try {
+            createConnection();
+            
+            //return Retrieve("select d.*, r.* from response r right join delivery d on d.purchaseOrderNo = r.purchaseOrderNo where"
+            //        + " r."+optionValue+" like r.'%"+insertBackslash(searchData)+"%' AND r.responseStatus ='"+insertBackslash(responseState)+"' ");
+            
+            //this has an issue
+            //return Retrieve("select d.*, r.* from response r right join delivery d on d.purchaseOrderNo = r.purchaseOrderNo "
+            //        + "where r.responseStatus ='"+insertBackslash(responseState)+"' AND r."+optionValue+" like r.'%"+insertBackslash(searchData)+"%' ");
+            
+            //return Retrieve("select d.*, r.* from response r right join delivery d where r.responseStatus ='"+insertBackslash(responseState)+"' AND r."+optionValue+" like r.'%"+insertBackslash(searchData)+"%' ");
+            
+            
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
+    
+    /**********************************
+     *              end
+     **********************************/
+    
+    
+    /**
+     * @param searchVal
+     * @return 
+     */
+    
+    public ResultSet getFollowUpAndResponseListInDBWithSearch(String searchVal) { 
+        
+        String flagState = "DONE";
+        
+        try {
+            createConnection();
+            //fix to match the PurchaseOrderNo and InvoiceNo search functionality
+            return Retrieve("select d.*, r.*, f.* from follow_up f right join response r right join delivery d on d.purchaseOrderNo = r.purchaseOrderNo = f.purchaseOrderNo where"
+                    + " d.purchaseOrderNo like '%"+insertBackslash(searchVal)+"%' AND d.followUpFlag ='"+insertBackslash(flagState)+"' ");
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
+    
+    /**
+     * Used for the New Order List with SEARCH
+     * get the resultset of all the delivery found in the database
+     * @return the resultset of all the delivery in the database
+     * @param searchVal
+     */
+    
+    
+    public ResultSet getNewOrderWithSearchInDB(String searchVal) { //displays the only the NEW delivery
+        
+        String delStatusOne = "new";
+        
+        try {
+            createConnection();
+            return Retrieve("select * from delivery where purchaseOrderNo like '%"+insertBackslash(searchVal)+"%' AND "
+                    + "deliveryStatus ='"+insertBackslash(delStatusOne)+"' ");
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
+    
+    /**
+     * get the resultset of all the logs inside the database with SEARCH
+     * @return the resultset of all the logs inside the database
+     * @param optionValue
+     * @param searchData
+     */
+    public ResultSet getAllLogsWithSearchInDB(String optionValue, String searchData) { //updated by angela 1/4/17
+        try {
+            createConnection();
+            return Retrieve("select l.*, u.* from log_details l left join user_account u on l.employeeID = u.employeeID where u."+optionValue+" like '%"+insertBackslash(searchData)+"%'");
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
+    
+    
+    /***
+     * 
+     * @param purchaseNo
+     * @return 
+     */
+    public boolean clearResponses(String purchaseNo) {
+        
+          String newVal = " ";
+          String newMsg = " ";
+          String cDate = "2017-01-01";
+          String newResponseStats = " ";
+
+        
+        boolean success = makeUpdate("update response set choiceValue = '"+insertBackslash(newVal)+"', "
+                + "shortMsg = '"+insertBackslash(newMsg)+"', currDate = '"+insertBackslash(cDate)+"', "
+                + "responseStatus = '"+insertBackslash(newResponseStats)+"' where purchaseOrderNo = '"+insertBackslash(purchaseNo)+"';");
+                
+        //if(success)
+            //model.LogDetails.addToDatabase("Delivery Item#"+purchaseNo+"'s Response Status has been updated.");
+            //model.LogDetails.addToDatabase(employeeID,"Closed the follow-up of delivery: "+purchaseNo+".");
+        return success;
+        
+    }
+    
+    /**
+     * Used for the Follow-up Date checker
+     * @return the resultset of follow-up date
+     * @param purchaseNo
+     */
+    
+    
+    public ResultSet getFollowUpDate(String purchaseNo) { //displays the only the NEW delivery
+        
+        try {
+            createConnection();
+            return Retrieve("select dateFollowedUp from follow_up where purchaseOrderNo ='"+insertBackslash(purchaseNo)+"' ");
+        } catch (SQLException | ClassNotFoundException ex) {
+            addToERRORLog(ex.getLocalizedMessage());
+        }
+        return null;
+    }
     
 }

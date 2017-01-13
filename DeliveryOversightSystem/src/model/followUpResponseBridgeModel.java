@@ -18,8 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class followUpResponseBridgeModel {
     
-     private String purchaseNo, purchaserName, suppName, faxedDate, deliveryStat, followUpFlag, dateFollowedUp, purchaseOrderNo, choiceValue, shortMsg,
-             currDate, responseStatus;
+     private String purchaseNo, purchaserName, suppName, faxedDate, deliveryStat, purchaseNum, followUpFlag, dateFollowedUp;
     
      /**
      * Constructor
@@ -28,32 +27,24 @@ public class followUpResponseBridgeModel {
      * @param suppName
      * @param faxedDate
      * @param deliveryStat
+     * @param purchaseNum
      * @param followUpFlag
      * @param dateFollowedUp
-     * @param purchaseOrderNo
-     * @param choiceValue
-     * @param shortMsg
-     * @param currDate
-     * @param responseStatus
      */
      
      public followUpResponseBridgeModel(String purchaseNo, String purchaserName, String suppName, String faxedDate, 
-            String deliveryStat, String followUpFlag, String dateFollowedUp, String purchaseOrderNo, String choiceValue, String shortMsg,
-            String currDate, String responseStatus) {
+            String deliveryStat, String purchaseNum, String followUpFlag, String dateFollowedUp) {
         
         this.purchaseNo = purchaseNo;
         this.purchaserName = purchaserName;
         this.suppName = suppName;
         this.faxedDate = faxedDate;
         this.deliveryStat = deliveryStat;
+        
+        this.purchaseNum = purchaseNum;
         this.followUpFlag = followUpFlag;
         this.dateFollowedUp = dateFollowedUp;
         
-        this.purchaseOrderNo = purchaseOrderNo;
-        this.choiceValue = choiceValue;
-        this.shortMsg = shortMsg;
-        this.currDate = currDate;
-        this.responseStatus = responseStatus;
     }
      
     /**
@@ -116,46 +107,15 @@ public class followUpResponseBridgeModel {
         this.dateFollowedUp = dateFollowedUp;
     }
 
-    public String getPurchaseOrderNo() {
-        return purchaseOrderNo;
+    public String getPurchaseNum() {
+        return purchaseNum;
     }
 
-    public void setPurchaseOrderNo(String purchaseOrderNo) {
-        this.purchaseOrderNo = purchaseOrderNo;
+    public void setPurchaseNum(String purchaseNum) {
+        this.purchaseNum = purchaseNum;
     }
 
-    public String getChoiceValue() {
-        return choiceValue;
-    }
-
-    public void setChoiceValue(String choiceValue) {
-        this.choiceValue = choiceValue;
-    }
-
-    public String getShortMsg() {
-        return shortMsg;
-    }
-
-    public void setShortMsg(String shortMsg) {
-        this.shortMsg = shortMsg;
-    }
-
-    public String getCurrDate() {
-        return currDate;
-    }
-
-    public void setCurrDate(String currDate) {
-        this.currDate = currDate;
-    }
-
-    public String getResponseStatus() {
-        return responseStatus;
-    }
-
-    public void setResponseStatus(String responseStatus) {
-        this.responseStatus = responseStatus;
-    }
-
+    
      
      /**
      * get all the details inside the delivery table JOIN response table from the database
@@ -170,13 +130,32 @@ public class followUpResponseBridgeModel {
             while(rs.next())
                 answerList.add(new followUpResponseBridgeModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
                         rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus"),
-                        rs.getString("followUpFlag"), rs.getString("dateFollowedUp"), rs.getString("purchaseOrderNo"), 
-                        rs.getString("choiceValue"), rs.getString("shortMsg"),rs.getString("currDate"), 
-                        rs.getString("responseStatus")));
+                        rs.getString("purchaseOrderNo"), rs.getString("followUpFlag"), rs.getString("dateFollowedUp")));
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null,"SQLException inside getAllNewItems in newItemsModel...");
+            JOptionPane.showMessageDialog(null,"SQLException inside getAllNewItems in getFollowUpAndResponseList...");
         }
         return answerList;
+    }
+    
+    /**
+     * get the details inside the delivery table JOIN response table from the database using SEARCH
+     * this function is called for the Answer Follow-Up List table
+     * @param searchVal
+     * @return an arraylist of delivery and response details
+     */
+    public static ArrayList<followUpResponseBridgeModel> getFollowUpAndResponseListWithSearch(String searchVal){      
+        ArrayList<followUpResponseBridgeModel> aList = new ArrayList<>();    
+        ResultSet rs = AccessLayer.getInstance().getFollowUpAndResponseListInDBWithSearch(searchVal);
+        //JOptionPane.showMessageDialog(null, "Inside newItemsModel getAnswerFollowUpList...");
+        try {
+            while(rs.next())
+                aList.add(new followUpResponseBridgeModel(rs.getString("purchaseOrderNo"), rs.getString("purchaser"), 
+                        rs.getString("supplierName"), rs.getString("dateFaxed"), rs.getString("deliveryStatus"),
+                        rs.getString("purchaseOrderNo"), rs.getString("followUpFlag"), rs.getString("dateFollowedUp")));
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"SQLException inside getAllNewItems in getFollowUpAndResponseListWithSearch...");
+        }
+        return aList;
     }
      
     

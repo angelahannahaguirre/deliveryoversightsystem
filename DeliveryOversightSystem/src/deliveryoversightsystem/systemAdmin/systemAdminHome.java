@@ -29,8 +29,9 @@ public class systemAdminHome extends javax.swing.JFrame {
     public systemAdminHome() {
         initComponents();
         instance = this;
-        initComponents();
         setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
     }
     
     public static systemAdminHome getInstance(){
@@ -65,6 +66,8 @@ public class systemAdminHome extends javax.swing.JFrame {
         viewUsersBtn = new javax.swing.JButton();
         createUserBtn = new javax.swing.JButton();
         viewLogDetailsBtn = new javax.swing.JButton();
+		
+		setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
         jPanel1.setPreferredSize(new java.awt.Dimension(764, 450));
@@ -327,8 +330,16 @@ public class systemAdminHome extends javax.swing.JFrame {
         createAcct.setVisible(true);
     }//GEN-LAST:event_createUserBtnActionPerformed
 
+    public LogDetails LD;
     private void viewLogDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLogDetailsBtnActionPerformed
         // TODO add your handling code here:
+        LD = new LogDetails();
+        LD.setVisible(true);
+        systemAdminHome.instance.setEnabled(false);
+        
+        LD.updateViewLogDetailsTable(model.LogDetails.getAllLogs());
+        
+        System.gc();
     }//GEN-LAST:event_viewLogDetailsBtnActionPerformed
 
     private void logoutSysAdBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutSysAdBtnActionPerformed

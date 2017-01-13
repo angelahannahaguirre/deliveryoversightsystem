@@ -8,7 +8,9 @@ package deliveryoversightsystem.purchasingHd;
 
 import connection.AccessLayer;
 import java.util.ArrayList;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import model.responseListModel;
 
@@ -33,6 +35,7 @@ public class AnsweredFollowUpList extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
+        goBtn.setEnabled(false);
     }
     
     public static AnsweredFollowUpList getInstance(){
@@ -131,11 +134,16 @@ public class AnsweredFollowUpList extends javax.swing.JFrame {
         answeredFollowUpListLabel.setForeground(new java.awt.Color(255, 255, 255));
         answeredFollowUpListLabel.setText("Answered Follow-Up List");
 
-        answeredFollowUpListCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Purchase Order No.", "Item 2", "Item 3", "Item 4" }));
+        answeredFollowUpListCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Purchase Order No.", "Delivery Status" }));
 
         goBtn.setBackground(new java.awt.Color(255, 255, 255));
         goBtn.setForeground(new java.awt.Color(0, 153, 255));
         goBtn.setText("GO");
+        goBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goBtnActionPerformed(evt);
+            }
+        });
 
         refreshBtn.setBackground(new java.awt.Color(255, 255, 255));
         refreshBtn.setForeground(new java.awt.Color(0, 153, 255));
@@ -240,6 +248,8 @@ public class AnsweredFollowUpList extends javax.swing.JFrame {
     
     private void viewAnswerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAnswerBtnActionPerformed
         // TODO add your handling code here:
+        
+        AccessLayer.getInstance().updateResponseStatusToViewed(purchaseNoID);
         viewAnswer = new AnsweredFollowUp(purchaseNoID);
         viewAnswer.setVisible(true);
         //AnsweredFollowUpList.instance.setEnabled(false);
@@ -266,9 +276,29 @@ public class AnsweredFollowUpList extends javax.swing.JFrame {
     private void viewAnswerBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAnswerBtn1ActionPerformed
         // TODO add your handling code here:
          AccessLayer.getInstance().closeResponse(purchaseNoID);
+         AccessLayer.getInstance().closeFollowUp(purchaseNoID);
          updateViewResponsesTable(responseListModel.getAllResponses());
          
     }//GEN-LAST:event_viewAnswerBtn1ActionPerformed
+
+    private void goBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBtnActionPerformed
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        String retVal = "";
+        //String condition = getPurchaseHeadHomeSearchField().getSelectedItem().toString(); //currently here
+        String condition = getAnsweredFollowUpListCB().getSelectedItem().toString(); //currently here
+        
+        if(condition.equalsIgnoreCase("Purchase Order No.")){
+            retVal = "purchaseOrderNo";
+        }else if(condition.equalsIgnoreCase("Delivery Status")){
+            retVal = "deliveryStatus";
+        }  
+        
+        String searchVal = getAnsweredFollowUpListSearchField().getText().trim();
+        
+        updateViewResponsesTable(responseListModel.getResponseWithSearch(retVal,searchVal));  
+            System.gc();
+    }//GEN-LAST:event_goBtnActionPerformed
 
     /**
      * get the data from the table at row i
@@ -330,6 +360,23 @@ public class AnsweredFollowUpList extends javax.swing.JFrame {
         this.answeredFollowUpListTable = answeredFollowUpListTable;
     }
 
+    public JComboBox getAnsweredFollowUpListCB() {
+        return answeredFollowUpListCB;
+    }
+
+    public void setAnsweredFollowUpListCB(JComboBox answeredFollowUpListCB) {
+        this.answeredFollowUpListCB = answeredFollowUpListCB;
+    }
+
+    public JTextField getAnsweredFollowUpListSearchField() {
+        return answeredFollowUpListSearchField;
+    }
+
+    public void setAnsweredFollowUpListSearchField(JTextField answeredFollowUpListSearchField) {
+        this.answeredFollowUpListSearchField = answeredFollowUpListSearchField;
+    }
+
+    
     
     
     /**
@@ -365,7 +412,7 @@ public class AnsweredFollowUpList extends javax.swing.JFrame {
             if(response.equals("DONE")){
                 response = "View?";
             }else if(response.equals("Response Viewed")){
-                response = "Response has been reviewed.";
+                response = "Response Viewed";
             }
             
             model.setValueAt(response,i,5);

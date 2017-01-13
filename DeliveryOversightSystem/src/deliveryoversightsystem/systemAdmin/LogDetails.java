@@ -6,12 +6,24 @@
 
 package deliveryoversightsystem.systemAdmin;
 
+import java.util.ArrayList;
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Aimee
  */
 public class LogDetails extends javax.swing.JFrame {
 
+    public static LogDetails instance;
+    
+    public static void setInstance(LogDetails aInstance) {
+      instance = aInstance;
+    }
+    
     /**
      * Creates new form LogDetails
      */
@@ -20,6 +32,12 @@ public class LogDetails extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
+    }
+    
+    public static LogDetails getInstance(){
+        if(instance == null)
+            instance = new LogDetails();
+        return instance;
     }
 
     /**
@@ -41,10 +59,14 @@ public class LogDetails extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         refreshBtn = new javax.swing.JButton();
         logCB = new javax.swing.JComboBox();
-        homeBtn1 = new javax.swing.JButton();
-        refreshBtn1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		addWindowListener(new java.awt.event.WindowAdapter(){
+			public void windowClosing(java.awt.event.WindowEvent evt){
+				formWindowClosing(evt);
+			}
+		});
 
         jPanel2.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -144,25 +166,7 @@ public class LogDetails extends javax.swing.JFrame {
             }
         });
 
-        logCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Employee LN", "Item 2", "Item 3", "Item 4" }));
-
-        homeBtn1.setBackground(new java.awt.Color(255, 255, 255));
-        homeBtn1.setForeground(new java.awt.Color(0, 153, 255));
-        homeBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/home_25.png"))); // NOI18N
-        homeBtn1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                homeBtn1ActionPerformed(evt);
-            }
-        });
-
-        refreshBtn1.setBackground(new java.awt.Color(255, 255, 255));
-        refreshBtn1.setForeground(new java.awt.Color(0, 153, 255));
-        refreshBtn1.setText("EXPORT");
-        refreshBtn1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshBtn1jButton1ActionPerformed(evt);
-            }
-        });
+        logCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Employee LN", "Employee FN" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -185,10 +189,6 @@ public class LogDetails extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(goBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(refreshBtn1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(homeBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(25, 25, 25))
         );
@@ -203,17 +203,13 @@ public class LogDetails extends javax.swing.JFrame {
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(logSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(logCB, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(homeBtn1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(refreshBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(goBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(logSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(logCB, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -233,19 +229,26 @@ public class LogDetails extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String retVal = "";
+        String condition = getLogCB().getSelectedItem().toString();
+        
+        if(condition.equalsIgnoreCase("Employee LN")){
+            retVal = "lastName";
+        }else if(condition.equalsIgnoreCase("Employee FN")){
+            retVal = "firstName";
+        }  
+        
+        String searchVal = getLogSearchField().getText().trim();
+        
+        updateViewLogDetailsTable(model.LogDetails.getAllLogsWithSearch(retVal,searchVal));  
+            System.gc();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void refreshBtnjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnjButton1ActionPerformed
         // TODO add your handling code here:
+        updateViewLogDetailsTable(model.LogDetails.getAllLogs());
+        System.gc();
     }//GEN-LAST:event_refreshBtnjButton1ActionPerformed
-
-    private void homeBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtn1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_homeBtn1ActionPerformed
-
-    private void refreshBtn1jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtn1jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_refreshBtn1jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,11 +284,82 @@ public class LogDetails extends javax.swing.JFrame {
             }
         });
     }
+    
+    /**
+     * 
+     * Getters and Setter
+     * @return
+     */
+    public JTable getLogTable() {
+        return logTable;
+    }
+
+    public void setLogTable(JTable logTable) {
+        this.logTable = logTable;
+    }
+
+    public JComboBox getLogCB() {
+        return logCB;
+    }
+
+    public void setLogCB(JComboBox logCB) {
+        this.logCB = logCB;
+    }
+
+    public JTextField getLogSearchField() {
+        return logSearchField;
+    }
+
+    public void setLogSearchField(JTextField logSearchField) {
+        this.logSearchField = logSearchField;
+    }
+    
+    
+
+    
+    /**
+     * 
+     * @param logList 
+     */
+    public void updateViewLogDetailsTable(ArrayList<model.LogDetails> logList){
+        
+        //JOptionPane.showMessageDialog(null,"Getting table results...");
+        if(logList == null)
+            return;
+        DefaultTableModel model = (DefaultTableModel) getLogTable().getModel();
+        int size = logList.size(), modelRows = model.getRowCount();
+        if(size > modelRows){
+            for(int i = size-modelRows; i > 0; i--)
+                model.addRow(new String[model.getColumnCount()]);
+        }
+        else if(modelRows > size){
+            for(int i = modelRows-size; i > 0; i--)
+                model.removeRow(0);
+        }
+        for(int i = 0; i < logList.size(); i++){
+            model.LogDetails m = logList.get(i);
+            
+            model.setValueAt(m.getLogDate(),i,0);
+            model.setValueAt(m.getLogTime(),i,1);
+            model.setValueAt(m.getFullname(),i,2);
+            model.setValueAt(m.getLogActivity(),i,3);
+            
+        }
+        System.gc();
+    }
+    
+    private void formWindowClosing(java.awt.event.WindowEvent evt){
+        showExitDialog();
+    }
+    
+    private void showExitDialog(){
+        systemAdminHome.instance.setEnabled(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dosLabel;
     private javax.swing.JButton goBtn;
-    private javax.swing.JButton homeBtn1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator3;
@@ -294,6 +368,5 @@ public class LogDetails extends javax.swing.JFrame {
     private javax.swing.JTextField logSearchField;
     private javax.swing.JTable logTable;
     private javax.swing.JButton refreshBtn;
-    private javax.swing.JButton refreshBtn1;
     // End of variables declaration//GEN-END:variables
 }

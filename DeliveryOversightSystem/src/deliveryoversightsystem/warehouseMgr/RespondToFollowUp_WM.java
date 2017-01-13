@@ -200,7 +200,9 @@ public class RespondToFollowUp_WM extends javax.swing.JFrame {
 
     private void respondBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_respondBtnActionPerformed
         // TODO add your handling code here:
+        
         String purchaseNo = getPurchaseOrderNoField().getText().trim();
+        AccessLayer.getInstance().clearResponses(purchaseNo);
         String buttonChoice = "";
         
         if(wIssuesRBtn.isSelected()){
@@ -222,16 +224,18 @@ public class RespondToFollowUp_WM extends javax.swing.JFrame {
         int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to send the response?","Confirmation",0);
             if(dialogResult == JOptionPane.YES_OPTION){
                 
-                if(new responseModel(purchaseNo, buttonChoice, respondMsg, currDate, responseStats).addResponseToDB(true)){}
                 
-                    AccessLayer.getInstance().updateResponseStatus(purchaseNo);
-                        JOptionPane.showMessageDialog(null,"Response was sent successfully!");
-                            
-                        
-                }else{
-                
-                    JOptionPane.showMessageDialog(null,"Cancelled!");
-                }
+                    if(new responseModel(purchaseNo, buttonChoice, respondMsg, currDate, responseStats).addResponseToDB(true)){}
+
+                        //AccessLayer.getInstance().updateResponseStatus(purchaseNo); //if successfully sent
+                        AccessLayer.getInstance().updateFollowUpFlag(purchaseNo);
+                            JOptionPane.showMessageDialog(null,"Response was sent successfully!");
+
+
+                    }else{
+
+                        JOptionPane.showMessageDialog(null,"Cancelled!");
+                    }
         
         // add a function here that closes the panel after user has clicked RESPOND
         // if user has responded already, user cannot respond again -  becoz only once a day
